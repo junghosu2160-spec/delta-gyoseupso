@@ -172,6 +172,35 @@
   .badge.on { background: var(--ok-soft); color: var(--ok); }
   .badge.off { background: var(--idle-soft); color: var(--idle); }
 
+  /* 달력 안 출석부 — 시간 + 이름 */
+  .cal.big .cell { min-height: 138px; }
+  .cal.big .cell { position: relative; padding-top: 5px; }
+  .dcnt { position: absolute; top: 5px; right: 6px; font-size: 9.5px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .lines { display: flex; flex-direction: column; margin-top: 5px; }
+  .ln {
+    display: flex; gap: 6px; align-items: center; width: 100%; text-align: left;
+    background: none; border: 0; padding: 1.5px 3px; border-radius: 4px; cursor: pointer;
+    font: inherit; font-size: 11px; line-height: 1.55; color: var(--ink);
+  }
+  .ln:hover { background: var(--surface-2); }
+  .ln:focus-visible { outline: 2px solid var(--brand); outline-offset: 0; }
+  .ln .lt { width: 33px; flex: none; color: var(--ink-3); font-size: 10px; font-variant-numeric: tabular-nums; }
+  .ln .lgr { font-size: 9.5px; font-weight: 700; border-radius: 3px; padding: 0 4px; flex: none; line-height: 1.6; }
+  .ln .lnm { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ln.ok { opacity: .42; }
+  .ln.ok .lt, .ln.ok .lnm { text-decoration: line-through; }
+  .ln.warn .lnm { color: var(--warn); font-weight: 600; }
+  .ln.bad .lnm { color: var(--bad); font-weight: 600; text-decoration: line-through; }
+  .lf { margin-left: auto; font-size: 9.5px; font-weight: 700; color: var(--ink-3); flex: none; }
+  .callegend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 12.5px; color: var(--ink-3); align-items: center; }
+  .callegend .s { display: inline-flex; align-items: center; gap: 6px; }
+  .callegend .dot { width: 14px; height: 10px; border-radius: 3px; display: block; }
+  .callegend .sep { width: 1px; height: 13px; background: var(--line); }
+  .callegend .demo { font-weight: 600; }
+  .callegend .demo.ok { color: var(--ink-3); text-decoration: line-through; }
+  .callegend .demo.warn { color: var(--warn); }
+  .callegend .demo.bad { color: var(--bad); text-decoration: line-through; }
+
   /* 대시보드 일정 체크리스트 */
   .quickadd { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
   .quickadd input[type="date"] { width: 132px; font-size: 13px; padding: 6px 9px; }
@@ -394,16 +423,6 @@
 
           <div class="col">
             <section class="card">
-              <div class="card-head"><div class="card-title">이번 달 일정</div><div class="card-meta">시험 · 상담 · 개인 · 휴무</div></div>
-              <div class="cal-nav">
-                <button type="button" id="dcPrev" aria-label="이전 달">‹</button>
-                <span class="mon n" id="dcMon"></span>
-                <button type="button" id="dcNext" aria-label="다음 달">›</button>
-              </div>
-              <div class="cal" id="dashCal"></div>
-            </section>
-
-            <section class="card">
               <div class="card-head">
                 <div class="card-title">일정</div>
                 <div class="card-meta" id="ckMeta"></div>
@@ -423,6 +442,26 @@
             </section>
           </div>
         </div>
+
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title">이번 달 출석부</div>
+            <div class="card-meta">이름을 누르면 출석 표시가 됩니다 (지워진 이름 = 출석 완료)</div>
+          </div>
+          <div class="cal-nav">
+            <button type="button" id="dcPrev" aria-label="이전 달">‹</button>
+            <span class="mon n" id="dcMon"></span>
+            <button type="button" id="dcNext" aria-label="다음 달">›</button>
+          </div>
+          <div class="cal big" id="dashCal"></div>
+          <div class="callegend">
+            <span class="s"><i class="dot" style="background:#dbeedf"></i>초등</span>
+            <span class="s"><i class="dot" style="background:#e3edfc"></i>중등</span>
+            <span class="s"><i class="dot" style="background:#fbe5ed"></i>고등</span>
+            <span class="sep"></span>
+            <span class="s">한 번 누르면 <b class="demo ok">출석</b> · 두 번 <b class="demo warn">지각</b> · 세 번 <b class="demo bad">결석</b> · 네 번 원래대로</span>
+          </div>
+        </section>
       </div>
     </section>
 
@@ -685,12 +724,17 @@
   var DEFAULT_UNITS = { "초등": 25000, "중등": 30000, "고등": 35000 };
 
   // 학년별 색상칩
+  // 초등 = 녹색 / 중등 = 파랑 / 고등 = 분홍, 학년이 올라갈수록 조금씩 진하게
   var GRADE_COLORS = {
-    "초1": ["#e8f3ff", "#2c6bb5"], "초2": ["#e6f6ec", "#1a7f4f"], "초3": ["#fdf0e0", "#a9701c"],
-    "초4": ["#f5eafb", "#7b46a8"], "초5": ["#e4f4f5", "#1c6b73"], "초6": ["#fdeae9", "#c0453e"],
-    "중1": ["#e9eefc", "#3c53a8"], "중2": ["#eaf5e6", "#4a7a2b"], "중3": ["#fff2d9", "#8d6a12"],
-    "고1": ["#f0eaf9", "#6b3fa0"], "고2": ["#e6f2f7", "#20657f"], "고3": ["#fbe8ef", "#a83a63"]
+    "초1": ["#eff8f0", "#4a8455"], "초2": ["#e9f5eb", "#3f7d4b"],
+    "초3": ["#e2f2e5", "#347541"], "초4": ["#dbeedf", "#2b6e39"],
+    "초5": ["#d4ebd9", "#226733"], "초6": ["#cde8d3", "#1a602d"],
+    "중1": ["#ecf3fd", "#3367b4"], "중2": ["#e3edfc", "#2b5fac"],
+    "중3": ["#dae7fa", "#2357a3"],
+    "고1": ["#fdeef3", "#b74a73"], "고2": ["#fbe5ed", "#ae426b"],
+    "고3": ["#f9dde7", "#a53a62"]
   };
+  var LEVEL_COLORS = { "초등": "#3d8a52", "중등": "#2f63b0", "고등": "#b34a72" };
   function gradeChip(grade, label) {
     var c = GRADE_COLORS[grade] || ["#eef0f3", "#5a6270"];
     var e = el("span", "gchip", label === undefined ? grade : label);
@@ -729,7 +773,7 @@
     TIP = el("div", "tip");
     TIP.appendChild(el("div", "tip-h", td._label + " · " + td._list.length + "명"));
     var b = el("div", "tip-b");
-    td._list.forEach(function (s) { b.appendChild(gradeChip(s.grade, s.name + " " + s.grade)); });
+    td._list.forEach(function (x) { b.appendChild(gradeChip(x.grade, x.text)); });
     TIP.appendChild(b);
     document.body.appendChild(TIP);
     var r = td.getBoundingClientRect(), t = TIP.getBoundingClientRect();
@@ -740,9 +784,9 @@
     TIP.style.top = top + "px";
   }
   function hideTip() { if (TIP) { TIP.remove(); TIP = null; } }
-  function onTipIn(e) { var td = e.target.closest("td.has"); if (td) showTip(td); }
-  function onTipOut(e) { if (!e.relatedTarget || !e.relatedTarget.closest || !e.relatedTarget.closest("td.has")) hideTip(); }
-  function onTipClick(e) { var td = e.target.closest("td.has"); if (td) showTip(td); else hideTip(); }
+  function onTipIn(e) { var td = e.target.closest(".has"); if (td) showTip(td); }
+  function onTipOut(e) { if (!e.relatedTarget || !e.relatedTarget.closest || !e.relatedTarget.closest(".has")) hideTip(); }
+  function onTipClick(e) { var td = e.target.closest(".has"); if (td) showTip(td); else hideTip(); }
 
   function students() {
     return Object.keys(DATA.students).map(function (id) {
@@ -836,11 +880,46 @@
 
     drawWeek();
     document.getElementById("dcMon").textContent = dcY + "년 " + dcM + "월";
-    buildCal(document.getElementById("dashCal"), dcY, dcM, function (cell, key) {
+    buildCal(document.getElementById("dashCal"), dcY, dcM, function (cell, key, wd) {
+      // 일정 먼저
       Object.keys(DATA.events).forEach(function (id) {
         var e = DATA.events[id];
         if (e.date === key) cell.appendChild(el("span", "ev " + e.kind, e.text));
       });
+      // 그날 오는 학생
+      if (isRest(key)) return;
+      var list = activeStudents().filter(function (s) { return s.days[wd]; })
+        .sort(function (a, b) {
+          var t = (a.days[wd] || "").localeCompare(b.days[wd] || "");
+          return t || (gradeIdx(a.grade) - gradeIdx(b.grade)) || a.name.localeCompare(b.name, "ko");
+        });
+      if (!list.length) return;
+
+      cell.appendChild(el("span", "dcnt", list.length + "명"));
+
+      var box = el("div", "lines");
+      var prevTime = null;
+      list.forEach(function (s) {
+        var st = att(key, s.id);
+        var b = el("button", "ln" + (st ? " " + st : ""));
+        b.type = "button";
+        b.title = s.name + " " + s.grade + " · " + s.days[wd] +
+          (st === "ok" ? " · 출석" : st === "warn" ? " · 지각" : st === "bad" ? " · 결석" : " · 미체크");
+        b.appendChild(el("span", "lt", s.days[wd]));
+        prevTime = s.days[wd];
+        var g = gradeChip(s.grade);
+        g.className = "lgr";
+        b.appendChild(g);
+        b.appendChild(el("span", "lnm", s.name));
+        if (st === "warn") b.appendChild(el("span", "lf", "지각"));
+        if (st === "bad") b.appendChild(el("span", "lf", "결석"));
+        b.addEventListener("click", function () {
+          var next = { "": "ok", "ok": "warn", "warn": "bad", "bad": null }[st || ""];
+          ROOT.child("attendance/" + key + "/" + s.id).set(next);
+        });
+        box.appendChild(b);
+      });
+      cell.appendChild(box);
     });
   }
 
@@ -892,7 +971,7 @@
           if (cls) td.appendChild(el("span", "pill " + cls, String(list.length)));
           else { td.className = "n"; td.textContent = String(list.length); }
           td.classList.add("has");
-          td._list = list;
+          td._list = list.map(function (s) { return { grade: s.grade, text: s.name + " " + s.grade }; });
           td._label = label + " · " + (d.getMonth() + 1) + "/" + d.getDate() + "(" + DOW[d.getDay()] + ")";
         }
         tr.appendChild(td);
