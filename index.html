@@ -39,8 +39,9 @@
   .brand { display: flex; align-items: center; gap: 10px; padding-inline: 6px; }
   .brand-mark { width: 30px; height: 45px; flex: none; }
   .brand-mark svg { width: 100%; height: 100%; display: block; }
-  .brand .title { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.03em; line-height: 1.25; }
-  .brand .sub { font-size: 11px; font-weight: 600; color: var(--brand); }
+  .brand .title { font-size: 15px; font-weight: 800; color: #fff; letter-spacing: -.03em; line-height: 1.25; white-space: nowrap; }
+  .brand .sub { font-size: 11px; font-weight: 600; color: var(--brand); white-space: nowrap; }
+  .calwrap { overflow-x: auto; }
   .nav { display: flex; flex-direction: column; gap: 3px; }
   .nav button {
     display: flex; align-items: center; gap: 10px; width: 100%;
@@ -149,6 +150,30 @@
   .att-actions button[aria-pressed="true"][data-s="ok"] { background: var(--ok); border-color: var(--ok); color: #fff; }
   .att-actions button[aria-pressed="true"][data-s="warn"] { background: var(--warn); border-color: var(--warn); color: #fff; }
   .att-actions button[aria-pressed="true"][data-s="bad"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+  .attgrid { display: grid; grid-template-columns: 296px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .pickcal .cell { min-height: 38px; padding: 3px 2px; align-items: center; justify-content: center; gap: 0; cursor: pointer; }
+  .pickcal .cell .d { font-size: 12px; }
+  .pickcal .pn { font-size: 9px; color: var(--ink-3); font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .pickcal .cell:hover { background: var(--surface-2); }
+  .pickcal .cell:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .pickcal .cell.sel { background: var(--brand); border-color: var(--brand); }
+  .pickcal .cell.sel .d, .pickcal .cell.sel .pn { color: var(--brand-ink); font-weight: 700; }
+  .pickcal .cell.blank { cursor: default; }
+  .pickcal .cell.blank:hover { background: none; }
+  .pickfoot { display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+  .att-row { flex-wrap: wrap; }
+  .att-row .lgr { font-size: 11px; font-weight: 700; border-radius: 4px; padding: 1px 6px; flex: none; }
+  .mtag { font-size: 11.5px; font-weight: 600; color: var(--warn); background: var(--warn-soft); border-radius: 5px; padding: 1px 7px; }
+  .mkbar {
+    flex: 1 1 100%; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-top: 8px; padding: 8px 10px; border-radius: 8px;
+    background: var(--bad-soft);
+  }
+  .mkno { font-size: 12.5px; color: var(--bad); font-weight: 600; }
+  .mkon { font-size: 12.5px; color: var(--ok); font-weight: 700; }
+  .mkbar .btn { background: var(--surface); }
+
   .datebar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
 
   /* 학생 */
@@ -186,7 +211,7 @@
   }
   .ln:hover { background: var(--surface-2); }
   .ln:focus-visible { outline: 2px solid var(--brand); outline-offset: 0; }
-  .ln .lt { width: 31px; flex: none; color: var(--ink-3); font-size: 10px; font-variant-numeric: tabular-nums; }
+  .ln .lt { margin-left: auto; flex: none; color: var(--ink-3); font-size: 10px; font-variant-numeric: tabular-nums; padding-left: 4px; }
   .ln .lgr { font-size: 9.5px; font-weight: 700; border-radius: 3px; padding: 0 4px; flex: none; line-height: 1.6; }
   .ln .lnm { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .ln.ok { opacity: .42; }
@@ -194,6 +219,7 @@
   .ln.warn .lt, .ln.warn .lnm { color: var(--warn); font-weight: 600; }
   .ln.bad .lt { color: var(--bad); }
   .ln.bad .lnm { color: var(--bad); font-weight: 600; text-decoration: line-through; }
+  .mkflag { font-size: 9px; font-weight: 700; color: var(--warn); background: var(--warn-soft); border-radius: 3px; padding: 0 3px; flex: none; }
   .callegend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 12.5px; color: var(--ink-3); align-items: center; }
   .callegend .s { display: inline-flex; align-items: center; gap: 6px; }
   .callegend .dot { width: 14px; height: 10px; border-radius: 3px; display: block; }
@@ -326,14 +352,17 @@
     font-size: 13.5px; font-weight: 600; z-index: 60; box-shadow: 0 6px 20px rgba(0,0,0,.25);
   }
 
-  @media (max-width: 1180px) { .cols, .sms-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1180px) { .cols, .sms-grid, .attgrid { grid-template-columns: minmax(0, 1fr); } }
   @media (max-width: 860px) {
-    .shell { grid-template-columns: 1fr; }
-    .side { flex-direction: row; align-items: center; gap: 12px; overflow-x: auto; padding: 10px 12px; }
+    .shell { grid-template-columns: minmax(0, 1fr); }
+    .side { flex-direction: column; align-items: stretch; gap: 10px; padding: 10px 12px; overflow: visible; }
+    .side .brand { padding-inline: 2px; }
     .side-foot { display: none; }
-    .nav { flex-direction: row; }
-    .nav button { white-space: nowrap; }
-    .main { padding: 16px 16px 40px; }
+    .nav { flex-direction: row; gap: 4px; overflow-x: auto; padding-bottom: 2px; }
+    .nav button { white-space: nowrap; flex: none; width: auto; padding: 8px 12px; }
+    .main { padding: 16px 14px 40px; }
+    .cal.big { min-width: 860px; }
+    .cal.big .cell { min-height: 118px; }
   }
   @media (max-width: 560px) {
     .stats { grid-template-columns: 1fr; }
@@ -454,7 +483,7 @@
             <span class="mon n" id="dcMon"></span>
             <button type="button" id="dcNext" aria-label="다음 달">›</button>
           </div>
-          <div class="cal big" id="dashCal"></div>
+          <div class="calwrap"><div class="cal big" id="dashCal"></div></div>
           <div class="callegend">
             <span class="s"><i class="dot" style="background:#dbeedf"></i>초등</span>
             <span class="s"><i class="dot" style="background:#e3edfc"></i>중등</span>
@@ -470,19 +499,32 @@
 
     <!-- 출결 -->
     <section id="page-att" hidden>
-      <section class="card">
-        <div class="card-head">
-          <div class="card-title" id="attTitle">출결</div>
-          <div class="card-meta">단추를 누르면 바로 저장됩니다</div>
-        </div>
-        <div class="datebar">
-          <button type="button" class="btn sm" id="attPrev">‹ 어제</button>
-          <input type="date" id="attDate">
-          <button type="button" class="btn sm" id="attNext">내일 ›</button>
-          <button type="button" class="btn sm" id="attToday">오늘</button>
-        </div>
-        <div id="attList"></div>
-      </section>
+      <div class="attgrid">
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title">날짜 고르기</div>
+          </div>
+          <div class="cal-nav">
+            <button type="button" id="acPrev" aria-label="이전 달">‹</button>
+            <span class="mon n" id="acMon"></span>
+            <button type="button" id="acNext" aria-label="다음 달">›</button>
+          </div>
+          <div class="cal pickcal" id="attCal"></div>
+          <div class="pickfoot">
+            <button type="button" class="btn sm" id="attToday">오늘로</button>
+            <button type="button" class="btn sm" id="attRest">이 날 휴무로</button>
+          </div>
+          <div class="hint" style="margin:10px 0 0">숫자 = 그날 오는 인원 · 분홍 = 휴무일</div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <div class="card-title" id="attTitle">출결</div>
+            <div class="card-meta">단추를 누르면 바로 저장됩니다</div>
+          </div>
+          <div id="attList"></div>
+        </section>
+      </div>
     </section>
 
     <!-- 학생 -->
@@ -513,7 +555,7 @@
         <div class="tbl-wrap">
           <table class="st">
             <thead><tr>
-              <th>이름</th><th>학교</th><th>학년</th><th>수업 요일 · 시간</th><th>학부모 연락처</th><th>학생 연락처</th><th>상태</th>
+              <th>학년</th><th>이름</th><th>학교</th><th>수업 요일 · 시간</th><th>학부모 연락처</th><th>학생 연락처</th><th>상태</th>
             </tr></thead>
             <tbody id="stuBody"></tbody>
           </table>
@@ -666,6 +708,27 @@
   </div>
 </div>
 
+<!-- 보강 잡기 -->
+<div class="ovl" id="ovl3" hidden>
+  <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="kTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="kTitle">보강 잡기</h2>
+        <div class="sub" id="kSub"></div>
+      </div>
+      <button type="button" class="btn x" id="kClose">닫기</button>
+    </div>
+    <div class="form2">
+      <label class="fld">보강 날짜<input type="date" id="kDate"></label>
+      <label class="fld">보강 시간<select id="kTime"></select></label>
+    </div>
+    <div class="hint" style="margin-top:12px">보강일로 정한 날의 출결 명단과 대시보드 출석부에 <b>보강</b> 표시로 함께 나옵니다.</div>
+    <div class="copyrow" style="margin-top:14px">
+      <button type="button" class="btn brand" id="kSave">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- 학생 추가/수정 -->
 <div class="ovl" id="ovl2" hidden>
   <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="eTitle">
@@ -746,7 +809,7 @@
     return e;
   }
 
-  var DATA = { students: {}, attendance: {}, events: {}, plans: {}, settings: { units: {} } };
+  var DATA = { students: {}, attendance: {}, events: {}, plans: {}, makeups: {}, settings: { units: {} } };
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function ymd(y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }
@@ -889,31 +952,26 @@
         var e = DATA.events[id];
         if (e.date === key) cell.appendChild(el("span", "ev " + e.kind, e.text));
       });
-      // 그날 오는 학생
-      if (isRest(key)) return;
-      var list = activeStudents().filter(function (s) { return s.days[wd]; })
-        .sort(function (a, b) {
-          var t = (a.days[wd] || "").localeCompare(b.days[wd] || "");
-          return t || (gradeIdx(a.grade) - gradeIdx(b.grade)) || a.name.localeCompare(b.name, "ko");
-        });
+      // 그날 오는 학생 (보강 포함)
+      var list = comingOn(key);
       if (!list.length) return;
 
       cell.appendChild(el("span", "dcnt", list.length + "명"));
 
       var box = el("div", "lines");
-      var prevTime = null;
-      list.forEach(function (s) {
+      list.forEach(function (x) {
+        var s = x.s;
         var st = att(key, s.id);
-        var b = el("button", "ln" + (st ? " " + st : ""));
+        var b = el("button", "ln" + (st ? " " + st : "") + (x.makeup ? " mkline" : ""));
         b.type = "button";
-        b.title = s.name + " " + s.grade + " · " + s.days[wd] +
+        b.title = s.name + " " + s.grade + " · " + x.time + (x.makeup ? " · 보강" : "") +
           (st === "ok" ? " · 출석" : st === "warn" ? " · 지각" : st === "bad" ? " · 결석" : " · 미체크");
-        b.appendChild(el("span", "lt", s.days[wd]));
-        prevTime = s.days[wd];
         var g = gradeChip(s.grade);
         g.className = "lgr";
         b.appendChild(g);
         b.appendChild(el("span", "lnm", s.name));
+        if (x.makeup) b.appendChild(el("span", "mkflag", "보강"));
+        b.appendChild(el("span", "lt", x.time));
         b.addEventListener("click", function () {
           var next = { "": "ok", "ok": "warn", "warn": "bad", "bad": null }[st || ""];
           ROOT.child("attendance/" + key + "/" + s.id).set(next);
@@ -1088,70 +1146,211 @@
   document.getElementById("dcPrev").addEventListener("click", function () { dcM--; if (dcM < 1) { dcM = 12; dcY--; } drawDash(); });
   document.getElementById("dcNext").addEventListener("click", function () { dcM++; if (dcM > 12) { dcM = 1; dcY++; } drawDash(); });
 
+  /* ===================== 보강 ===================== */
+  // makeups/{결석한날}/{학생} = { date: 보강날, time: 보강시간 }
+  function makeupOf(absentKey, sid) { return (DATA.makeups[absentKey] || {})[sid] || null; }
+
+  // 그날 보강으로 오는 학생들
+  function makeupArrivals(dateKey) {
+    var out = [];
+    Object.keys(DATA.makeups).forEach(function (from) {
+      Object.keys(DATA.makeups[from]).forEach(function (sid) {
+        var m = DATA.makeups[from][sid];
+        if (!m || m.date !== dateKey) return;
+        var s = DATA.students[sid];
+        if (!s || s.status !== "재원") return;
+        s.id = sid;
+        out.push({ s: s, time: m.time || "", from: from });
+      });
+    });
+    return out;
+  }
+
   /* ===================== 출결 ===================== */
   var attKey = TODAY_KEY;
+  var acY = NOW.getFullYear(), acM = NOW.getMonth() + 1;
+
+  function comingOn(dateKey) {
+    if (isRest(dateKey)) return [];
+    var wd = parseKey(dateKey).getDay();
+    var out = activeStudents().filter(function (s) { return s.days[wd]; })
+      .map(function (s) { return { s: s, time: s.days[wd], makeup: false }; });
+    makeupArrivals(dateKey).forEach(function (m) {
+      out.push({ s: m.s, time: m.time, makeup: true, from: m.from });
+    });
+    return out.sort(function (a, b) {
+      return (a.time || "").localeCompare(b.time || "") ||
+             (gradeIdx(a.s.grade) - gradeIdx(b.s.grade)) ||
+             a.s.name.localeCompare(b.s.name, "ko");
+    });
+  }
+
+  function drawAttCal() {
+    document.getElementById("acMon").textContent = acY + "년 " + acM + "월";
+    buildCal(document.getElementById("attCal"), acY, acM, function (cell, key) {
+      if (key === attKey) cell.classList.add("sel");
+      var n = comingOn(key).length;
+      if (n) cell.appendChild(el("span", "pn", String(n)));
+      cell.addEventListener("click", function () { attKey = key; drawAtt(); });
+      cell.tabIndex = 0;
+      cell.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); attKey = key; drawAtt(); }
+      });
+    });
+  }
+
+  function attRow(s, time, makeupTag) {
+    var row = el("div", "att-row");
+    var g = gradeChip(s.grade);
+    g.className = "lgr";
+    row.appendChild(g);
+    row.appendChild(el("span", "att-name", s.name));
+    if (makeupTag) row.appendChild(el("span", "mtag", makeupTag));
+
+    var st = att(attKey, s.id);
+    var acts = el("span", "att-actions");
+    [["ok", "출석"], ["warn", "지각"], ["bad", "결석"]].forEach(function (p) {
+      var b = el("button", "", p[1]);
+      b.type = "button";
+      b.dataset.s = p[0];
+      b.setAttribute("aria-pressed", String(st === p[0]));
+      b.addEventListener("click", function () {
+        ROOT.child("attendance/" + attKey + "/" + s.id).set(st === p[0] ? null : p[0]);
+      });
+      acts.appendChild(b);
+    });
+    row.appendChild(acts);
+
+    // 결석이면 보강 줄
+    if (st === "bad") {
+      var m = makeupOf(attKey, s.id);
+      var bar = el("div", "mkbar");
+      if (m) {
+        var d = parseKey(m.date);
+        bar.appendChild(el("span", "mkon", "보강 " + (d.getMonth() + 1) + "/" + d.getDate() + "(" + DOW[d.getDay()] + ") " + (m.time || "")));
+        var ch = el("button", "btn sm", "바꾸기");
+        ch.type = "button";
+        ch.addEventListener("click", function () { openMakeup(s, attKey, m); });
+        bar.appendChild(ch);
+        var rm = el("button", "btn sm danger", "보강 취소");
+        rm.type = "button";
+        rm.addEventListener("click", function () {
+          ROOT.child("makeups/" + attKey + "/" + s.id).remove();
+          toast("보강을 취소했습니다");
+        });
+        bar.appendChild(rm);
+      } else {
+        bar.appendChild(el("span", "mkno", "보강 안 잡힘"));
+        var add = el("button", "btn sm brand", "+ 보강 잡기");
+        add.type = "button";
+        add.addEventListener("click", function () { openMakeup(s, attKey, null); });
+        bar.appendChild(add);
+      }
+      row.appendChild(bar);
+    }
+    return row;
+  }
 
   function drawAtt() {
-    document.getElementById("attDate").value = attKey;
     var dt = parseKey(attKey);
     document.getElementById("attTitle").textContent =
       dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + dt.getDate() + "일 " + DOW[dt.getDay()] + "요일 출결";
+    document.getElementById("attRest").textContent = isRest(attKey) ? "휴무 풀기" : "이 날 휴무로";
+
+    // 고른 날이 보이는 달과 다르면 달을 따라감
+    var ky = Number(attKey.slice(0, 4)), km = Number(attKey.slice(5, 7));
+    if (ky !== acY || km !== acM) { acY = ky; acM = km; }
+    drawAttCal();
 
     var host = document.getElementById("attList");
     host.textContent = "";
 
     if (isRest(attKey)) {
       host.appendChild(el("div", "muted", "휴무일입니다 — " + (restName(attKey) || "수업 없음")));
-      return;
+      var mk = makeupArrivals(attKey);
+      if (!mk.length) return;
     }
 
-    var wd = dt.getDay(), slots = {};
-    activeStudents().forEach(function (s) {
-      var t = s.days[wd];
-      if (!t) return;
-      (slots[t] = slots[t] || []).push(s);
-    });
+    var list = comingOn(attKey);
+    if (!list.length) { host.appendChild(el("div", "muted", "이 날 수업이 있는 학생이 없습니다.")); return; }
 
-    var keys = Object.keys(slots).sort();
-    if (!keys.length) { host.appendChild(el("div", "muted", "이 요일에 수업이 있는 학생이 없습니다.")); return; }
+    var slots = {};
+    list.forEach(function (x) { (slots[x.time] = slots[x.time] || []).push(x); });
 
-    keys.forEach(function (t) {
+    Object.keys(slots).sort().forEach(function (t) {
       var box = el("div", "att-slot");
       var head = el("div", "att-head");
-      head.appendChild(el("span", "att-time", t));
-      var grades = slots[t].map(function (s) { return s.grade; }).filter(function (v, i, a) { return a.indexOf(v) === i; });
+      head.appendChild(el("span", "att-time", t || "시간 미정"));
+      var grades = slots[t].map(function (x) { return x.s.grade; }).filter(function (v, i, a) { return a.indexOf(v) === i; });
       head.appendChild(el("span", "att-class", grades.join(" · ")));
       head.appendChild(el("span", "att-count", slots[t].length + "명"));
       box.appendChild(head);
-
-      slots[t].sort(function (a, b) { return a.name.localeCompare(b.name, "ko"); }).forEach(function (s) {
-        var row = el("div", "att-row");
-        row.appendChild(el("span", "att-name", s.name));
-        row.appendChild(el("span", "att-grade", s.grade));
-        var acts = el("span", "att-actions");
-        [["ok", "출석"], ["warn", "지각"], ["bad", "결석"]].forEach(function (p) {
-          var b = el("button", "", p[1]);
-          b.type = "button";
-          b.dataset.s = p[0];
-          b.setAttribute("aria-pressed", String(att(attKey, s.id) === p[0]));
-          b.addEventListener("click", function () {
-            var cur = att(attKey, s.id);
-            var next = cur === p[0] ? null : p[0];
-            ROOT.child("attendance/" + attKey + "/" + s.id).set(next);
-          });
-          acts.appendChild(b);
-        });
-        row.appendChild(acts);
-        box.appendChild(row);
+      slots[t].forEach(function (x) {
+        var tag = null;
+        if (x.makeup) {
+          var f = parseKey(x.from);
+          tag = "보강 (" + (f.getMonth() + 1) + "/" + f.getDate() + " 결석분)";
+        }
+        box.appendChild(attRow(x.s, x.time, tag));
       });
       host.appendChild(box);
     });
   }
 
-  document.getElementById("attDate").addEventListener("change", function () { attKey = this.value || TODAY_KEY; drawAtt(); });
-  document.getElementById("attPrev").addEventListener("click", function () { var d = parseKey(attKey); d.setDate(d.getDate() - 1); attKey = keyOf(d); drawAtt(); });
-  document.getElementById("attNext").addEventListener("click", function () { var d = parseKey(attKey); d.setDate(d.getDate() + 1); attKey = keyOf(d); drawAtt(); });
   document.getElementById("attToday").addEventListener("click", function () { attKey = TODAY_KEY; drawAtt(); });
+  document.getElementById("attRest").addEventListener("click", function () {
+    var hit = null;
+    Object.keys(DATA.events).forEach(function (id) {
+      var e = DATA.events[id];
+      if (e.date === attKey && e.kind === "rest") hit = id;
+    });
+    if (hit) {
+      ROOT.child("events/" + hit).remove();
+      toast("휴무를 풀었습니다");
+    } else {
+      var d = parseKey(attKey);
+      ROOT.child("events").push({
+        date: attKey, kind: "rest",
+        text: (d.getMonth() + 1) + "/" + d.getDate() + " 휴무"
+      });
+      toast("휴무로 정했습니다");
+    }
+  });
+  document.getElementById("acPrev").addEventListener("click", function () { acM--; if (acM < 1) { acM = 12; acY--; } drawAttCal(); });
+  document.getElementById("acNext").addEventListener("click", function () { acM++; if (acM > 12) { acM = 1; acY++; } drawAttCal(); });
+
+  /* 보강 잡기 창 */
+  var mkStudent = null, mkFrom = null;
+  function openMakeup(s, fromKey, cur) {
+    mkStudent = s; mkFrom = fromKey;
+    var f = parseKey(fromKey);
+    document.getElementById("kTitle").textContent = s.name + " 보강 잡기";
+    document.getElementById("kSub").textContent =
+      s.grade + " · " + (f.getMonth() + 1) + "월 " + f.getDate() + "일 " + DOW[f.getDay()] + "요일 결석";
+    var sel = document.getElementById("kTime");
+    if (!sel.options.length) {
+      TIMES.forEach(function (t) {
+        var o = document.createElement("option");
+        o.value = t; o.textContent = t;
+        sel.appendChild(o);
+      });
+    }
+    document.getElementById("kDate").value = cur ? cur.date : fromKey;
+    sel.value = cur ? (cur.time || "16:00") : "16:00";
+    document.getElementById("ovl3").hidden = false;
+    document.getElementById("kDate").focus();
+  }
+  document.getElementById("kClose").addEventListener("click", function () { document.getElementById("ovl3").hidden = true; });
+  document.getElementById("ovl3").addEventListener("click", function (e) { if (e.target.id === "ovl3") this.hidden = true; });
+  document.getElementById("kSave").addEventListener("click", function () {
+    var d = document.getElementById("kDate").value;
+    var t = document.getElementById("kTime").value;
+    if (!d) { document.getElementById("kDate").focus(); toast("보강 날짜를 골라 주세요"); return; }
+    ROOT.child("makeups/" + mkFrom + "/" + mkStudent.id).set({ date: d, time: t }).then(function () {
+      document.getElementById("ovl3").hidden = true;
+      toast("보강을 잡았습니다");
+    });
+  });
 
   /* ===================== 학생 명단 ===================== */
   var FILTER = { grade: "", school: "" };
@@ -1212,6 +1411,9 @@
         if (q && s.name.indexOf(q) === -1) return;
         shown++;
         var tr = el("tr");
+        var tg = el("td");
+        tg.appendChild(gradeChip(s.grade));
+        tr.appendChild(tg);
         var td = el("td");
         var b = el("button", "name-btn", s.name);
         b.type = "button";
@@ -1219,9 +1421,6 @@
         td.appendChild(b);
         tr.appendChild(td);
         tr.appendChild(el("td", "", s.school || "–"));
-        var tg = el("td");
-        tg.appendChild(gradeChip(s.grade));
-        tr.appendChild(tg);
         tr.appendChild(el("td", "n", daysText(s)));
         tr.appendChild(el("td", "n", s.phone || "–"));
         tr.appendChild(el("td", "n", s.phone2 || "–"));
@@ -1785,6 +1984,7 @@
     DATA.attendance = v.attendance || {};
     DATA.events = v.events || {};
     DATA.plans = v.plans || {};
+    DATA.makeups = v.makeups || {};
     DATA.settings = v.settings || { units: {} };
     if (!DATA.settings.units) DATA.settings.units = {};
     renderAll();
@@ -1805,7 +2005,6 @@
     var dt = NOW;
     document.getElementById("todayText").textContent =
       dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + dt.getDate() + "일 " + DOW[dt.getDay()];
-    document.getElementById("attDate").value = TODAY_KEY;
     document.getElementById("evDate").value = TODAY_KEY;
     document.getElementById("qDate").value = TODAY_KEY;
     syncSms();
