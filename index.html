@@ -172,6 +172,48 @@
   .badge.on { background: var(--ok-soft); color: var(--ok); }
   .badge.off { background: var(--idle-soft); color: var(--idle); }
 
+  /* 대시보드 일정 체크리스트 */
+  .quickadd { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
+  .quickadd input[type="date"] { width: 132px; font-size: 13px; padding: 6px 9px; }
+  .quickadd select { font-size: 13px; padding: 6px 9px; }
+  .quickadd input[type="text"] { flex: 1 1 130px; min-width: 0; font-size: 13px; padding: 6px 10px; }
+  .quickadd .btn { padding: 6px 14px; }
+
+  .ck { list-style: none; margin: 10px 0 0; padding: 0; }
+  .ck li { display: flex; align-items: center; gap: 10px; padding: 9px 2px; border-bottom: 1px solid var(--line-2); }
+  .ck li:last-child { border-bottom: 0; }
+  .ck .cb {
+    width: 19px; height: 19px; flex: none; border-radius: 6px; cursor: pointer;
+    border: 1.5px solid var(--line); background: var(--surface); color: transparent;
+    font-size: 12px; line-height: 1; padding: 0; font-weight: 700;
+  }
+  .ck .cb:hover { border-color: var(--ink-3); }
+  .ck .cb:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .ck .cb[aria-pressed="true"] { background: var(--ok); border-color: var(--ok); color: #fff; }
+  .ck .cd { font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; min-width: 58px; }
+  .ck .cd.soon { color: var(--bad); font-weight: 700; }
+  .ck .ct { font-size: 11.5px; font-weight: 600; border-radius: 5px; padding: 1px 7px; white-space: nowrap; }
+  .ck .cx { flex: 1 1 auto; font-size: 13.5px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ck .cr { opacity: 0; font-size: 15px; line-height: 1; background: none; border: 0; color: var(--ink-3); cursor: pointer; padding: 2px 4px; }
+  .ck li:hover .cr, .ck .cr:focus-visible { opacity: 1; }
+  .ck li.done .cx, .ck li.done .cd { color: var(--ink-3); text-decoration: line-through; }
+  .ck li.done .ct { opacity: .5; }
+  .ck .empty { color: var(--ink-3); font-size: 13.5px; padding: 14px 2px; border: 0; }
+
+  /* 학년 색상칩 */
+  .gchip { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 1px 8px; white-space: nowrap; }
+  table.wk td.has { cursor: default; }
+  table.wk tr.lvl { background: var(--surface-2); }
+  table.wk tr.lvl th.rowh { font-weight: 700; color: var(--ink); }
+  .tip {
+    position: fixed; z-index: 80; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: 0 8px 26px rgba(15,23,42,.16); padding: 10px 12px; max-width: 300px;
+    pointer-events: none;
+  }
+  .tip .tip-h { font-size: 11.5px; color: var(--ink-3); font-weight: 600; margin-bottom: 7px; }
+  .tip .tip-b { display: flex; flex-wrap: wrap; gap: 4px; }
+
   /* 달력 */
   .cal-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
   .cal-nav .mon { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -360,6 +402,25 @@
               </div>
               <div class="cal" id="dashCal"></div>
             </section>
+
+            <section class="card">
+              <div class="card-head">
+                <div class="card-title">일정</div>
+                <div class="card-meta" id="ckMeta"></div>
+              </div>
+              <div class="quickadd">
+                <input type="date" id="qDate">
+                <select id="qKind">
+                  <option value="exam">시험</option>
+                  <option value="talk">상담</option>
+                  <option value="etc">개인</option>
+                  <option value="rest">휴무</option>
+                </select>
+                <input type="text" id="qText" placeholder="할 일 · 일정 적기">
+                <button type="button" class="btn brand" id="qAdd">추가</button>
+              </div>
+              <ul class="ck" id="ckList"></ul>
+            </section>
           </div>
         </div>
       </div>
@@ -410,7 +471,7 @@
         <div class="tbl-wrap">
           <table class="st">
             <thead><tr>
-              <th>이름</th><th>학교</th><th>학년</th><th>수업 요일 · 시간</th><th>학부모 연락처</th><th>상태</th>
+              <th>이름</th><th>학교</th><th>학년</th><th>수업 요일 · 시간</th><th>학부모 연락처</th><th>학생 연락처</th><th>상태</th>
             </tr></thead>
             <tbody id="stuBody"></tbody>
           </table>
@@ -464,6 +525,14 @@
 
           <div class="sec-t">받는 사람</div>
           <div class="chips" id="smsWho"></div>
+
+          <div class="sec">
+            <div class="sec-t">어느 번호로</div>
+            <div class="chips" id="smsTarget">
+              <button type="button" class="chip" data-p="phone" aria-pressed="true">학부모 번호</button>
+              <button type="button" class="chip" data-p="phone2" aria-pressed="false">학생 번호</button>
+            </div>
+          </div>
 
           <div class="sec">
             <div class="sec-t">자주 쓰는 문구</div>
@@ -537,13 +606,11 @@
     </div>
 
     <div class="sec">
-      <div class="sec-t">달력 이미지 (카톡으로 보내기)</div>
-      <div class="imgwrap"><img id="mImg" alt="다음 달 수업일 달력"></div>
-      <div class="copyrow">
+      <div class="copyrow" style="margin-top:0">
         <button type="button" class="btn brand" id="mCopyImg">달력 이미지 복사하기</button>
         <span class="copyok" id="mImgMsg" hidden></span>
       </div>
-      <div class="hint" style="margin-top:6px">복사가 안 되면 그림 위에서 <b>마우스 오른쪽 클릭 → 이미지 복사</b>. 휴대폰은 그림을 길게 누르세요.</div>
+      <div class="imgwrap" id="mImgWrap" hidden style="margin-top:10px"><img id="mImg" alt="다음 달 수업일 달력"></div>
     </div>
 
     <div class="sec">
@@ -575,6 +642,7 @@
         </select>
       </label>
       <label class="fld">학부모 연락처<input type="text" id="ePhone" placeholder="010-0000-0000"></label>
+      <label class="fld">학생 연락처<input type="text" id="ePhone2" placeholder="010-0000-0000"></label>
       <label class="fld">상태
         <select id="eStatus"><option>재원</option><option>휴원</option><option>퇴원</option></select>
       </label>
@@ -616,6 +684,21 @@
   var KIND_NAME = { exam: "시험", talk: "상담", etc: "개인", rest: "휴무" };
   var DEFAULT_UNITS = { "초등": 25000, "중등": 30000, "고등": 35000 };
 
+  // 학년별 색상칩
+  var GRADE_COLORS = {
+    "초1": ["#e8f3ff", "#2c6bb5"], "초2": ["#e6f6ec", "#1a7f4f"], "초3": ["#fdf0e0", "#a9701c"],
+    "초4": ["#f5eafb", "#7b46a8"], "초5": ["#e4f4f5", "#1c6b73"], "초6": ["#fdeae9", "#c0453e"],
+    "중1": ["#e9eefc", "#3c53a8"], "중2": ["#eaf5e6", "#4a7a2b"], "중3": ["#fff2d9", "#8d6a12"],
+    "고1": ["#f0eaf9", "#6b3fa0"], "고2": ["#e6f2f7", "#20657f"], "고3": ["#fbe8ef", "#a83a63"]
+  };
+  function gradeChip(grade, label) {
+    var c = GRADE_COLORS[grade] || ["#eef0f3", "#5a6270"];
+    var e = el("span", "gchip", label === undefined ? grade : label);
+    e.style.background = c[0];
+    e.style.color = c[1];
+    return e;
+  }
+
   var DATA = { students: {}, attendance: {}, events: {}, plans: {}, settings: { units: {} } };
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
@@ -637,6 +720,29 @@
     document.body.appendChild(t);
     setTimeout(function () { t.remove(); }, 1800);
   }
+
+  /* ---------- 숫자에 손 올리면 학생 명단 ---------- */
+  var TIP = null;
+  function showTip(td) {
+    hideTip();
+    if (!td._list || !td._list.length) return;
+    TIP = el("div", "tip");
+    TIP.appendChild(el("div", "tip-h", td._label + " · " + td._list.length + "명"));
+    var b = el("div", "tip-b");
+    td._list.forEach(function (s) { b.appendChild(gradeChip(s.grade, s.name + " " + s.grade)); });
+    TIP.appendChild(b);
+    document.body.appendChild(TIP);
+    var r = td.getBoundingClientRect(), t = TIP.getBoundingClientRect();
+    var left = Math.min(Math.max(8, r.left + r.width / 2 - t.width / 2), window.innerWidth - t.width - 8);
+    var top = r.top - t.height - 8;
+    if (top < 8) top = r.bottom + 8;
+    TIP.style.left = left + "px";
+    TIP.style.top = top + "px";
+  }
+  function hideTip() { if (TIP) { TIP.remove(); TIP = null; } }
+  function onTipIn(e) { var td = e.target.closest("td.has"); if (td) showTip(td); }
+  function onTipOut(e) { if (!e.relatedTarget || !e.relatedTarget.closest || !e.relatedTarget.closest("td.has")) hideTip(); }
+  function onTipClick(e) { var td = e.target.closest("td.has"); if (td) showTip(td); else hideTip(); }
 
   function students() {
     return Object.keys(DATA.students).map(function (id) {
@@ -750,13 +856,15 @@
     });
     times.sort();
 
-    function countAt(day, filter) {
+    function listAt(day, filter) {
       var key = keyOf(day);
-      if (isRest(key)) return 0;
+      if (isRest(key)) return [];
       return activeStudents().filter(function (s) {
         var t = s.days[day.getDay()];
         return t && filter(s, t);
-      }).length;
+      }).sort(function (a, b) {
+        return (gradeIdx(a.grade) - gradeIdx(b.grade)) || a.name.localeCompare(b.name, "ko");
+      });
     }
 
     var t = document.getElementById("wkTable");
@@ -773,33 +881,127 @@
 
     var tb = el("tbody");
 
-    function row(label, filter, cls, cssColor) {
+    function row(label, filter, cls) {
       var tr = el("tr");
-      var th = el("th", "rowh", label);
-      if (cssColor) { th.style.color = cssColor; th.style.fontWeight = "600"; }
-      tr.appendChild(th);
+      tr.appendChild(el("th", "rowh", label));
       days.forEach(function (d) {
-        var n = countAt(d, filter);
+        var list = listAt(d, filter);
         var td = el("td");
-        if (n === 0) { td.className = "dash"; td.textContent = "–"; }
-        else if (cls) td.appendChild(el("span", "pill " + cls, String(n)));
-        else { td.className = "n"; td.textContent = String(n); }
+        if (!list.length) { td.className = "dash"; td.textContent = "–"; }
+        else {
+          if (cls) td.appendChild(el("span", "pill " + cls, String(list.length)));
+          else { td.className = "n"; td.textContent = String(list.length); }
+          td.classList.add("has");
+          td._list = list;
+          td._label = label + " · " + (d.getMonth() + 1) + "/" + d.getDate() + "(" + DOW[d.getDay()] + ")";
+        }
         tr.appendChild(td);
       });
       return tr;
     }
 
-    tb.appendChild(row("초등부", function (s) { return levelOf(s.grade) === "초등"; }, "g", "var(--ok)"));
+    // 1) 시간대별
     times.forEach(function (time) {
       tb.appendChild(row(time, function (s, t2) { return t2 === time; }, "b"));
     });
-    tb.appendChild(row("중학생", function (s) { return levelOf(s.grade) === "중등"; }, null));
-    tb.appendChild(row("고등학생", function (s) { return levelOf(s.grade) === "고등"; }, null));
+    // 2) 학년 묶음 — 초등부 → 중학생 → 고등학생
+    var lvRows = [
+      row("초등부", function (s) { return levelOf(s.grade) === "초등"; }, "g"),
+      row("중학생", function (s) { return levelOf(s.grade) === "중등"; }, "g"),
+      row("고등학생", function (s) { return levelOf(s.grade) === "고등"; }, "g")
+    ];
+    lvRows[0].className = "lvl";
+    lvRows[1].className = "lvl";
+    lvRows[2].className = "lvl";
+    lvRows.forEach(function (r) { tb.appendChild(r); });
+    // 3) 합계
     var sum = row("합계", function () { return true; }, null);
     sum.className = "sum";
     tb.appendChild(sum);
     t.appendChild(tb);
   }
+
+  (function () {
+    var t = document.getElementById("wkTable");
+    t.addEventListener("mouseover", onTipIn);
+    t.addEventListener("mouseout", onTipOut);
+    t.addEventListener("click", onTipClick);
+    window.addEventListener("scroll", hideTip, true);
+  })();
+
+  /* ---------- 대시보드 일정 체크리스트 ---------- */
+  function dayLabel(key) {
+    var d = parseKey(key);
+    var diff = Math.round((d - NOW) / 86400000);
+    if (diff === 0) return "오늘";
+    if (diff === 1) return "내일";
+    return (d.getMonth() + 1) + "/" + d.getDate() + " " + DOW[d.getDay()];
+  }
+
+  function drawCheck() {
+    var all = Object.keys(DATA.events).map(function (id) {
+      var e = DATA.events[id]; e.id = id; return e;
+    });
+    var open = all.filter(function (e) { return !e.done && e.date >= TODAY_KEY; })
+                  .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+    var done = all.filter(function (e) { return e.done; })
+                  .sort(function (a, b) { return a.date > b.date ? -1 : 1; }).slice(0, 3);
+
+    document.getElementById("ckMeta").textContent =
+      open.length ? "남은 일정 " + open.length + "건" : "남은 일정 없음";
+
+    var ul = document.getElementById("ckList");
+    ul.textContent = "";
+
+    function line(e) {
+      var li = el("li" + "", e.done ? "done" : "");
+      var cb = el("button", "cb", "✓");
+      cb.type = "button";
+      cb.setAttribute("aria-pressed", String(!!e.done));
+      cb.setAttribute("aria-label", e.text + " 완료");
+      cb.addEventListener("click", function () {
+        ROOT.child("events/" + e.id + "/done").set(e.done ? null : true);
+      });
+      li.appendChild(cb);
+
+      var cd = el("span", "cd" + (e.date === TODAY_KEY ? " soon" : ""), dayLabel(e.date));
+      li.appendChild(cd);
+
+      var ct = el("span", "ct ev " + e.kind, KIND_NAME[e.kind]);
+      li.appendChild(ct);
+
+      li.appendChild(el("span", "cx", e.text));
+
+      var rm = el("button", "cr", "✕");
+      rm.type = "button";
+      rm.title = "지우기";
+      rm.setAttribute("aria-label", e.text + " 지우기");
+      rm.addEventListener("click", function () { ROOT.child("events/" + e.id).remove(); });
+      li.appendChild(rm);
+      return li;
+    }
+
+    open.slice(0, 7).forEach(function (e) { ul.appendChild(line(e)); });
+    done.forEach(function (e) { ul.appendChild(line(e)); });
+    if (!open.length && !done.length) {
+      ul.appendChild(el("li", "empty", "일정이 없습니다. 위에서 날짜와 내용을 넣어 추가하세요."));
+    }
+  }
+
+  document.getElementById("qAdd").addEventListener("click", function () {
+    var d = document.getElementById("qDate").value;
+    var k = document.getElementById("qKind").value;
+    var t = document.getElementById("qText").value.trim();
+    if (!d) { document.getElementById("qDate").focus(); toast("날짜를 골라 주세요"); return; }
+    if (!t) { document.getElementById("qText").focus(); toast("내용을 적어 주세요"); return; }
+    ROOT.child("events").push({ date: d, kind: k, text: t }).then(function () {
+      document.getElementById("qText").value = "";
+      toast("일정을 추가했습니다");
+    });
+  });
+  document.getElementById("qText").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") document.getElementById("qAdd").click();
+  });
 
   document.getElementById("wkPrev").addEventListener("click", function () { wkStart.setDate(wkStart.getDate() - 7); drawWeek(); });
   document.getElementById("wkNext").addEventListener("click", function () { wkStart.setDate(wkStart.getDate() + 7); drawWeek(); });
@@ -937,9 +1139,12 @@
         td.appendChild(b);
         tr.appendChild(td);
         tr.appendChild(el("td", "", s.school || "–"));
-        tr.appendChild(el("td", "", s.grade));
+        var tg = el("td");
+        tg.appendChild(gradeChip(s.grade));
+        tr.appendChild(tg);
         tr.appendChild(el("td", "n", daysText(s)));
         tr.appendChild(el("td", "n", s.phone || "–"));
+        tr.appendChild(el("td", "n", s.phone2 || "–"));
         var st = el("td");
         st.appendChild(el("span", "badge " + (s.status === "재원" ? "on" : "off"), s.status));
         tr.appendChild(st);
@@ -948,7 +1153,7 @@
 
     if (!shown) {
       var tr = el("tr"), td = el("td", "muted", "학생이 없습니다. 오른쪽 위 [+ 학생 추가]를 눌러 등록하세요.");
-      td.colSpan = 6; tr.appendChild(td); body.appendChild(tr);
+      td.colSpan = 7; tr.appendChild(td); body.appendChild(tr);
     }
     document.getElementById("stuFound").textContent = shown + "명";
   }
@@ -1003,6 +1208,7 @@
     document.getElementById("eSchool").value = s ? (s.school || "") : "";
     document.getElementById("eGrade").value = s ? s.grade : "중1";
     document.getElementById("ePhone").value = s ? (s.phone || "") : "";
+    document.getElementById("ePhone2").value = s ? (s.phone2 || "") : "";
     document.getElementById("eStatus").value = s ? s.status : "재원";
     document.getElementById("eUnit").value = s && s.unit ? s.unit : "";
     editDays = s && s.days ? JSON.parse(JSON.stringify(s.days)) : {};
@@ -1024,6 +1230,7 @@
       school: document.getElementById("eSchool").value.trim(),
       grade: document.getElementById("eGrade").value,
       phone: document.getElementById("ePhone").value.trim(),
+      phone2: document.getElementById("ePhone2").value.trim(),
       status: document.getElementById("eStatus").value,
       days: editDays
     };
@@ -1124,7 +1331,11 @@
     s._plan = planOf(s);
 
     document.getElementById("mName").textContent = s.name;
-    document.getElementById("mSub").textContent = [s.school, s.grade, s.phone].filter(Boolean).join(" · ");
+    document.getElementById("mSub").textContent = [
+      s.school, s.grade,
+      s.phone ? "학부모 " + s.phone : "",
+      s.phone2 ? "학생 " + s.phone2 : ""
+    ].filter(Boolean).join(" · ");
     document.getElementById("mNowTitle").textContent = "이번 달 등원 (" + NOW.getFullYear() + "년 " + (NOW.getMonth() + 1) + "월)";
     document.getElementById("mNextTitle").textContent = "다음 달 예정 (" + nextY + "년 " + nextM + "월)";
 
@@ -1197,6 +1408,7 @@
     document.getElementById("mMsg").value = buildMsg(s, cnt, unit);
     document.getElementById("mCopied").hidden = true;
     document.getElementById("mImgMsg").hidden = true;
+    document.getElementById("mImgWrap").hidden = true;
     drawCalImage(s, cnt, unit);
   }
 
@@ -1355,8 +1567,9 @@
   document.getElementById("mCopyImg").addEventListener("click", function () {
     var msg = document.getElementById("mImgMsg");
     function fail() {
+      document.getElementById("mImgWrap").hidden = false;
       msg.hidden = false; msg.style.color = "var(--ink-2)";
-      msg.textContent = "달력 그림에서 오른쪽 클릭 → 이미지 복사를 눌러 주세요.";
+      msg.textContent = "아래 그림에서 오른쪽 클릭 → 이미지 복사를 눌러 주세요. (휴대폰은 길게 누르기)";
     }
     if (!window.ClipboardItem || !navigator.clipboard || !navigator.clipboard.write) { fail(); return; }
     IMG_CANVAS.toBlob(function (blob) {
@@ -1404,10 +1617,19 @@
       "중등": function (s) { return levelOf(s.grade) === "중등"; },
       "고등": function (s) { return levelOf(s.grade) === "고등"; },
       absent: function (s) { var v = att(TODAY_KEY, s.id); return v === "bad" || v === "warn"; } }[smsWho];
-    var list = activeStudents().filter(f).map(function (s) { return s.phone; }).filter(Boolean);
+    var list = activeStudents().filter(f).map(function (s) { return s[smsField]; }).filter(Boolean);
     document.getElementById("smsPhones").value = list.join(", ");
-    document.getElementById("smsCount").textContent = list.length + "명";
+    document.getElementById("smsCount").textContent = list.length + "명 (" + (smsField === "phone" ? "학부모" : "학생") + " 번호)";
   }
+
+  var smsField = "phone";
+  document.getElementById("smsTarget").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-p]");
+    if (!b) return;
+    smsField = b.dataset.p;
+    this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+    syncPhones();
+  });
 
   var TPL = {
     absent: "안녕하세요, 델타수학교습소입니다.\n오늘 자녀가 수업에 참석하지 않았습니다.\n확인 부탁드립니다.",
@@ -1460,6 +1682,7 @@
   /* ===================== 자료 받아오기 ===================== */
   function renderAll() {
     drawDash();
+    drawCheck();
     drawAtt();
     buildFilters();
     drawStudents();
@@ -1504,6 +1727,7 @@
       dt.getFullYear() + "년 " + (dt.getMonth() + 1) + "월 " + dt.getDate() + "일 " + DOW[dt.getDay()];
     document.getElementById("attDate").value = TODAY_KEY;
     document.getElementById("evDate").value = TODAY_KEY;
+    document.getElementById("qDate").value = TODAY_KEY;
     syncSms();
   })();
 })();
