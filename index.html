@@ -376,6 +376,8 @@
     .modal { padding: 16px; }
     .form2 { grid-template-columns: 1fr; }
   }
+  .sms-help{margin:10px 0 0;font-size:12px;line-height:1.7;color:var(--ink-3);}
+  .sms-help b{font-weight:700;}
 </style>
 </head>
 <body>
@@ -611,7 +613,7 @@
     <section id="page-sms" hidden>
       <div class="sms-grid">
         <section class="card">
-          <div class="card-head"><div class="card-title">문자 보내기</div><div class="card-meta">연락처를 복사해서 문자 앱에 붙여넣으세요</div></div>
+          <div class="card-head"><div class="card-title">문자 보내기</div><div class="card-meta">받는 사람과 문구를 고른 뒤 문자 앱으로 보내세요</div></div>
 
           <div class="sec-t">받는 사람</div>
           <div class="chips" id="smsWho"></div>
@@ -639,10 +641,16 @@
             <textarea id="smsBody"></textarea>
             <div class="cnt"><span id="smsLen">0</span>자</div>
             <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
-              <button type="button" class="btn brand" id="smsCopyText">문구 복사</button>
+              <button type="button" class="btn brand" id="smsOpenApp">📱 문자 앱으로 보내기</button>
+              <button type="button" class="btn" id="smsCopyText">문구 복사</button>
               <button type="button" class="btn" id="smsCopyPhone">연락처 복사</button>
               <button type="button" class="btn" id="smsClear">지우기</button>
             </div>
+            <p class="sms-help">
+              <b>문자 앱으로 보내기</b>를 누르면 받는 사람과 내용이 채워진 채로 문자 앱이 열려요. 확인하고 직접 전송을 누르시면 됩니다.<br>
+              컴퓨터에서는 윈도우 <b>휴대폰 연결</b> 앱이 열리고, 짝지어둔 핸드폰으로 전송돼요. 핸드폰·태블릿에서는 문자 앱이 바로 열립니다.<br>
+              기기에 따라 여러 명이 한 번에 안 들어갈 수 있어요 — 그럴 땐 <b>연락처 복사</b>로 번호를 복사해서 붙여넣어 주세요.
+            </p>
           </div>
 
           <div class="sec">
@@ -1937,6 +1945,14 @@
     smsBody.value = TPL[b.dataset.t];
     syncSms();
   });
+  document.getElementById("smsOpenApp").addEventListener("click", function () {
+    var raw = document.getElementById("smsPhones").value || "";
+    var nums = raw.split(",").map(function (x) { return x.replace(/[^0-9]/g, ""); }).filter(Boolean);
+    if (!nums.length) { alert("받는 사람이 없습니다. 위에서 대상을 골라 주세요."); return; }
+    var body = smsBody.value || "";
+    window.location.href = "sms:" + nums.join(",") + (body ? "?body=" + encodeURIComponent(body) : "");
+  });
+
   document.getElementById("smsCopyText").addEventListener("click", function () {
     var span = el("span", "copyok");
     this.parentNode.appendChild(span);
