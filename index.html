@@ -378,6 +378,39 @@
   }
   .sms-help{margin:10px 0 0;font-size:12px;line-height:1.7;color:var(--ink-3);}
   .sms-help b{font-weight:700;}
+  /* ===== 학생 명단 체크 선택 + 문자 ===== */
+  .st th.ck, .st td.ck{ width:36px; padding-left:12px; padding-right:0; }
+  .st input[type=checkbox]{ width:15px; height:15px; cursor:pointer; accent-color:#1A1A1A; margin:0; vertical-align:middle; }
+  .st tr.picked td{ background:#FFFCF2; }
+  .sms-mini{
+    border:1px solid var(--line); background:var(--surface); border-radius:7px; cursor:pointer;
+    font-size:11px; padding:3px 8px; color:var(--ink-2); font-weight:700; white-space:nowrap;
+    opacity:0; transition:opacity .12s; margin-left:6px;
+  }
+  .st tr:hover .sms-mini{ opacity:1; }
+  .sms-mini:hover{ background:#FFF8E4; border-color:var(--brand); color:#8A6A12; }
+  @media (max-width:780px){ .sms-mini{ opacity:1; } }
+  .pickbar{
+    display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+    background:#1A1A1A; color:#fff; border-radius:11px; padding:10px 14px; margin-bottom:12px;
+  }
+  .pickbar[hidden]{ display:none; }
+  .pickbar .cnt2{ font-size:13px; font-weight:800; }
+  .pickbar .cnt2 em{ font-style:normal; color:var(--brand); }
+  .pickbar .tgt{ display:flex; gap:5px; margin-left:6px; }
+  .pickbar .tgt button{
+    border:1px solid #3A3A3A; background:#2E2E2E; color:#B9BCC4; font:inherit; font-size:11.5px;
+    font-weight:700; padding:5px 11px; border-radius:7px; cursor:pointer;
+  }
+  .pickbar .tgt button[aria-pressed="true"]{ background:#fff; color:#1A1A1A; border-color:#fff; }
+  .pickbar .sp{ margin-left:auto; display:flex; gap:7px; flex-wrap:wrap; }
+  .pbtn{
+    border:1px solid #3A3A3A; background:#2E2E2E; color:#fff; border-radius:8px; padding:7px 12px;
+    font:inherit; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap;
+  }
+  .pbtn:hover{ background:#3A3A3A; }
+  .pbtn.brand{ background:var(--brand); border-color:var(--brand); color:#1A1A1A; }
+  .pbtn.brand:hover{ filter:brightness(.96); }
 </style>
 </head>
 <body>
@@ -560,9 +593,23 @@
           <button type="button" class="btn brand" id="addStudent">+ 학생 추가</button>
         </div>
 
+        <div class="pickbar" id="pickBar" hidden>
+          <span class="cnt2"><em id="pickCount">0명</em> 선택됨</span>
+          <span class="tgt" id="pickTarget">
+            <button type="button" data-p="phone" aria-pressed="true">학부모</button>
+            <button type="button" data-p="phone2" aria-pressed="false">학생</button>
+          </span>
+          <span class="sp">
+            <button type="button" class="pbtn brand" id="pickToSms">📨 문자 쓰러 가기</button>
+            <button type="button" class="pbtn" id="pickCopy">연락처 복사</button>
+            <button type="button" class="pbtn" id="pickClear">선택 해제</button>
+          </span>
+        </div>
+
         <div class="tbl-wrap">
           <table class="st">
             <thead><tr>
+              <th class="ck"><input type="checkbox" id="pickAll" title="보이는 학생 전체 선택"></th>
               <th>학년</th><th>이름</th><th>학교</th><th>수업 요일 · 시간</th><th>학부모 연락처</th><th>학생 연락처</th><th>상태</th>
             </tr></thead>
             <tbody id="stuBody"></tbody>
@@ -618,7 +665,7 @@
           <div class="sec-t">받는 사람</div>
           <div class="chips" id="smsWho"></div>
 
-          <div class="sec">
+          <div class="sec" id="smsTargetSec">
             <div class="sec-t">어느 번호로</div>
             <div class="chips" id="smsTarget">
               <button type="button" class="chip" data-p="phone" aria-pressed="true">학부모 번호</button>
@@ -1407,11 +1454,66 @@
     fill("fSchool", "school", schools);
   }
 
+  /* ===== 학생 명단 선택 (여러 명 문자) ===== */
+  var PICKED = {};        // { 학생id: true }
+  var PICK_TARGET = { phone: true, phone2: false };  // 학부모/학생 — 둘 다 켤 수 있음
+  var visibleIds = [];    // 지금 화면에 보이는 학생 id
+
+  // 연락처 칸 + 그 번호로 바로 보내는 ✉ 버튼
+  function phoneCell(num, name, who) {
+    var td = el("td", "n");
+    if (!num) { td.textContent = "–"; return td; }
+    td.appendChild(document.createTextNode(num));
+    var b = el("button", "sms-mini", "✉ 문자");
+    b.type = "button";
+    b.title = name + " " + who + "에게 문자";
+    b.addEventListener("click", function (e) {
+      e.stopPropagation();
+      openSmsTo([num]);
+    });
+    td.appendChild(b);
+    return td;
+  }
+
+  // 번호들로 문자 앱 열기 (내용 없이)
+  function openSmsTo(nums) {
+    var clean = nums.map(function (x) { return String(x || "").replace(/[^0-9]/g, ""); }).filter(Boolean);
+    if (!clean.length) { alert("보낼 번호가 없습니다."); return; }
+    window.location.href = "sms:" + clean.join(",");
+  }
+
+  // 지금 고른 학생들의 번호 목록 (학부모/학생 켜진 것만)
+  function pickedNumbers() {
+    var out = [];
+    students().forEach(function (s) {
+      if (!PICKED[s.id]) return;
+      if (PICK_TARGET.phone && s.phone) out.push(s.phone);
+      if (PICK_TARGET.phone2 && s.phone2) out.push(s.phone2);
+    });
+    return out;
+  }
+
+  function syncPickBar() {
+    var bar = document.getElementById("pickBar");
+    var ids = Object.keys(PICKED);
+    if (!ids.length) { bar.hidden = true; }
+    else {
+      bar.hidden = false;
+      document.getElementById("pickCount").textContent = ids.length + "명";
+    }
+    var all = document.getElementById("pickAll");
+    if (all) {
+      all.checked = visibleIds.length > 0 && visibleIds.every(function (id) { return PICKED[id]; });
+      all.indeterminate = !all.checked && visibleIds.some(function (id) { return PICKED[id]; });
+    }
+  }
+
   function drawStudents() {
     var q = document.getElementById("stuSearch").value.trim();
     var body = document.getElementById("stuBody");
     body.textContent = "";
     var shown = 0;
+    visibleIds = [];
 
     students()
       .filter(function (s) { return s.status !== "퇴원"; })
@@ -1424,7 +1526,21 @@
         if (FILTER.school && s.school !== FILTER.school) return;
         if (q && s.name.indexOf(q) === -1) return;
         shown++;
+        visibleIds.push(s.id);
         var tr = el("tr");
+        if (PICKED[s.id]) tr.className = "picked";
+
+        // 체크 칸
+        var tc = el("td", "ck");
+        var cb = el("input"); cb.type = "checkbox"; cb.checked = !!PICKED[s.id];
+        cb.addEventListener("change", function () {
+          if (cb.checked) PICKED[s.id] = true; else delete PICKED[s.id];
+          tr.className = cb.checked ? "picked" : "";
+          syncPickBar();
+        });
+        tc.appendChild(cb);
+        tr.appendChild(tc);
+
         var tg = el("td");
         tg.appendChild(gradeChip(s.grade));
         tr.appendChild(tg);
@@ -1436,8 +1552,8 @@
         tr.appendChild(td);
         tr.appendChild(el("td", "", s.school || "–"));
         tr.appendChild(el("td", "n", daysText(s)));
-        tr.appendChild(el("td", "n", s.phone || "–"));
-        tr.appendChild(el("td", "n", s.phone2 || "–"));
+        tr.appendChild(phoneCell(s.phone, s.name, "학부모"));
+        tr.appendChild(phoneCell(s.phone2, s.name, "학생"));
         var st = el("td");
         st.appendChild(el("span", "badge " + (s.status === "재원" ? "on" : "off"), s.status));
         tr.appendChild(st);
@@ -1446,9 +1562,10 @@
 
     if (!shown) {
       var tr = el("tr"), td = el("td", "muted", "학생이 없습니다. 오른쪽 위 [+ 학생 추가]를 눌러 등록하세요.");
-      td.colSpan = 7; tr.appendChild(td); body.appendChild(tr);
+      td.colSpan = 8; tr.appendChild(td); body.appendChild(tr);
     }
     document.getElementById("stuFound").textContent = shown + "명";
+    syncPickBar();
   }
   document.getElementById("stuSearch").addEventListener("input", drawStudents);
 
@@ -1876,6 +1993,51 @@
     }, "image/png");
   });
 
+  /* ===== 선택 막대 버튼들 ===== */
+  document.getElementById("pickAll").addEventListener("change", function () {
+    var on = this.checked;
+    visibleIds.forEach(function (id) { if (on) PICKED[id] = true; else delete PICKED[id]; });
+    drawStudents();
+  });
+
+  document.getElementById("pickTarget").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-p]");
+    if (!b) return;
+    var k = b.dataset.p;
+    // 둘 다 끄지는 못하게 (받는 사람이 없어지니까)
+    if (PICK_TARGET[k] && !(PICK_TARGET.phone && PICK_TARGET.phone2)) return;
+    PICK_TARGET[k] = !PICK_TARGET[k];
+    b.setAttribute("aria-pressed", String(PICK_TARGET[k]));
+  });
+
+  document.getElementById("pickClear").addEventListener("click", function () {
+    PICKED = {};
+    drawStudents();
+  });
+
+  document.getElementById("pickCopy").addEventListener("click", function () {
+    var nums = pickedNumbers();
+    if (!nums.length) { alert("고른 학생에게 등록된 번호가 없습니다."); return; }
+    var ta = el("textarea"); ta.value = nums.join(", ");
+    ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    var span = el("span", "copyok");
+    this.parentNode.appendChild(span);
+    copyText(ta, span, "연락처 " + nums.length + "개를 복사했습니다");
+    setTimeout(function () { ta.remove(); span.remove(); }, 2200);
+  });
+
+  // 고른 사람을 데리고 문자 발송 화면으로 이동
+  document.getElementById("pickToSms").addEventListener("click", function () {
+    var nums = pickedNumbers();
+    if (!nums.length) { alert("고른 학생에게 등록된 번호가 없습니다. 학부모/학생 중 어느 번호로 보낼지도 확인해 주세요."); return; }
+    smsWho = "picked";
+    var navBtn = document.querySelector('.nav button[data-go="sms"]');
+    if (navBtn) navBtn.click();
+    drawSmsWho();
+    syncPhones();
+  });
+
   /* ===================== 문자 ===================== */
   var smsWho = "all";
 
@@ -1889,6 +2051,23 @@
       ["absent", "오늘 결석·지각", function (s) { var v = att(TODAY_KEY, s.id); return v === "bad" || v === "warn"; }]
     ];
     host.textContent = "";
+
+    // 학생 명단에서 직접 고른 사람이 있으면 맨 앞에 칩으로 보여줌
+    var pickedIds = Object.keys(PICKED);
+    if (pickedIds.length) {
+      var pb = el("button", "chip", "명단에서 고른 " + pickedIds.length + "명");
+      pb.type = "button";
+      pb.setAttribute("aria-pressed", String(smsWho === "picked"));
+      pb.addEventListener("click", function () {
+        smsWho = "picked";
+        host.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", String(x === pb)); });
+        syncPhones();
+      });
+      host.appendChild(pb);
+    } else if (smsWho === "picked") {
+      smsWho = "all";
+    }
+
     groups.forEach(function (g) {
       var n = activeStudents().filter(g[2]).length;
       var b = el("button", "chip", g[1] + " (" + n + ")");
@@ -1905,14 +2084,31 @@
   }
 
   function syncPhones() {
-    var f = { all: function () { return true; },
-      "초등": function (s) { return levelOf(s.grade) === "초등"; },
-      "중등": function (s) { return levelOf(s.grade) === "중등"; },
-      "고등": function (s) { return levelOf(s.grade) === "고등"; },
-      absent: function (s) { var v = att(TODAY_KEY, s.id); return v === "bad" || v === "warn"; } }[smsWho];
-    var list = activeStudents().filter(f).map(function (s) { return s[smsField]; }).filter(Boolean);
+    var list, label;
+
+    if (smsWho === "picked") {
+      // 명단에서 고른 사람 — 학부모/학생 켠 쪽을 모두 포함
+      list = pickedNumbers();
+      var who = [];
+      if (PICK_TARGET.phone) who.push("학부모");
+      if (PICK_TARGET.phone2) who.push("학생");
+      label = Object.keys(PICKED).length + "명 · " + who.join("+") + " 번호 " + list.length + "개";
+    } else {
+      var f = { all: function () { return true; },
+        "초등": function (s) { return levelOf(s.grade) === "초등"; },
+        "중등": function (s) { return levelOf(s.grade) === "중등"; },
+        "고등": function (s) { return levelOf(s.grade) === "고등"; },
+        absent: function (s) { var v = att(TODAY_KEY, s.id); return v === "bad" || v === "warn"; } }[smsWho];
+      list = activeStudents().filter(f).map(function (s) { return s[smsField]; }).filter(Boolean);
+      label = list.length + "명 (" + (smsField === "phone" ? "학부모" : "학생") + " 번호)";
+    }
+
     document.getElementById("smsPhones").value = list.join(", ");
-    document.getElementById("smsCount").textContent = list.length + "명 (" + (smsField === "phone" ? "학부모" : "학생") + " 번호)";
+    document.getElementById("smsCount").textContent = label;
+
+    // 명단에서 고른 경우엔 학부모/학생을 이미 거기서 정했으므로 이 줄은 숨김
+    var tsec = document.getElementById("smsTargetSec");
+    if (tsec) tsec.hidden = (smsWho === "picked");
   }
 
   var smsField = "phone";
