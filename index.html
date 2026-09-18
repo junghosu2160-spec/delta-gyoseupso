@@ -214,6 +214,9 @@
   .ln .lt { margin-left: auto; flex: none; color: var(--ink-3); font-size: 10px; font-variant-numeric: tabular-nums; padding-left: 4px; }
   .ln .lgr { font-size: 9.5px; font-weight: 700; border-radius: 3px; padding: 0 4px; flex: none; line-height: 1.6; }
   .ln .lnm { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ln.offline { opacity: .34; }
+  .ln.offline .lnm, .ln.offline .lt { text-decoration: line-through; color: var(--ink-3); }
+  .ln.offline .lgr { filter: grayscale(1); }
   .ln.ok { opacity: .42; }
   .ln.ok .lt, .ln.ok .lnm { text-decoration: line-through; }
   .ln.warn .lt, .ln.warn .lnm { color: var(--warn); font-weight: 600; }
@@ -230,6 +233,7 @@
   .callegend .demo.ok { color: var(--ink-3); text-decoration: line-through; }
   .callegend .demo.warn { color: var(--warn); }
   .callegend .demo.bad { color: var(--bad); text-decoration: line-through; }
+  .callegend .demo.offdemo { color: var(--ink-3); opacity: .55; text-decoration: line-through; }
 
   /* 대시보드 일정 체크리스트 */
   .quickadd { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
@@ -517,7 +521,7 @@
         <section class="card">
           <div class="card-head">
             <div class="card-title">이번 달 출석부</div>
-            <div class="card-meta">이름을 누르면 출석 표시가 됩니다 (지워진 이름 = 출석 완료)</div>
+            <div class="card-meta">이름을 누르면 제외 → 지각 → 결석 → 원래대로 순서로 바뀝니다</div>
           </div>
           <div class="cal-nav">
             <button type="button" id="dcPrev" aria-label="이전 달">‹</button>
@@ -530,7 +534,7 @@
             <span class="s"><i class="dot" style="background:#e3edfc"></i>중등</span>
             <span class="s"><i class="dot" style="background:#fbe5ed"></i>고등</span>
             <span class="sep"></span>
-            <span class="s wrap">한&nbsp;번&nbsp;<b class="demo ok">출석</b> · 두&nbsp;번&nbsp;<b class="demo warn">지각</b> · 세&nbsp;번&nbsp;<b class="demo bad">결석</b> · 네&nbsp;번&nbsp;원래대로</span>
+            <span class="s wrap">한&nbsp;번&nbsp;<b class="demo offdemo">제외</b> · 두&nbsp;번&nbsp;<b class="demo warn">지각</b> · 세&nbsp;번&nbsp;<b class="demo bad">결석</b> · 네&nbsp;번&nbsp;원래대로</span>
           </div>
         </section>
           </div>
@@ -941,6 +945,53 @@
   }
   function att(dateKey, sid) { return (DATA.attendance[dateKey] || {})[sid] || ""; }
 
+  /* ===== 등원 계획 (학생 창에서 날짜를 켜고 끈 것) =====
+     plans/{YYYY-MM}/{학생id} = ["2026-10-02", ...]
+     저장된 게 없으면 수업 요일(화·목 같은)을 그대로 씁니다. */
+  var PLAN_EMPTY = "-";   // 그 달 전부 뺐을 때 자리를 지키는 표시
+
+  function basePlanOf(s, y, m) {
+    var last = new Date(y, m, 0).getDate(), list = [];
+    for (var d = 1; d <= last; d++) {
+      var key = ymd(y, m, d);
+      var wd = new Date(y, m - 1, d).getDay();
+      if (s.days && s.days[wd] && !isRest(key)) list.push(key);
+    }
+    return list;
+  }
+  function savedPlan(sid, y, m) {
+    var v = (DATA.plans[monthKey(y, m)] || {})[sid];
+    return (v && v.length) ? v : null;
+  }
+  /* 이 학생이 이 날 오기로 되어 있나 */
+  function attendsOn(s, dateKey) {
+    if (isRest(dateKey)) return false;
+    var d = parseKey(dateKey);
+    var plan = savedPlan(s.id, d.getFullYear(), d.getMonth() + 1);
+    if (plan) return plan.indexOf(dateKey) !== -1;
+    return !!(s.days && s.days[d.getDay()]);
+  }
+  /* 그 날 수업 시간 — 요일 시간이 없으면 그 학생이 쓰는 시간 중 하나 */
+  function timeOn(s, dateKey) {
+    var wd = parseKey(dateKey).getDay();
+    if (s.days && s.days[wd]) return s.days[wd];
+    var ks = Object.keys(s.days || {});
+    return ks.length ? s.days[ks[0]] : "";
+  }
+  /* 그 날 하루만 켜거나 끄기 — 그 달 계획을 만들어 두고 고칩니다 */
+  function setPlanDay(sid, dateKey, on) {
+    var s = DATA.students[sid]; if (!s) return;
+    s.id = sid;
+    var d = parseKey(dateKey), y = d.getFullYear(), m = d.getMonth() + 1;
+    var cur = (savedPlan(sid, y, m) || basePlanOf(s, y, m)).slice()
+      .filter(function (x) { return x !== PLAN_EMPTY; });
+    var i = cur.indexOf(dateKey);
+    if (on && i === -1) cur.push(dateKey);
+    if (!on && i !== -1) cur.splice(i, 1);
+    cur.sort();
+    ROOT.child("plans/" + monthKey(y, m) + "/" + sid).set(cur.length ? cur : [PLAN_EMPTY]);
+  }
+
   /* ===================== 달력 그리기 ===================== */
   function buildCal(host, year, month, render) {
     host.textContent = "";
@@ -1013,20 +1064,22 @@
         var e = DATA.events[id];
         if (e.date === key) cell.appendChild(el("span", "ev " + e.kind, e.text));
       });
-      // 그날 오는 학생 (보강 포함)
-      var list = comingOn(key);
+      // 그날 오는 학생 (보강 포함) — 계획에서 뺀 학생도 흐리게 같이 보여줌
+      var list = comingOn(key, true);
       if (!list.length) return;
 
-      cell.appendChild(el("span", "dcnt", list.length + "명"));
+      var onCount = list.filter(function (x) { return !x.off; }).length;
+      if (onCount) cell.appendChild(el("span", "dcnt", onCount + "명"));
 
       var box = el("div", "lines");
       list.forEach(function (x) {
         var s = x.s;
         var st = att(key, s.id);
-        var b = el("button", "ln" + (st ? " " + st : "") + (x.makeup ? " mkline" : ""));
+        var b = el("button", "ln" + (st ? " " + st : "") + (x.makeup ? " mkline" : "") + (x.off ? " offline" : ""));
         b.type = "button";
         b.title = s.name + " " + s.grade + " · " + x.time + (x.makeup ? " · 보강" : "") +
-          (st === "ok" ? " · 출석" : st === "warn" ? " · 지각" : st === "bad" ? " · 결석" : " · 미체크");
+          (x.off ? " · 이날 제외됨 (눌러서 되돌리기)"
+                 : st === "warn" ? " · 지각" : st === "bad" ? " · 결석" : " · 수업 예정");
         var g = gradeChip(s.grade);
         g.className = "lgr";
         b.appendChild(g);
@@ -1034,8 +1087,18 @@
         if (x.makeup) b.appendChild(el("span", "mkflag", "보강"));
         b.appendChild(el("span", "lt", x.time));
         b.addEventListener("click", function () {
-          var next = { "": "ok", "ok": "warn", "warn": "bad", "bad": null }[st || ""];
-          ROOT.child("attendance/" + key + "/" + s.id).set(next);
+          // 한 번 제외 → 두 번 지각 → 세 번 결석 → 네 번 원래대로
+          if (x.off) {                       // 제외됨 → 지각
+            setPlanDay(s.id, key, true);
+            ROOT.child("attendance/" + key + "/" + s.id).set("warn");
+          } else if (st === "warn") {        // 지각 → 결석
+            ROOT.child("attendance/" + key + "/" + s.id).set("bad");
+          } else if (st === "bad") {         // 결석 → 원래대로
+            ROOT.child("attendance/" + key + "/" + s.id).set(null);
+          } else {                           // 예정(또는 출석) → 제외
+            ROOT.child("attendance/" + key + "/" + s.id).set(null);
+            setPlanDay(s.id, key, false);
+          }
         });
         box.appendChild(b);
       });
@@ -1059,7 +1122,8 @@
       var key = keyOf(day);
       if (isRest(key)) return [];
       return activeStudents().filter(function (s) {
-        var t = s.days[day.getDay()];
+        if (!attendsOn(s, key)) return false;
+        var t = timeOn(s, key);
         return t && filter(s, t);
       }).sort(function (a, b) {
         return (gradeIdx(a.grade) - gradeIdx(b.grade)) || a.name.localeCompare(b.name, "ko");
@@ -1231,11 +1295,17 @@
   var attKey = TODAY_KEY;
   var acY = NOW.getFullYear(), acM = NOW.getMonth() + 1;
 
-  function comingOn(dateKey) {
+  function comingOn(dateKey, withOff) {
     if (isRest(dateKey)) return [];
     var wd = parseKey(dateKey).getDay();
-    var out = activeStudents().filter(function (s) { return s.days[wd]; })
-      .map(function (s) { return { s: s, time: s.days[wd], makeup: false }; });
+    var out = [];
+    activeStudents().forEach(function (s) {
+      var on = attendsOn(s, dateKey);
+      // 기본 요일엔 있는데 계획에서 뺀 학생 — 달력에서는 흐리게 남겨둠
+      var wasBase = !!(s.days && s.days[wd]);
+      if (on) out.push({ s: s, time: timeOn(s, dateKey), makeup: false, off: false });
+      else if (withOff && wasBase) out.push({ s: s, time: timeOn(s, dateKey), makeup: false, off: true });
+    });
     makeupArrivals(dateKey).forEach(function (m) {
       out.push({ s: m.s, time: m.time, makeup: true, from: m.from });
     });
@@ -1716,22 +1786,14 @@
   var nextY, nextM;
   (function () { var d = new Date(NOW.getFullYear(), NOW.getMonth() + 1, 1); nextY = d.getFullYear(); nextM = d.getMonth() + 1; })();
 
-  function basePlan(s, y, m) {
-    var last = new Date(y, m, 0).getDate(), list = [];
-    for (var d = 1; d <= last; d++) {
-      var key = ymd(y, m, d);
-      var wd = new Date(y, m - 1, d).getDay();
-      if (s.days[wd] && !isRest(key)) list.push(key);
-    }
-    return list;
-  }
+  function basePlan(s, y, m) { return basePlanOf(s, y, m); }
   function planOf(s) {
-    var saved = (DATA.plans[monthKey(nextY, nextM)] || {})[s.id];
-    if (saved && saved.length) return saved.slice();
-    return basePlan(s, nextY, nextM);
+    var saved = savedPlan(s.id, nextY, nextM);
+    if (saved) return saved.filter(function (x) { return x !== PLAN_EMPTY; });
+    return basePlanOf(s, nextY, nextM);
   }
   function savePlan(s, list) {
-    ROOT.child("plans/" + monthKey(nextY, nextM) + "/" + s.id).set(list);
+    ROOT.child("plans/" + monthKey(nextY, nextM) + "/" + s.id).set(list.length ? list : [PLAN_EMPTY]);
   }
 
   function openStudent(id) {
@@ -1758,10 +1820,10 @@
     });
 
     buildCal(document.getElementById("mCalNow"), NOW.getFullYear(), NOW.getMonth() + 1, function (cell, key, wd) {
-      if (isRest(key) || !s.days[wd]) return;
+      if (!attendsOn(s, key)) return;
       var st = att(key, id);
       var cls = st === "ok" ? "ok" : st === "bad" ? "bad" : st === "warn" ? "warn" : "plan";
-      var txt = st === "ok" ? "출석" : st === "bad" ? "결석" : st === "warn" ? "지각" : s.days[wd];
+      var txt = st === "ok" ? "출석" : st === "bad" ? "결석" : st === "warn" ? "지각" : timeOn(s, key);
       cell.appendChild(el("span", "mk " + cls, txt));
     });
 
@@ -1779,7 +1841,7 @@
       if (on) {
         cell.classList.add("on");
         if (!base) cell.classList.add("extra");
-        cell.appendChild(el("span", "mk plan", s.days[wd] || "보강"));
+        cell.appendChild(el("span", "mk plan", timeOn(s, key) || "보강"));
       } else if (isRest(key)) {
         cell.appendChild(el("span", "ev rest", restName(key) || "휴무"));
       }
