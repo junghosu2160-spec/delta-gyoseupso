@@ -321,9 +321,28 @@
 
   /* 창 */
   /* 매출 관리 */
-  .rev-top { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-  .rev-top .grow { flex: 1; }
-  .rev-top .mon { font-size: 15px; font-weight: 800; min-width: 104px; text-align: center; }
+  .rev-top { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .rev-top .mon { font-size: 15px; font-weight: 800; min-width: 92px; text-align: center; }
+  .rev-nav { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .rev-tabs { display: inline-flex; gap: 5px; }
+  .rev-tab { font: inherit; font-size: 13px; font-weight: 700; padding: 7px 14px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--ink-3); }
+  .rev-tab.on { background: var(--brand-ink); border-color: var(--brand-ink); color: #fff; }
+  .rev-tab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .rev-bars { display: flex; align-items: flex-end; gap: 8px; height: 190px; padding: 6px 2px 0; }
+  .rev-bar { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%;
+    justify-content: flex-end; cursor: pointer; }
+  .rev-bar .col { width: 100%; max-width: 46px; background: var(--brand); border-radius: 5px 5px 0 0;
+    position: relative; min-height: 2px; }
+  .rev-bar .col .out { position: absolute; left: 0; right: 0; bottom: 0; background: #f3cfcd;
+    border-radius: 0 0 5px 5px; }
+  .rev-bar .v { font-size: 10px; font-weight: 700; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .rev-bar .m { font-size: 11px; color: var(--ink-3); font-weight: 700; }
+  .rev-bar:hover .col { filter: brightness(.94); }
+  .rev-bar.now .m { color: var(--ink); }
+  .rev-bar.now .col { outline: 2px solid var(--brand-ink); outline-offset: 1px; }
+  .rev-tbl tr.clickable { cursor: pointer; }
+  .rev-tbl tr.clickable:hover td { background: var(--surface-2); }
   .rev-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 13px; }
   .rev-st { border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; }
   .rev-st .k { font-size: 11.5px; color: var(--ink-3); font-weight: 600; }
@@ -360,8 +379,9 @@
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
   @media (max-width: 900px) { .rev-stats { grid-template-columns: 1fr 1fr; } .grid2, .rev-drops { grid-template-columns: 1fr; } }
   /* 학생 관리 좌우 분할 */
-  .stu-split { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.85fr); gap: 14px; align-items: start; }
-  .stu-pane { position: sticky; top: 14px; }
+  .stu-split { display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr); gap: 14px; align-items: start; }
+  .stu-listcard { order: 1; }          /* 왼쪽 = 명단 */
+  .stu-pane { order: 2; position: sticky; top: 14px; }   /* 오른쪽 = 학생 내용 */
   .stu-detail { position: static; max-height: none; width: auto; margin: 0;
     background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
     box-shadow: var(--shadow); padding: 0; overflow: visible; }
@@ -382,7 +402,8 @@
   .stu-listcard .st tbody tr { cursor: pointer; }
   @media (max-width: 1080px) {
     .stu-split { grid-template-columns: 1fr; }
-    .stu-pane { position: static; }
+    .stu-pane { position: static; order: 1; }   /* 좁은 화면에서는 학생 내용이 위로 */
+    .stu-listcard { order: 2; }
   }
   /* 그날 등원 고치기 */
   .cal.big .cell .fix { position: absolute; top: 3px; right: 3px; width: 19px; height: 19px;
@@ -725,7 +746,7 @@
 
       <div class="stu-pane">
         <div class="stu-empty" id="stuEmpty">
-          👉 오른쪽 명단에서 <b>학생 이름</b>을 눌러 주세요<br>여기에 그 학생 내용이 나옵니다
+👈 왼쪽 명단에서 <b>학생 이름</b>을 눌러 주세요<br>여기에 그 학생 내용이 나옵니다
         </div>
         <div class="modal stu-detail" id="stuDetail" hidden role="region" aria-labelledby="mName">
     <div class="modal-head">
@@ -863,7 +884,7 @@
       <section class="card stu-listcard">
         <div class="card-head">
           <div class="card-title">학생 명단</div>
-          <div class="card-meta">이름을 누르면 왼쪽에 열립니다</div>
+          <div class="card-meta">이름을 누르면 오른쪽에 열립니다</div>
         </div>
 
         <div class="feeline">
@@ -1007,18 +1028,27 @@
     <!-- 매출 관리 -->
     <section id="page-rev" hidden>
       <section class="card">
-        <div class="card-head">
-          <div class="card-title">매출 관리</div>
-          <div class="rev-top">
+        <div class="rev-top">
+          <span class="rev-tabs">
+            <button type="button" class="rev-tab on" id="revTabM">📅 월별</button>
+            <button type="button" class="rev-tab" id="revTabY">📊 연간</button>
+          </span>
+          <span class="rev-nav" id="revNavM">
             <button type="button" class="btn" id="revPrev">‹</button>
             <span class="mon n" id="revMon"></span>
             <button type="button" class="btn" id="revNext">›</button>
-            <span class="grow"></span>
             <button type="button" class="btn" id="revCopyPrev">지난달 지출 가져오기</button>
-          </div>
+          </span>
+          <span class="rev-nav" id="revNavY" hidden>
+            <button type="button" class="btn" id="revYPrev">‹</button>
+            <span class="mon n" id="revYear"></span>
+            <button type="button" class="btn" id="revYNext">›</button>
+          </span>
         </div>
         <div class="rev-stats" id="revStats"></div>
       </section>
+
+      <div id="revMonthly">
 
       <section class="card section-gap">
         <div class="card-head"><div class="card-title">파일 올리기</div>
@@ -1057,10 +1087,25 @@
         <div class="tbl-wrap"><table class="st rev-tbl" id="revPayTbl"></table></div>
       </section>
 
-      <section class="card section-gap">
-        <div class="card-head"><div class="card-title">⑤ 달마다</div></div>
-        <div class="tbl-wrap"><table class="st rev-tbl" id="revMonTbl"></table></div>
-      </section>
+      </div>
+
+      <div id="revYearly" hidden>
+        <section class="card section-gap">
+          <div class="card-head"><div class="card-title">달마다</div>
+            <div class="card-meta">한 해를 한눈에 · 달을 누르면 그 달로 넘어갑니다</div></div>
+          <div class="tbl-wrap"><table class="st rev-tbl" id="revYearTbl"></table></div>
+        </section>
+        <section class="card section-gap">
+          <div class="card-head"><div class="card-title">한 해 흐름</div>
+            <div class="card-meta">막대는 그 달 수입 · 붉은 선은 지출</div></div>
+          <div class="rev-bars" id="revBars"></div>
+        </section>
+        <section class="card section-gap">
+          <div class="card-head"><div class="card-title">학생별 한 해 수업료</div>
+            <div class="card-meta">누가 얼마나 다녔는지</div></div>
+          <div class="tbl-wrap"><table class="st rev-tbl" id="revYearStu"></table></div>
+        </section>
+      </div>
     </section>
 
   </main>
@@ -3243,7 +3288,124 @@
              unpaid: unpaid, unpaidAmt: unpaid.reduce(function (n, r) { return n + r.amount; }, 0) };
   }
 
+
+  /* ---- 연간 매출 ---- */
+  var revView = "m";
+  function revSetView(v) {
+    revView = v;
+    document.getElementById("revTabM").classList.toggle("on", v === "m");
+    document.getElementById("revTabY").classList.toggle("on", v === "y");
+    document.getElementById("revNavM").hidden = v !== "m";
+    document.getElementById("revNavY").hidden = v !== "y";
+    document.getElementById("revMonthly").hidden = v !== "m";
+    document.getElementById("revYearly").hidden = v !== "y";
+    drawRev();
+  }
+  /* 한 달치 숫자 — 연간 표에서 씀 */
+  function revMonthSum(y, m) {
+    var b = (DATA.rev || {})[monthKey(y, m)] || {};
+    var fee = 0, cnt = 0;
+    activeStudents().forEach(function (s) {
+      var pl = savedPlan(s.id, y, m) || basePlanOf(s, y, m);
+      var c = pl.filter(function (x) { return x !== PLAN_EMPTY; }).length;
+      if (!c) return;
+      var cy = Number(((b.fees || {})[s.id] || {}).carry);
+      if (isNaN(cy) || ((b.fees || {})[s.id] || {}).carry === undefined) cy = 0;
+      fee += Math.max(0, c - cy) * unitOf(s);
+      cnt++;
+    });
+    var etc = Object.values(b.etc || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+    var out = Object.values(b.out || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+    var got = Object.values(b.in || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+    return { fee: fee, etc: etc, out: out, got: got, cnt: cnt, income: fee + etc, net: fee + etc - out };
+  }
+
+  function drawRevYear() {
+    document.getElementById("revYear").textContent = revY + "년";
+    var rows = [], T = { fee: 0, etc: 0, out: 0, got: 0, income: 0, net: 0 };
+    for (var m = 1; m <= 12; m++) {
+      var r = revMonthSum(revY, m);
+      rows.push(r);
+      ["fee", "etc", "out", "got", "income", "net"].forEach(function (k) { T[k] += r[k]; });
+    }
+    /* 요약 4칸 */
+    var best = rows.reduce(function (a, b, i) { return b.income > rows[a].income ? i : a; }, 0);
+    document.getElementById("revStats").innerHTML =
+      '<div class="rev-st main"><div class="k">' + revY + '년 수입</div><div class="v n">' + won(T.income) +
+        '</div><div class="s">달 평균 ' + won(Math.round(T.income / 12)) + '</div></div>' +
+      '<div class="rev-st out"><div class="k">지출</div><div class="v n">' + won(T.out) +
+        '</div><div class="s">달 평균 ' + won(Math.round(T.out / 12)) + '</div></div>' +
+      '<div class="rev-st net"><div class="k">남은 돈</div><div class="v n">' + won(T.net) +
+        '</div><div class="s">수입 − 지출</div></div>' +
+      '<div class="rev-st due"><div class="k">가장 많았던 달</div><div class="v n">' + (best + 1) +
+        '월</div><div class="s">' + won(rows[best].income) + '</div></div>';
+
+    /* 달마다 표 */
+    var h = '<thead><tr><th>달</th><th class="amt">학생</th><th class="amt">수업료</th><th class="amt">과외·기타</th>' +
+      '<th class="amt">수입</th><th class="amt">지출</th><th class="amt">남은 돈</th></tr></thead><tbody>';
+    rows.forEach(function (r, i) {
+      var m = i + 1;
+      var empty = !r.income && !r.out;
+      h += '<tr class="clickable" onclick="revGoMonth(' + revY + ',' + m + ')"' + (empty ? ' style="opacity:.45"' : '') + '>' +
+        '<td><b>' + m + '월</b></td><td class="amt n">' + (r.cnt || "–") + '</td>' +
+        '<td class="amt n">' + (r.fee ? r.fee.toLocaleString("ko-KR") : "–") + '</td>' +
+        '<td class="amt n">' + (r.etc ? r.etc.toLocaleString("ko-KR") : "–") + '</td>' +
+        '<td class="amt n">' + (r.income ? r.income.toLocaleString("ko-KR") : "–") + '</td>' +
+        '<td class="amt n" style="color:var(--bad)">' + (r.out ? r.out.toLocaleString("ko-KR") : "–") + '</td>' +
+        '<td class="amt n" style="color:var(--ok)">' + (r.income || r.out ? r.net.toLocaleString("ko-KR") : "–") + '</td></tr>';
+    });
+    h += '</tbody><tfoot><tr><td><b>합계</b></td><td></td>' +
+      '<td class="amt n">' + T.fee.toLocaleString("ko-KR") + '</td>' +
+      '<td class="amt n">' + T.etc.toLocaleString("ko-KR") + '</td>' +
+      '<td class="amt n">' + T.income.toLocaleString("ko-KR") + '</td>' +
+      '<td class="amt n" style="color:var(--bad)">' + T.out.toLocaleString("ko-KR") + '</td>' +
+      '<td class="amt n" style="color:var(--ok)">' + T.net.toLocaleString("ko-KR") + '</td></tr></tfoot>';
+    document.getElementById("revYearTbl").innerHTML = h;
+
+    /* 막대 */
+    var max = Math.max.apply(null, rows.map(function (r) { return Math.max(r.income, r.out); }).concat([1]));
+    var thisM = (revY === NOW.getFullYear()) ? NOW.getMonth() + 1 : 0;
+    document.getElementById("revBars").innerHTML = rows.map(function (r, i) {
+      var m = i + 1;
+      var ih = Math.round(r.income / max * 100), oh = r.income ? Math.round(r.out / r.income * 100) : 0;
+      return '<div class="rev-bar' + (m === thisM ? " now" : "") + '" onclick="revGoMonth(' + revY + ',' + m + ')" ' +
+        'title="' + m + '월 수입 ' + won(r.income) + ' · 지출 ' + won(r.out) + '">' +
+        '<span class="v">' + (r.income ? Math.round(r.income / 10000) + '만' : '') + '</span>' +
+        '<span class="col" style="height:' + Math.max(ih, r.income ? 3 : 0) + '%">' +
+          (r.out ? '<span class="out" style="height:' + Math.min(oh, 100) + '%"></span>' : '') + '</span>' +
+        '<span class="m">' + m + '월</span></div>';
+    }).join("");
+
+    /* 학생별 한 해 */
+    var per = {};
+    for (var mm = 1; mm <= 12; mm++) {
+      var bb = (DATA.rev || {})[monthKey(revY, mm)] || {};
+      activeStudents().forEach(function (s) {
+        var pl = savedPlan(s.id, revY, mm) || basePlanOf(s, revY, mm);
+        var c = pl.filter(function (x) { return x !== PLAN_EMPTY; }).length;
+        if (!c) return;
+        var cy = Number(((bb.fees || {})[s.id] || {}).carry) || 0;
+        var bill = Math.max(0, c - cy);
+        if (!per[s.id]) per[s.id] = { s: s, months: 0, cnt: 0, amt: 0 };
+        per[s.id].months++; per[s.id].cnt += bill; per[s.id].amt += bill * unitOf(s);
+      });
+    }
+    var list = Object.values(per).sort(function (a, b) { return b.amt - a.amt; });
+    var h2 = '<thead><tr><th>학생</th><th class="amt">다닌 달</th><th class="amt">수업 횟수</th><th class="amt">한 해 수업료</th></tr></thead><tbody>';
+    if (!list.length) h2 += '<tr><td colspan="4" class="muted">자료가 쌓이면 여기에 나옵니다.</td></tr>';
+    list.forEach(function (r) {
+      h2 += '<tr><td>' + gradeChip(r.s.grade).outerHTML + ' ' + r.s.name + '</td>' +
+        '<td class="amt n">' + r.months + '달</td><td class="amt n">' + r.cnt + '회</td>' +
+        '<td class="amt n">' + r.amt.toLocaleString("ko-KR") + '</td></tr>';
+    });
+    h2 += '</tbody><tfoot><tr><td>' + list.length + '명</td><td></td><td></td>' +
+      '<td class="amt n">' + list.reduce(function (n, r) { return n + r.amt; }, 0).toLocaleString("ko-KR") + '</td></tr></tfoot>';
+    document.getElementById("revYearStu").innerHTML = h2;
+  }
+  function revGoMonth(y, m) { revY = y; revM = m; revSetView("m"); window.scrollTo(0, 0); }
+
   function drawRev() {
+    if (revView === "y") { drawRevYear(); return; }
     document.getElementById("revMon").textContent = revY + "년 " + revM + "월";
     var S = revSum();
     document.getElementById("revStats").innerHTML =
@@ -3255,7 +3417,7 @@
         '</div><div class="s">수입 − 지출</div></div>' +
       '<div class="rev-st due"><div class="k">아직 안 들어옴</div><div class="v n">' + S.unpaid.length +
         '명</div><div class="s">' + won(S.unpaidAmt) + '</div></div>';
-    drawRevFee(S); drawRevEtc(); drawRevOut(); drawRevIn(); drawRevMonths();
+    drawRevFee(S); drawRevEtc(); drawRevOut(); drawRevIn();
   }
 
   function drawRevFee(S) {
@@ -3423,34 +3585,6 @@
     ROOT.child("rev/" + revKey() + "/in/" + id + "/links")
       .set(sug.list.map(function (x) { return { sid: x.sid, amount: x.amt }; }));
     if (r.who && sug.list.length === 1) ROOT.child("revMap/" + revSafe(r.who)).set(sug.list[0].sid);
-  }
-
-  function drawRevMonths() {
-    var t = document.getElementById("revMonTbl");
-    var keys = Object.keys(DATA.rev || {}).sort().reverse().slice(0, 12);
-    var h = '<thead><tr><th>달</th><th class="amt">수업료</th><th class="amt">과외·기타</th><th class="amt">수입</th>' +
-      '<th class="amt">지출</th><th class="amt">남은 돈</th></tr></thead><tbody>';
-    if (!keys.length) h += '<tr><td colspan="6" class="muted">달이 쌓이면 여기에 정리됩니다.</td></tr>';
-    keys.forEach(function (k) {
-      var b = DATA.rev[k] || {};
-      var etc = Object.values(b.etc || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
-      var out = Object.values(b.out || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
-      var fee = 0;
-      var p = k.split("-"), yy = +p[0], mm = +p[1];
-      activeStudents().forEach(function (s) {
-        var plan = savedPlan(s.id, yy, mm) || basePlanOf(s, yy, mm);
-        var c = plan.filter(function (x) { return x !== PLAN_EMPTY; }).length;
-        var cy = Number(((b.fees || {})[s.id] || {}).carry) || 0;
-        fee += Math.max(0, c - cy) * unitOf(s);
-      });
-      h += '<tr><td>' + k + '</td><td class="amt n">' + fee.toLocaleString("ko-KR") + '</td>' +
-        '<td class="amt n">' + etc.toLocaleString("ko-KR") + '</td>' +
-        '<td class="amt n">' + (fee + etc).toLocaleString("ko-KR") + '</td>' +
-        '<td class="amt n" style="color:var(--bad)">' + out.toLocaleString("ko-KR") + '</td>' +
-        '<td class="amt n" style="color:var(--ok)">' + (fee + etc - out).toLocaleString("ko-KR") + '</td></tr>';
-    });
-    h += '</tbody>';
-    t.innerHTML = h;
   }
 
   /* ---- 엑셀 읽기 ---- */
@@ -3682,7 +3816,20 @@
   };
 
 
+  /* 화면 안 버튼(onclick=)이 쓰는 것들 — 이 묶음 밖에서도 보이게 */
+  [["revSetFee", revSetFee], ["revSetEtc", revSetEtc], ["revSetOut", revSetOut], ["revDel", revDel],
+   ["revLinkOne", revLinkOne], ["revLinkAuto", revLinkAuto], ["revGoMonth", revGoMonth],
+   ["toggleExamCheck", typeof toggleExamCheck === "function" ? toggleExamCheck : null],
+   ["ecAddSubject", typeof ecAddSubject === "function" ? ecAddSubject : null],
+   ["ecRemoveSubject", typeof ecRemoveSubject === "function" ? ecRemoveSubject : null],
+   ["setExamTerm", typeof setExamTerm === "function" ? setExamTerm : null]
+  ].forEach(function (x) { if (x[1]) window[x[0]] = x[1]; });
+
   /* ---- 매출 관리 · 버튼 연결 ---- */
+  document.getElementById("revTabM").onclick = function () { revSetView("m"); };
+  document.getElementById("revTabY").onclick = function () { revSetView("y"); };
+  document.getElementById("revYPrev").onclick = function () { revY--; drawRev(); };
+  document.getElementById("revYNext").onclick = function () { revY++; drawRev(); };
   document.getElementById("revPrev").onclick = function () {
     revM--; if (revM < 1) { revM = 12; revY--; } drawRev();
   };
