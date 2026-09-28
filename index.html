@@ -320,6 +320,70 @@
   .sec-t { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 9px; }
 
   /* 창 */
+  /* 매출 관리 */
+  .rev-top { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .rev-top .grow { flex: 1; }
+  .rev-top .mon { font-size: 15px; font-weight: 800; min-width: 104px; text-align: center; }
+  .rev-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 13px; }
+  .rev-st { border: 1px solid var(--line); border-radius: 12px; padding: 11px 13px; }
+  .rev-st .k { font-size: 11.5px; color: var(--ink-3); font-weight: 600; }
+  .rev-st .v { font-size: 20px; font-weight: 800; margin-top: 2px; }
+  .rev-st .s { font-size: 11px; color: var(--ink-3); margin-top: 1px; }
+  .rev-st.main { background: #161616; border-color: #161616; }
+  .rev-st.main .k { color: #c9ccd2; } .rev-st.main .v { color: #fff; } .rev-st.main .s { color: var(--brand); }
+  .rev-st.out .v { color: var(--bad); } .rev-st.net .v { color: var(--ok); } .rev-st.due .v { color: var(--warn); }
+  .rev-drops { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .rev-drop { border: 2px dashed var(--line); border-radius: 12px; padding: 16px; text-align: center;
+    color: var(--ink-3); font-size: 13px; background: var(--surface-2); cursor: pointer; display: block; }
+  .rev-drop:hover { border-color: var(--brand); background: #fffbef; }
+  .rev-drop b { color: var(--ink); }
+  .rev-drop .s { font-size: 11px; margin-top: 4px; }
+  .rev-tbl { width: 100%; }
+  .rev-tbl th { font-size: 10.5px; }
+  .rev-tbl td { font-size: 12.5px; padding: 5px; }
+  .rev-tbl .amt { text-align: right; white-space: nowrap; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .rev-tbl select, .rev-tbl input { font: inherit; font-size: 11.5px; padding: 3px 6px;
+    border: 1px solid var(--line); border-radius: 6px; background: var(--surface); max-width: 100%; }
+  .rev-tbl input.num { width: 84px; text-align: right; }
+  .rev-tbl input.txt { width: 100%; min-width: 70px; }
+  .rev-tbl tfoot td { border-top: 1px solid var(--line); font-weight: 800; }
+  .rev-tbl tr.hl td { background: #fffdf3; }
+  .rev-ok { font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 7px;
+    background: var(--ok-soft); color: var(--ok); white-space: nowrap; }
+  .rev-no { font-size: 10px; font-weight: 700; border-radius: 4px; padding: 2px 7px;
+    background: var(--bad-soft); color: var(--bad); white-space: nowrap; }
+  .rev-sug { font-size: 11.5px; font-weight: 700; color: var(--ok); }
+  .rev-sug.multi { color: var(--slot); }
+  .rev-sug.none { color: var(--warn); }
+  .rev-del { font: inherit; font-size: 11px; cursor: pointer; border: 1px solid var(--line);
+    background: var(--surface); color: var(--bad); border-radius: 6px; padding: 2px 7px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  @media (max-width: 900px) { .rev-stats { grid-template-columns: 1fr 1fr; } .grid2, .rev-drops { grid-template-columns: 1fr; } }
+  /* 학생 관리 좌우 분할 */
+  .stu-split { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.85fr); gap: 14px; align-items: start; }
+  .stu-pane { position: sticky; top: 14px; }
+  .stu-detail { position: static; max-height: none; width: auto; margin: 0;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 0; overflow: visible; }
+  .stu-empty { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); min-height: 300px; display: flex; align-items: center; justify-content: center;
+    text-align: center; color: var(--ink-3); font-size: 13.5px; line-height: 2; padding: 20px; }
+  .stu-empty b { color: var(--ink-2); }
+  .stu-listcard .st th:nth-child(5), .stu-listcard .st td:nth-child(5),
+  .stu-listcard .st th:nth-child(6), .stu-listcard .st td:nth-child(6),
+  .stu-listcard .st th:nth-child(7), .stu-listcard .st td:nth-child(7) { display: none; }
+  .stu-listcard .tbl-wrap { max-height: 520px; overflow-y: auto; }
+  .stu-listcard .st th, .stu-listcard .st td { padding-left: 5px; padding-right: 5px; font-size: 12.5px; }
+  .stu-listcard .st .name-btn { font-size: 13px; }
+  .stu-listcard .feeline { gap: 6px; }
+  .stu-listcard .feeline .fld { min-width: 74px; }
+  .stu-listcard .st tr.cur td { background: #fffbef; }
+  .stu-listcard .st tr.cur .name-btn { font-weight: 800; }
+  .stu-listcard .st tbody tr { cursor: pointer; }
+  @media (max-width: 1080px) {
+    .stu-split { grid-template-columns: 1fr; }
+    .stu-pane { position: static; }
+  }
   /* 그날 등원 고치기 */
   .cal.big .cell .fix { position: absolute; top: 3px; right: 3px; width: 19px; height: 19px;
     border-radius: 5px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-3);
@@ -522,6 +586,7 @@
       <button type="button" data-go="stu"><span class="ico">👥</span>학생 관리</button>
       <button type="button" data-go="cal"><span class="ico">🗓️</span>캘린더</button>
       <button type="button" data-go="sms"><span class="ico">📨</span>문자 발송</button>
+      <button type="button" data-go="rev"><span class="ico">💰</span>매출 관리</button>
     </nav>
 
     <div class="side-foot">모든 자료는 인터넷에<br>자동 저장됩니다</div>
@@ -656,10 +721,149 @@
 
     <!-- 학생 -->
     <section id="page-stu" hidden>
-      <section class="card">
+      <div class="stu-split">
+
+      <div class="stu-pane">
+        <div class="stu-empty" id="stuEmpty">
+          👉 오른쪽 명단에서 <b>학생 이름</b>을 눌러 주세요<br>여기에 그 학생 내용이 나옵니다
+        </div>
+        <div class="modal stu-detail" id="stuDetail" hidden role="region" aria-labelledby="mName">
+    <div class="modal-head">
+      <div>
+        <h2 id="mName">학생</h2>
+        <div class="sub" id="mSub"></div>
+      </div>
+      <span class="x" style="display:flex;gap:8px">
+        <button type="button" class="btn" id="mEdit">정보 고치기</button>
+        <button type="button" class="btn" id="mClose">닫기</button>
+      </span>
+    </div>
+    <div class="mtabs">
+      <button type="button" class="mtab on" id="mTabBtnA">등원 · 수업료</button>
+      <button type="button" class="mtab" id="mTabBtnB">📝 한 달 멘트</button>
+    </div>
+    <div id="mTabA">
+
+    <div class="sec">
+      <div class="sec-t">수업 요일 · 시간 (30분 단위)</div>
+      <div class="daygrid" id="mDays"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t" id="mNowTitle">이번 달 등원</div>
+      <div class="cal mini" id="mCalNow"></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-t" id="mNextTitle">다음 달 예정</div>
+      <div class="hint">날짜를 누르면 등원일을 켜고 끌 수 있습니다. 보강·추가 수업은 눌러서 켜고, 쉬는 날은 눌러서 끄세요. 노란색은 직접 넣은 날입니다.</div>
+      <div class="cal mini" id="mCalNext"></div>
+      <div class="fee" style="margin-top:14px">
+        <div class="feebox"><div class="k">예정 등원 횟수</div><div class="v" id="mCount">–</div><div class="s" id="mCountSub"></div></div>
+        <div class="feebox"><div class="k">회당 수업료</div><input type="number" id="mUnit" step="1000" min="0"><div class="s" id="mUnitSub"></div></div>
+        <div class="feebox total"><div class="k">다음 달 수업료</div><div class="v" id="mFee">–</div><div class="s">회당 × 예정 횟수</div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="copyrow" style="margin-top:0">
+        <button type="button" class="btn brand" id="mCopyImg">달력 이미지 복사하기</button>
+        <span class="copyok" id="mImgMsg" hidden></span>
+      </div>
+      <div class="imgwrap" id="mImgWrap" hidden style="margin-top:10px"><img id="mImg" alt="다음 달 수업일 달력"></div>
+    </div>
+
+    </div>
+
+    <div id="mTabB" hidden>
+      <div class="sec">
+        <div class="cm-row">
+          <select id="cmMonth"></select>
+          <span class="cm-att" id="cmAtt"></span>
+          <span class="hint" style="margin-left:auto">출결은 프로그램이 알아서 세어 넣습니다</span>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">체크하기
+          <span class="hint">잘한 점 · 개선할 점을 눌러서 고르세요 · 2~4개면 충분합니다</span>
+          <button type="button" class="btn sm" id="cmEditChips" style="margin-left:auto">✏️ 항목 고치기</button>
+        </div>
+        <div id="cmCats"></div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">한마디 더 <span class="hint">있으면 적으세요 · 없으면 비워두셔도 됩니다</span></div>
+        <textarea id="cmMemo" rows="2" style="min-height:0"></textarea>
+        <div class="cm-my" id="cmMyList"></div>
+        <div class="copyrow" style="margin-top:7px">
+          <input type="text" id="cmMyNew" placeholder="자주 쓰는 문구 추가 (예: 다음 달 시험 대비 시작합니다)" style="flex:1;min-width:0">
+          <button type="button" class="btn sm" id="cmMyAdd">＋ 담기</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">말투</div>
+        <div class="cm-tone" id="cmTone">
+          <button type="button" class="tn on" data-t="warm">따뜻하게</button>
+          <button type="button" class="tn" data-t="plain">담백하게</button>
+          <button type="button" class="tn" data-t="detail">꼼꼼하게</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">① 한 달 멘트 <span class="hint">고쳐 쓰셔도 됩니다 · 고친 그대로 저장됩니다</span></div>
+        <textarea id="cmText" style="min-height:230px"></textarea>
+        <div class="copyrow">
+          <button type="button" class="btn" id="cmCopy">📋 멘트만 복사</button>
+          <button type="button" class="btn sm" id="cmRemake">↻ 다시 만들기</button>
+          <span class="copyok" id="cmCopied" hidden>복사했습니다.</span>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">② 수업일 안내 문구 <span class="hint">다음 달 수업일 · 수업료</span></div>
+        <textarea id="mMsg" readonly style="min-height:150px"></textarea>
+        <div class="copyrow">
+          <button type="button" class="btn" id="mCopy">📋 안내 문구만 복사</button>
+          <span class="copyok" id="mCopied" hidden>복사했습니다.</span>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="copyrow" style="margin-top:0">
+          <button type="button" class="btn brand" id="cmCopyBoth">📋 둘 다 합쳐서 복사</button>
+          <textarea id="cmBoth" readonly hidden></textarea>
+          <span class="copyok" id="cmBothOk" hidden>복사했습니다.</span>
+          <span class="hint" style="margin-left:auto">멘트 + 수업일 안내를 카톡 한 통으로</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 항목 고치기 -->
+<div class="ovl" id="ovl4" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ceTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="ceTitle">체크 항목 고치기</h2>
+        <div class="sub">칸이 세 개입니다 — <b>짧은 말</b>은 버튼에 보이고, <b>끝맺는 문장</b>은 그 문장으로 끝날 때,
+          <b>이어 쓰는 말</b>은 뒤에 다른 말이 더 붙을 때 씁니다. 이어 쓰는 말은 비워두셔도 됩니다.</div>
+      </div>
+      <span class="x" style="display:flex;gap:8px">
+        <button type="button" class="btn" id="ceReset">처음 상태로</button>
+        <button type="button" class="btn" id="ceClose">닫기</button>
+      </span>
+    </div>
+    <div class="sec"><div id="ceBody"></div></div>
+  </div>
+      </div>
+
+      <section class="card stu-listcard">
         <div class="card-head">
           <div class="card-title">학생 명단</div>
-          <div class="card-meta">이름을 누르면 개인 등원 달력이 열립니다</div>
+          <div class="card-meta">이름을 누르면 왼쪽에 열립니다</div>
         </div>
 
         <div class="feeline">
@@ -702,6 +906,8 @@
           </table>
         </div>
       </section>
+
+      </div>
     </section>
 
     <!-- 캘린더 -->
@@ -798,136 +1004,69 @@
         </section>
       </div>
     </section>
+    <!-- 매출 관리 -->
+    <section id="page-rev" hidden>
+      <section class="card">
+        <div class="card-head">
+          <div class="card-title">매출 관리</div>
+          <div class="rev-top">
+            <button type="button" class="btn" id="revPrev">‹</button>
+            <span class="mon n" id="revMon"></span>
+            <button type="button" class="btn" id="revNext">›</button>
+            <span class="grow"></span>
+            <button type="button" class="btn" id="revCopyPrev">지난달 지출 가져오기</button>
+          </div>
+        </div>
+        <div class="rev-stats" id="revStats"></div>
+      </section>
+
+      <section class="card section-gap">
+        <div class="card-head"><div class="card-title">파일 올리기</div>
+          <div class="card-meta">결제선생 정산표 · 은행 거래내역 둘 다 됩니다</div></div>
+        <div class="rev-drops">
+          <label class="rev-drop"><input type="file" id="revFilePay" accept=".xlsx,.xls,.csv" hidden>
+            💳 <b>결제선생 정산표</b><div class="s">결제일시 · 이름 · 금액 · 카드사명</div></label>
+          <label class="rev-drop"><input type="file" id="revFileBank" accept=".xlsx,.xls,.csv" hidden>
+            🏦 <b>은행 거래내역</b><div class="s">거래일시 · 적요 · 보낸분 · 입금액</div></label>
+        </div>
+        <div class="hint" id="revUpMsg" style="margin-top:9px">같은 내역은 다시 올려도 중복으로 안 들어갑니다.</div>
+      </section>
+
+      <section class="card section-gap">
+        <div class="card-head"><div class="card-title">① 수업료 수입</div>
+          <div class="card-meta">횟수·금액은 등원 계획에서 저절로 옵니다 · 이월은 지난달 결석(보강 안 한 것)을 세어 빼 줍니다</div></div>
+        <div class="tbl-wrap"><table class="st rev-tbl" id="revFeeTbl"></table></div>
+      </section>
+
+      <div class="grid2 section-gap">
+        <section class="card">
+          <div class="card-head"><div class="card-title">② 과외 · 기타 수입</div>
+            <button type="button" class="btn" id="revAddEtc">＋ 추가</button></div>
+          <div class="tbl-wrap"><table class="st rev-tbl" id="revEtcTbl"></table></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><div class="card-title">③ 지출</div>
+            <button type="button" class="btn" id="revAddOut">＋ 추가</button></div>
+          <div class="tbl-wrap"><table class="st rev-tbl" id="revOutTbl"></table></div>
+        </section>
+      </div>
+
+      <section class="card section-gap">
+        <div class="card-head"><div class="card-title">④ 들어온 돈 맞추기</div>
+          <div class="card-meta">올린 입금 건을 학생과 짝지으세요 · 한 번 짝지으면 다음 달부터 저절로</div></div>
+        <div class="tbl-wrap"><table class="st rev-tbl" id="revPayTbl"></table></div>
+      </section>
+
+      <section class="card section-gap">
+        <div class="card-head"><div class="card-title">⑤ 달마다</div></div>
+        <div class="tbl-wrap"><table class="st rev-tbl" id="revMonTbl"></table></div>
+      </section>
+    </section>
+
   </main>
 </div>
 
 <!-- 학생 상세 -->
-<div class="ovl" id="ovl" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mName">
-    <div class="modal-head">
-      <div>
-        <h2 id="mName">학생</h2>
-        <div class="sub" id="mSub"></div>
-      </div>
-      <span class="x" style="display:flex;gap:8px">
-        <button type="button" class="btn" id="mEdit">정보 고치기</button>
-        <button type="button" class="btn" id="mClose">닫기</button>
-      </span>
-    </div>
-    <div class="mtabs">
-      <button type="button" class="mtab on" id="mTabBtnA">등원 · 수업료</button>
-      <button type="button" class="mtab" id="mTabBtnB">📝 한 달 멘트</button>
-    </div>
-    <div id="mTabA">
-
-    <div class="sec">
-      <div class="sec-t">수업 요일 · 시간 (30분 단위)</div>
-      <div class="daygrid" id="mDays"></div>
-    </div>
-
-    <div class="sec">
-      <div class="sec-t" id="mNowTitle">이번 달 등원</div>
-      <div class="cal mini" id="mCalNow"></div>
-    </div>
-
-    <div class="sec">
-      <div class="sec-t" id="mNextTitle">다음 달 예정</div>
-      <div class="hint">날짜를 누르면 등원일을 켜고 끌 수 있습니다. 보강·추가 수업은 눌러서 켜고, 쉬는 날은 눌러서 끄세요. 노란색은 직접 넣은 날입니다.</div>
-      <div class="cal mini" id="mCalNext"></div>
-      <div class="fee" style="margin-top:14px">
-        <div class="feebox"><div class="k">예정 등원 횟수</div><div class="v" id="mCount">–</div><div class="s" id="mCountSub"></div></div>
-        <div class="feebox"><div class="k">회당 수업료</div><input type="number" id="mUnit" step="1000" min="0"><div class="s" id="mUnitSub"></div></div>
-        <div class="feebox total"><div class="k">다음 달 수업료</div><div class="v" id="mFee">–</div><div class="s">회당 × 예정 횟수</div></div>
-      </div>
-    </div>
-
-    <div class="sec">
-      <div class="copyrow" style="margin-top:0">
-        <button type="button" class="btn brand" id="mCopyImg">달력 이미지 복사하기</button>
-        <span class="copyok" id="mImgMsg" hidden></span>
-      </div>
-      <div class="imgwrap" id="mImgWrap" hidden style="margin-top:10px"><img id="mImg" alt="다음 달 수업일 달력"></div>
-    </div>
-
-    <div class="sec">
-      <div class="sec-t">글로 보낼 안내 문구</div>
-      <textarea id="mMsg" readonly style="min-height:160px"></textarea>
-      <div class="copyrow">
-        <button type="button" class="btn" id="mCopy">글 복사하기</button>
-        <span class="copyok" id="mCopied" hidden>복사했습니다.</span>
-      </div>
-    </div>
-    </div>
-
-    <div id="mTabB" hidden>
-      <div class="sec">
-        <div class="cm-row">
-          <select id="cmMonth"></select>
-          <span class="cm-att" id="cmAtt"></span>
-          <span class="hint" style="margin-left:auto">출결은 프로그램이 알아서 세어 넣습니다</span>
-        </div>
-      </div>
-
-      <div class="sec">
-        <div class="sec-t">체크하기
-          <span class="hint">잘한 점 · 개선할 점을 눌러서 고르세요 · 2~4개면 충분합니다</span>
-          <button type="button" class="btn sm" id="cmEditChips" style="margin-left:auto">✏️ 항목 고치기</button>
-        </div>
-        <div id="cmCats"></div>
-      </div>
-
-      <div class="sec">
-        <div class="sec-t">한마디 더 <span class="hint">있으면 적으세요 · 없으면 비워두셔도 됩니다</span></div>
-        <textarea id="cmMemo" rows="2" style="min-height:0"></textarea>
-        <div class="cm-my" id="cmMyList"></div>
-        <div class="copyrow" style="margin-top:7px">
-          <input type="text" id="cmMyNew" placeholder="자주 쓰는 문구 추가 (예: 다음 달 시험 대비 시작합니다)" style="flex:1;min-width:0">
-          <button type="button" class="btn sm" id="cmMyAdd">＋ 담기</button>
-        </div>
-      </div>
-
-      <div class="sec">
-        <div class="sec-t">말투</div>
-        <div class="cm-tone" id="cmTone">
-          <button type="button" class="tn on" data-t="warm">따뜻하게</button>
-          <button type="button" class="tn" data-t="plain">담백하게</button>
-          <button type="button" class="tn" data-t="detail">꼼꼼하게</button>
-        </div>
-      </div>
-
-      <div class="sec">
-        <div class="sec-t">만들어진 멘트 <span class="hint">고쳐 쓰셔도 됩니다 · 고친 그대로 저장됩니다</span></div>
-        <textarea id="cmText" style="min-height:230px"></textarea>
-        <div class="copyrow">
-          <button type="button" class="btn brand" id="cmCopy">📋 멘트 복사하기</button>
-          <button type="button" class="btn sm" id="cmRemake">↻ 다시 만들기</button>
-          <span class="copyok" id="cmCopied" hidden>복사했습니다.</span>
-          <span class="hint" style="margin-left:auto">복사해서 카톡에 붙여넣으세요</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 항목 고치기 -->
-<div class="ovl" id="ovl4" hidden>
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ceTitle">
-    <div class="modal-head">
-      <div>
-        <h2 id="ceTitle">체크 항목 고치기</h2>
-        <div class="sub">칸이 세 개입니다 — <b>짧은 말</b>은 버튼에 보이고, <b>끝맺는 문장</b>은 그 문장으로 끝날 때,
-          <b>이어 쓰는 말</b>은 뒤에 다른 말이 더 붙을 때 씁니다. 이어 쓰는 말은 비워두셔도 됩니다.</div>
-      </div>
-      <span class="x" style="display:flex;gap:8px">
-        <button type="button" class="btn" id="ceReset">처음 상태로</button>
-        <button type="button" class="btn" id="ceClose">닫기</button>
-      </span>
-    </div>
-    <div class="sec"><div id="ceBody"></div></div>
-  </div>
-</div>
-
-
 <!-- 그날 등원 고치기 -->
 <div class="ovl" id="ovl5" hidden>
   <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="dyTitle">
@@ -1010,6 +1149,7 @@
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
@@ -1055,7 +1195,7 @@
     return e;
   }
 
-  var DATA = { students: {}, attendance: {}, events: {}, plans: {}, makeups: {}, settings: { units: {} }, comments: {}, chips: {}, phrases: [], times: {} };
+  var DATA = { students: {}, attendance: {}, events: {}, plans: {}, makeups: {}, settings: { units: {} }, comments: {}, chips: {}, phrases: [], times: {}, rev: {}, revMap: {}, revSet: {} };
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function ymd(y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }
@@ -1808,14 +1948,21 @@
         shown++;
         visibleIds.push(s.id);
         var tr = el("tr");
-        if (PICKED[s.id]) tr.className = "picked";
+        var cls = [];
+        if (PICKED[s.id]) cls.push("picked");
+        if (CUR && CUR.id === s.id) cls.push("cur");
+        tr.className = cls.join(" ");
+        tr.addEventListener("click", function (ev) {
+          if (ev.target.closest("input,button")) return;
+          openStudent(s.id);
+        });
 
         // 체크 칸
         var tc = el("td", "ck");
         var cb = el("input"); cb.type = "checkbox"; cb.checked = !!PICKED[s.id];
         cb.addEventListener("change", function () {
           if (cb.checked) PICKED[s.id] = true; else delete PICKED[s.id];
-          tr.className = cb.checked ? "picked" : "";
+          tr.classList.toggle("picked", cb.checked);
           syncPickBar();
         });
         tc.appendChild(cb);
@@ -1939,7 +2086,7 @@
     if (!window.confirm(s.name + " 학생을 명단에서 지울까요?\n(출결 기록은 남습니다)")) return;
     ROOT.child("students/" + editId).remove().then(function () {
       document.getElementById("ovl2").hidden = true;
-      document.getElementById("ovl").hidden = true;
+      closeStudent();
       toast("삭제했습니다");
     });
   });
@@ -2508,7 +2655,9 @@
     else cmMake(false);
   }
 
+  var stuTab = "a";
   function cmOpenTab(which) {
+    stuTab = which;
     document.getElementById("mTabBtnA").classList.toggle("on", which === "a");
     document.getElementById("mTabBtnB").classList.toggle("on", which === "b");
     document.getElementById("mTabA").hidden = which !== "a";
@@ -2603,9 +2752,17 @@
       return '<option value="' + k + '">' + q[0] + "년 " + (+q[1]) + "월</option>";
     }).join("");
     cmMonthKey = msel.value;
-    cmOpenTab("a");
+    cmOpenTab(stuTab);   // 고른 칸은 학생을 바꿔도 그대로
 
-    document.getElementById("ovl").hidden = false;
+    document.getElementById("stuEmpty").hidden = true;
+    document.getElementById("stuDetail").hidden = false;
+    drawStudents();
+  }
+  function closeStudent() {
+    CUR = null;
+    document.getElementById("stuDetail").hidden = true;
+    document.getElementById("stuEmpty").hidden = false;
+    drawStudents();
   }
 
   function drawNextCal(s) {
@@ -2668,12 +2825,12 @@
   });
   document.getElementById("mUnit").addEventListener("input", function () { if (CUR) fillFee(CUR); });
   document.getElementById("mEdit").addEventListener("click", function () { if (CUR) openEdit(CUR.id); });
-  document.getElementById("mClose").addEventListener("click", function () { document.getElementById("ovl").hidden = true; });
-  document.getElementById("ovl").addEventListener("click", function (e) { if (e.target.id === "ovl") this.hidden = true; });
+  document.getElementById("mClose").addEventListener("click", closeStudent);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
-      document.getElementById("ovl").hidden = true;
-      document.getElementById("ovl2").hidden = true;
+      ["ovl2", "ovl4", "ovl5"].forEach(function (k) {
+        var n = document.getElementById(k); if (n) n.hidden = true;
+      });
     }
   });
 
@@ -3000,7 +3157,7 @@
   });
 
   /* ===================== 화면 전환 ===================== */
-  var titles = { dash: "대시보드", att: "출결 관리", stu: "학생 관리", cal: "캘린더", sms: "문자 발송" };
+  var titles = { dash: "대시보드", att: "출결 관리", stu: "학생 관리", cal: "캘린더", sms: "문자 발송", rev: "매출 관리" };
   var navs = document.querySelectorAll(".nav button[data-go]");
   navs.forEach(function (b) {
     b.addEventListener("click", function () {
@@ -3013,8 +3170,392 @@
     });
   });
 
+
+  /* ===================== 매출 관리 ===================== */
+  /* 저장 위치
+     rev/{YYYY-MM}/fees/{학생id}   = { pay:"결제선생|카드결제|계좌이체|현금", carry:숫자, memo }
+     rev/{YYYY-MM}/etc/{id}        = { name, cnt, unit, amount, pay }
+     rev/{YYYY-MM}/out/{id}        = { name, amount, memo }
+     rev/{YYYY-MM}/in/{id}         = { src:"bank|pay", date, who, amount, base, card, links:[{sid,amount}], raw }
+     revMap/{보낸분이름}            = 학생id      ← 한 번 짝지으면 기억
+     revSet                        = { feeRate: 0.004 }                                            */
+
+  var revY = NOW.getFullYear(), revM = NOW.getMonth() + 1;
+  var REV_PAYS = ["결제선생", "카드결제", "계좌이체", "현금", "기타"];
+  var REV_OUT_DEFAULT = ["월세", "인터넷", "정수기", "관리비", "핸드폰"];
+
+  function revKey() { return monthKey(revY, revM); }
+  function revBox(k) { return ((DATA.rev || {})[revKey()] || {})[k] || {}; }
+  function revRate() { var v = (DATA.revSet || {}).feeRate; return (typeof v === "number") ? v : 0.004; }
+  function revMapOf(who) { return (DATA.revMap || {})[revSafe(who)] || ""; }
+  function revSafe(t) { return String(t || "").replace(/[.#$\[\]\/]/g, "").trim(); }
+  function revNum(v) { return Number(String(v == null ? "" : v).replace(/[^0-9.-]/g, "")) || 0; }
+
+  /* 이월 — 지난달 결석 중 보강으로 못 채운 횟수 (다음 달 횟수에서 뺍니다) */
+  function revCarryAuto(s) {
+    var pm = revM - 1, py = revY;
+    if (pm < 1) { pm = 12; py--; }
+    var last = new Date(py, pm, 0).getDate(), n = 0;
+    for (var d = 1; d <= last; d++) {
+      var key = ymd(py, pm, d);
+      if (!attendsOn(s, key)) continue;
+      if (att(key, s.id) === "bad" && !makeupOf(key, s.id)) n++;
+    }
+    return n;
+  }
+  /* 그 달 학생별 청구액 — 등원 계획에서 */
+  function revFeeRows() {
+    var y = revY, m = revM;
+    return activeStudents().map(function (s) {
+      var plan = savedPlan(s.id, y, m) || basePlanOf(s, y, m);
+      var cnt = plan.filter(function (x) { return x !== PLAN_EMPTY; }).length;
+      var unit = unitOf(s);
+      var saved = revBox("fees")[s.id] || {};
+      var auto = revCarryAuto(s);
+      var manual = (saved.carry !== undefined && saved.carry !== null);
+      var carry = manual ? (Number(saved.carry) || 0) : auto;
+      var bill = Math.max(0, cnt - carry);
+      return { s: s, cnt: cnt, unit: unit, carry: carry, auto: auto, manual: manual,
+               bill: bill, amount: bill * unit, pay: saved.pay || "결제선생" };
+    }).filter(function (r) { return r.cnt > 0 || r.carry > 0; })
+      .sort(function (a, b) { return (gradeIdx(a.s.grade) - gradeIdx(b.s.grade)) || a.s.name.localeCompare(b.s.name, "ko"); });
+  }
+  /* 그 학생에게 붙은 입금 */
+  function revPaidOf(sid) {
+    var ins = revBox("in"), out = [];
+    Object.keys(ins).forEach(function (id) {
+      var r = ins[id];
+      (r.links || []).forEach(function (L) { if (L.sid === sid) out.push({ id: id, r: r, amount: L.amount }); });
+    });
+    return out;
+  }
+
+  function revSum() {
+    var fees = revFeeRows();
+    var fee = fees.reduce(function (n, r) { return n + r.amount; }, 0);
+    var etc = Object.values(revBox("etc")).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+    var out = Object.values(revBox("out")).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+    var ins = Object.values(revBox("in"));
+    var got = ins.reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+    var unpaid = fees.filter(function (r) { return !revPaidOf(r.s.id).length; });
+    return { fees: fees, fee: fee, etc: etc, out: out, got: got,
+             income: fee + etc, net: fee + etc - out,
+             unpaid: unpaid, unpaidAmt: unpaid.reduce(function (n, r) { return n + r.amount; }, 0) };
+  }
+
+  function drawRev() {
+    document.getElementById("revMon").textContent = revY + "년 " + revM + "월";
+    var S = revSum();
+    document.getElementById("revStats").innerHTML =
+      '<div class="rev-st main"><div class="k">' + revM + '월 수입</div><div class="v n">' + won(S.income) +
+        '</div><div class="s">수업료 ' + S.fees.length + '명' + (S.etc ? ' + 과외·기타' : '') + '</div></div>' +
+      '<div class="rev-st out"><div class="k">지출</div><div class="v n">' + won(S.out) +
+        '</div><div class="s">' + Object.keys(revBox("out")).length + '건</div></div>' +
+      '<div class="rev-st net"><div class="k">남은 돈</div><div class="v n">' + won(S.net) +
+        '</div><div class="s">수입 − 지출</div></div>' +
+      '<div class="rev-st due"><div class="k">아직 안 들어옴</div><div class="v n">' + S.unpaid.length +
+        '명</div><div class="s">' + won(S.unpaidAmt) + '</div></div>';
+    drawRevFee(S); drawRevEtc(); drawRevOut(); drawRevIn(); drawRevMonths();
+  }
+
+  function drawRevFee(S) {
+    var t = document.getElementById("revFeeTbl");
+    var h = '<thead><tr><th style="width:26px">#</th><th>학생</th><th class="amt">이번 달</th>' +
+      '<th class="amt">이월(−)</th><th class="amt">청구 횟수</th><th class="amt">회당</th>' +
+      '<th class="amt">총금액</th><th>결제수단</th><th>들어옴</th></tr></thead><tbody>';
+    S.fees.forEach(function (r, i) {
+      var paid = revPaidOf(r.s.id);
+      var got = paid.reduce(function (n, x) { return n + x.amount; }, 0);
+      var cTip = r.manual ? "직접 적으신 값" : (r.auto ? "지난달 결석 " + r.auto + "회 (보강 안 한 것) — 직접 고칠 수 있습니다" : "지난달 결석 없음");
+      h += '<tr><td class="n">' + (i + 1) + '</td>' +
+        '<td>' + gradeChip(r.s.grade).outerHTML + ' ' + r.s.name + '</td>' +
+        '<td class="amt n">' + r.cnt + '회</td>' +
+        '<td class="amt"><input class="num" style="width:56px" type="number" min="0" step="1" title="' + cTip + '" value="' +
+          (r.manual ? r.carry : (r.auto || "")) + '" placeholder="0" onchange="revSetFee(\'' + r.s.id + '\',\'carry\',this.value)">' +
+          (!r.manual && r.auto ? '<div class="hint">자동</div>' : '') + '</td>' +
+        '<td class="amt n"' + (r.carry ? ' style="color:var(--warn)"' : '') + '>' + r.bill + '회</td>' +
+        '<td class="amt n">' + r.unit.toLocaleString("ko-KR") + '</td>' +
+        '<td class="amt n">' + r.amount.toLocaleString("ko-KR") + '</td>' +
+        '<td>' + REV_PAYS.map(function (p) {
+          return '<option value="' + p + '"' + (p === r.pay ? ' selected' : '') + '>' + p + '</option>'; })
+          .join("").replace(/^/, '<select onchange="revSetFee(\'' + r.s.id + '\',\'pay\',this.value)">') + '</select></td>' +
+        '<td>' + (paid.length
+          ? '<span class="rev-ok">✓ ' + won(got) + '</span>'
+          : '<span class="rev-no">아직</span>') + '</td></tr>';
+    });
+    var carrySum = S.fees.reduce(function (n, r) { return n + r.carry; }, 0);
+    h += '</tbody><tfoot><tr><td></td><td>' + S.fees.length + '명</td><td></td>' +
+      '<td class="amt n"' + (carrySum ? ' style="color:var(--warn)"' : '') + '>' + (carrySum || "") + (carrySum ? '회' : '') + '</td>' +
+      '<td></td><td></td><td class="amt n">' + S.fee.toLocaleString("ko-KR") + '</td>' +
+      '<td colspan="2" class="hint">받은 돈 ' + won(S.got) + '</td></tr></tfoot>';
+    t.innerHTML = h;
+  }
+  function revSetFee(sid, k, v) {
+    if (k === "carry") {
+      var t = String(v == null ? "" : v).trim();
+      ROOT.child("rev/" + revKey() + "/fees/" + sid + "/carry").set(t === "" ? null : (revNum(t) || 0));
+      return;
+    }
+    ROOT.child("rev/" + revKey() + "/fees/" + sid + "/" + k).set(v);
+  }
+
+  function drawRevEtc() {
+    var t = document.getElementById("revEtcTbl"), box = revBox("etc");
+    var h = '<thead><tr><th>이름</th><th class="amt">횟수</th><th class="amt">회당</th><th class="amt">금액</th><th>결제수단</th><th></th></tr></thead><tbody>';
+    var sum = 0;
+    Object.keys(box).sort().forEach(function (id) {
+      var r = box[id]; sum += revNum(r.amount);
+      h += '<tr><td><input class="txt" value="' + escAttr(r.name) + '" onchange="revSetEtc(\'' + id + '\',\'name\',this.value)"></td>' +
+        '<td class="amt"><input class="num" type="number" value="' + (r.cnt || "") + '" onchange="revSetEtc(\'' + id + '\',\'cnt\',this.value)"></td>' +
+        '<td class="amt"><input class="num" type="number" step="1000" value="' + (r.unit || "") + '" onchange="revSetEtc(\'' + id + '\',\'unit\',this.value)"></td>' +
+        '<td class="amt"><input class="num" type="number" step="1000" value="' + (r.amount || "") + '" onchange="revSetEtc(\'' + id + '\',\'amount\',this.value)"></td>' +
+        '<td>' + REV_PAYS.map(function (p) { return '<option' + (p === r.pay ? ' selected' : '') + '>' + p + '</option>'; })
+          .join("").replace(/^/, '<select onchange="revSetEtc(\'' + id + '\',\'pay\',this.value)">') + '</select></td>' +
+        '<td><button type="button" class="rev-del" onclick="revDel(\'etc\',\'' + id + '\')">삭제</button></td></tr>';
+    });
+    if (!Object.keys(box).length) h += '<tr><td colspan="6" class="muted">과외·기타 수입이 있으면 ＋ 추가를 눌러 적으세요.</td></tr>';
+    h += '</tbody><tfoot><tr><td>합계</td><td></td><td></td><td class="amt n">' + sum.toLocaleString("ko-KR") + '</td><td colspan="2"></td></tr></tfoot>';
+    t.innerHTML = h;
+  }
+  function revSetEtc(id, k, v) {
+    var val = (k === "name" || k === "pay") ? v : (revNum(v) || null);
+    ROOT.child("rev/" + revKey() + "/etc/" + id + "/" + k).set(val);
+    if (k === "cnt" || k === "unit") {
+      var r = revBox("etc")[id] || {};
+      var c = k === "cnt" ? revNum(v) : revNum(r.cnt), u = k === "unit" ? revNum(v) : revNum(r.unit);
+      if (c && u) ROOT.child("rev/" + revKey() + "/etc/" + id + "/amount").set(c * u);
+    }
+  }
+
+  function drawRevOut() {
+    var t = document.getElementById("revOutTbl"), box = revBox("out");
+    var h = '<thead><tr><th>항목</th><th class="amt">금액</th><th>메모</th><th></th></tr></thead><tbody>';
+    var sum = 0;
+    Object.keys(box).sort().forEach(function (id) {
+      var r = box[id]; sum += revNum(r.amount);
+      h += '<tr><td><input class="txt" value="' + escAttr(r.name) + '" onchange="revSetOut(\'' + id + '\',\'name\',this.value)"></td>' +
+        '<td class="amt"><input class="num" type="number" step="1000" value="' + (r.amount || "") + '" onchange="revSetOut(\'' + id + '\',\'amount\',this.value)"></td>' +
+        '<td><input class="txt" value="' + escAttr(r.memo) + '" onchange="revSetOut(\'' + id + '\',\'memo\',this.value)"></td>' +
+        '<td><button type="button" class="rev-del" onclick="revDel(\'out\',\'' + id + '\')">삭제</button></td></tr>';
+    });
+    if (!Object.keys(box).length) h += '<tr><td colspan="4" class="muted">＋ 추가 또는 「지난달 지출 가져오기」를 눌러 주세요.</td></tr>';
+    h += '</tbody><tfoot><tr><td>합계</td><td class="amt n">' + sum.toLocaleString("ko-KR") + '</td><td colspan="2"></td></tr></tfoot>';
+    t.innerHTML = h;
+  }
+  function revSetOut(id, k, v) {
+    ROOT.child("rev/" + revKey() + "/out/" + id + "/" + k).set(k === "amount" ? (revNum(v) || null) : v);
+  }
+  function revDel(kind, id) { ROOT.child("rev/" + revKey() + "/" + kind + "/" + id).remove(); }
+  function escAttr(t) { return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
+  function escapeHtml(t) { return String(t == null ? "" : t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  /* ---- 들어온 돈 맞추기 ---- */
+  function revCandidates(base) {
+    /* 금액이 맞는 학생 (1명 또는 2~3명 묶음) */
+    var rows = revFeeRows().map(function (r) { return { sid: r.s.id, name: r.s.name, amt: r.amount }; });
+    var one = rows.filter(function (r) { return r.amt === base; });
+    if (one.length) return { kind: "one", list: one };
+    for (var k = 2; k <= 3; k++) {
+      var found = null;
+      (function comb(start, acc, sum) {
+        if (found) return;
+        if (acc.length === k) { if (sum === base) found = acc.slice(); return; }
+        for (var i = start; i < rows.length; i++) {
+          if (sum + rows[i].amt > base) continue;
+          acc.push(rows[i]); comb(i + 1, acc, sum + rows[i].amt); acc.pop();
+          if (found) return;
+        }
+      })(0, [], 0);
+      if (found) return { kind: "multi", list: found };
+    }
+    return { kind: "none", list: [] };
+  }
+
+  function drawRevIn() {
+    var t = document.getElementById("revPayTbl"), box = revBox("in");
+    var ids = Object.keys(box).sort(function (a, b) { return (box[b].date || "").localeCompare(box[a].date || ""); });
+    var h = '<thead><tr><th style="width:62px">날짜</th><th>보낸분 · 이름</th><th class="amt">입금액</th>' +
+      '<th class="amt">원금(역산)</th><th>붙은 학생</th><th></th></tr></thead><tbody>';
+    if (!ids.length) h += '<tr><td colspan="6" class="muted">위에서 파일을 올리면 여기에 나옵니다.</td></tr>';
+    ids.forEach(function (id) {
+      var r = box[id];
+      var linked = (r.links || []).map(function (L) {
+        var st = DATA.students[L.sid];
+        return (st ? st.name : "?") + " " + won(L.amount);
+      }).join(" + ");
+      var sug = linked ? "" : revCandidates(r.base || r.amount);
+      var cell;
+      if (linked) cell = '<span class="rev-sug">' + escapeHtml(linked) + '</span>';
+      else if (sug.kind === "multi")
+        cell = '<span class="rev-sug multi">' + sug.list.length + '명 묶음 → ' +
+          sug.list.map(function (x) { return escapeHtml(x.name) + " " + won(x.amt); }).join(" + ") +
+          '</span> <button type="button" class="btn" style="font-size:11px;padding:2px 8px" onclick="revLinkAuto(\'' + id + '\')">확정</button>';
+      else if (sug.kind === "one")
+        cell = '<select onchange="revLinkOne(\'' + id + '\',this.value)"><option value="">고르기…</option>' +
+          sug.list.map(function (x) { return '<option value="' + x.sid + '">' + escapeHtml(x.name) + " " + won(x.amt) + '</option>'; }).join("") +
+          '</select>';
+      else
+        cell = '<select onchange="revLinkOne(\'' + id + '\',this.value)"><option value="">맞는 금액 없음 — 직접 고르기</option>' +
+          revFeeRows().map(function (x) { return '<option value="' + x.s.id + '">' + escapeHtml(x.s.name) + " " + won(x.amount) + '</option>'; }).join("") +
+          '</select>';
+      h += '<tr' + (linked ? "" : ' class="hl"') + '><td class="n">' + (r.date || "").slice(5).replace("-", "/") + '</td>' +
+        '<td>' + escapeHtml(r.who || "") + (r.card ? '<div class="hint">' + escapeHtml(r.card) + '</div>' : '') + '</td>' +
+        '<td class="amt n">' + revNum(r.amount).toLocaleString("ko-KR") + '</td>' +
+        '<td class="amt n">' + (r.base && r.base !== r.amount
+            ? r.base.toLocaleString("ko-KR") + '<div class="hint">수수료 ' + won(r.base - r.amount) + '</div>'
+            : '<span class="hint">수수료 없음</span>') + '</td>' +
+        '<td>' + cell + '</td>' +
+        '<td><button type="button" class="rev-del" onclick="revDel(\'in\',\'' + id + '\')">삭제</button></td></tr>';
+    });
+    h += '</tbody>';
+    t.innerHTML = h;
+  }
+  function revLinkOne(id, sid) {
+    if (!sid) return;
+    var r = revBox("in")[id]; if (!r) return;
+    ROOT.child("rev/" + revKey() + "/in/" + id + "/links").set([{ sid: sid, amount: r.base || r.amount }]);
+    if (r.who) ROOT.child("revMap/" + revSafe(r.who)).set(sid);
+  }
+  function revLinkAuto(id) {
+    var r = revBox("in")[id]; if (!r) return;
+    var sug = revCandidates(r.base || r.amount);
+    if (!sug.list.length) return;
+    ROOT.child("rev/" + revKey() + "/in/" + id + "/links")
+      .set(sug.list.map(function (x) { return { sid: x.sid, amount: x.amt }; }));
+    if (r.who && sug.list.length === 1) ROOT.child("revMap/" + revSafe(r.who)).set(sug.list[0].sid);
+  }
+
+  function drawRevMonths() {
+    var t = document.getElementById("revMonTbl");
+    var keys = Object.keys(DATA.rev || {}).sort().reverse().slice(0, 12);
+    var h = '<thead><tr><th>달</th><th class="amt">수업료</th><th class="amt">과외·기타</th><th class="amt">수입</th>' +
+      '<th class="amt">지출</th><th class="amt">남은 돈</th></tr></thead><tbody>';
+    if (!keys.length) h += '<tr><td colspan="6" class="muted">달이 쌓이면 여기에 정리됩니다.</td></tr>';
+    keys.forEach(function (k) {
+      var b = DATA.rev[k] || {};
+      var etc = Object.values(b.etc || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+      var out = Object.values(b.out || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
+      var fee = 0;
+      var p = k.split("-"), yy = +p[0], mm = +p[1];
+      activeStudents().forEach(function (s) {
+        var plan = savedPlan(s.id, yy, mm) || basePlanOf(s, yy, mm);
+        var c = plan.filter(function (x) { return x !== PLAN_EMPTY; }).length;
+        var cy = Number(((b.fees || {})[s.id] || {}).carry) || 0;
+        fee += Math.max(0, c - cy) * unitOf(s);
+      });
+      h += '<tr><td>' + k + '</td><td class="amt n">' + fee.toLocaleString("ko-KR") + '</td>' +
+        '<td class="amt n">' + etc.toLocaleString("ko-KR") + '</td>' +
+        '<td class="amt n">' + (fee + etc).toLocaleString("ko-KR") + '</td>' +
+        '<td class="amt n" style="color:var(--bad)">' + out.toLocaleString("ko-KR") + '</td>' +
+        '<td class="amt n" style="color:var(--ok)">' + (fee + etc - out).toLocaleString("ko-KR") + '</td></tr>';
+    });
+    h += '</tbody>';
+    t.innerHTML = h;
+  }
+
+  /* ---- 엑셀 읽기 ---- */
+  function revCell(row, names) {
+    for (var i = 0; i < names.length; i++) {
+      var k = Object.keys(row).find(function (x) { return String(x).replace(/\s/g, "").indexOf(names[i]) >= 0; });
+      if (k != null && row[k] !== undefined && row[k] !== "") return row[k];
+    }
+    return "";
+  }
+  var REV_CARD_WORDS = ["삼성", "신한", "롯데", "현대", "현", "NH", "농협", "KB", "국민", "하나",
+                        "비씨", "BC", "우리", "씨티", "카카오", "케이", "광주", "전북", "제주", "수협", "기업", "새마을"];
+  /* 카드사 정산 입금인가 — 「가맹입금」이거나 「카드사이름 + 숫자」 */
+  function revIsCard(who, memo) {
+    if (/가맹/.test(memo || "")) return true;
+    var w = String(who || "").replace(/\s/g, "");
+    if (!/\d{4,}/.test(w)) return false;
+    return REV_CARD_WORDS.some(function (c) { return w.indexOf(c) === 0; });
+  }
+  function revDate(v) {
+    if (v instanceof Date) return ymd(v.getFullYear(), v.getMonth() + 1, v.getDate());
+    var t = String(v || "").replace(/\./g, "-").replace(/\//g, "-");
+    var m = t.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    return m ? ymd(+m[1], +m[2], +m[3]) : "";
+  }
+  function revReadFile(file, kind) {
+    var fr = new FileReader();
+    fr.onload = function (e) {
+      var wb;
+      try { wb = XLSX.read(new Uint8Array(e.target.result), { type: "array", cellDates: true }); }
+      catch (err) { alert("엑셀을 읽지 못했습니다.\n" + (err && err.message)); return; }
+      var sh = wb.Sheets[wb.SheetNames[0]];
+      var grid = XLSX.utils.sheet_to_json(sh, { header: 1, defval: "", raw: false, cellDates: true });
+      /* 머리글 줄 찾기 */
+      var hi = -1;
+      for (var i = 0; i < Math.min(grid.length, 12); i++) {
+        var line = grid[i].map(function (x) { return String(x).replace(/\s/g, ""); }).join("|");
+        if (/입금액|금액\(원\)|거래일시|결제일시/.test(line)) { hi = i; break; }
+      }
+      if (hi < 0) { alert("칸 이름을 못 찾았습니다. 은행 거래내역이나 결제선생 정산표가 맞는지 확인해 주세요."); return; }
+      var head = grid[hi].map(function (x) { return String(x).replace(/\s/g, ""); });
+      var rows = grid.slice(hi + 1).map(function (arr) {
+        var o = {}; head.forEach(function (k, c) { if (k) o[k] = arr[c]; }); return o;
+      });
+      var add = 0, skip = 0, rate = revRate();
+      rows.forEach(function (r) {
+        var rec = null;
+        if (kind === "bank") {
+          var inAmt = revNum(revCell(r, ["입금액"]));
+          if (inAmt <= 0) return;
+          var d = revDate(revCell(r, ["거래일시", "거래일자", "날짜"]));
+          var who = String(revCell(r, ["보낸분", "받는분", "의뢰인"]) || "").trim();
+          var memo = String(revCell(r, ["적요"]) || "").trim();
+          if (!who) who = memo;
+          rec = { src: "bank", date: d, who: who, card: memo, amount: inAmt, base: inAmt };
+          /* 카드사 정산일 때만 수수료를 되돌린다 — 계좌이체·현금은 그대로 */
+          if (revIsCard(who, memo)) rec.base = Math.round(inAmt / (1 - rate) / 10) * 10;
+        } else {
+          var amt = revNum(revCell(r, ["금액(원)", "금액", "승인금액"]));
+          if (amt <= 0) return;
+          if (String(revCell(r, ["결제상태"]) || "").indexOf("취소") >= 0) return;
+          rec = { src: "pay", date: revDate(revCell(r, ["결제일시", "결제일", "승인일시"])),
+                  who: String(revCell(r, ["이름", "고객명", "학생명"]) || "").trim(),
+                  amount: amt, base: amt, card: String(revCell(r, ["카드사명", "매입사명", "결제수단"]) || "").trim() };
+        }
+        if (!rec.date) return;
+        var mk = rec.date.slice(0, 7);
+        var box = ((DATA.rev || {})[mk] || {}).in || {};
+        var dup = Object.keys(box).some(function (id) {
+          var x = box[id];
+          return x.src === rec.src && x.date === rec.date && revNum(x.amount) === rec.amount && (x.who || "") === rec.who;
+        });
+        if (dup) { skip++; return; }
+        /* 이름으로 바로 붙여보기 — 「안수민,안성재」처럼 여러 명이면 나눠 붙인다 */
+        var hits = activeStudents().filter(function (s) { return rec.who.indexOf(s.name) >= 0; });
+        var mapped = revMapOf(rec.who);
+        if (hits.length > 1) {
+          var p2 = rec.date.slice(0, 7).split("-");
+          var each = hits.map(function (s) {
+            var pl = savedPlan(s.id, +p2[0], +p2[1]) || basePlanOf(s, +p2[0], +p2[1]);
+            var c = pl.filter(function (x) { return x !== PLAN_EMPTY; }).length;
+            return { sid: s.id, amt: c * unitOf(s) };
+          });
+          var tot = each.reduce(function (n, x) { return n + x.amt; }, 0);
+          rec.links = (tot === rec.base || !tot)
+            ? each.map(function (x) { return { sid: x.sid, amount: tot ? x.amt : Math.round(rec.base / each.length) }; })
+            : each.map(function (x) { return { sid: x.sid, amount: Math.round(rec.base * x.amt / tot) }; });
+        } else if (hits.length === 1) {
+          rec.links = [{ sid: hits[0].id, amount: rec.base }];
+        } else if (mapped) {
+          rec.links = [{ sid: mapped, amount: rec.base }];
+        }
+        ROOT.child("rev/" + mk + "/in").push(rec);
+        add++;
+      });
+      document.getElementById("revUpMsg").textContent =
+        add + "건 넣었습니다." + (skip ? " (이미 있던 " + skip + "건은 건너뜀)" : "");
+      if (!add && !skip) document.getElementById("revUpMsg").textContent = "넣을 입금 건을 못 찾았습니다.";
+    };
+    fr.readAsArrayBuffer(file);
+  }
+
   /* ===================== 자료 받아오기 ===================== */
   function renderAll() {
+    drawRev();
     drawDash();
     drawCheck();
     drawAtt();
@@ -3027,7 +3568,7 @@
       var inp = document.getElementById("unit" + lv);
       if (document.activeElement !== inp) inp.value = u[lv] || DEFAULT_UNITS[lv];
     });
-    if (CUR && !document.getElementById("ovl").hidden && DATA.students[CUR.id]) {
+    if (CUR && !document.getElementById("stuDetail").hidden && DATA.students[CUR.id]) {
       // 열려 있는 학생 창은 그대로 두고 금액만 갱신
       fillFee(CUR);
     }
@@ -3043,12 +3584,15 @@
     DATA.settings = v.settings || { units: {} };
     if (!DATA.settings.units) DATA.settings.units = {};
     DATA.times = v.times || {};
+    DATA.rev = v.rev || {};
+    DATA.revMap = v.revMap || {};
+    DATA.revSet = v.revSet || {};
     DATA.comments = v.comments || {};
     DATA.chips = v.chips || {};
     DATA.phrases = v.phrases || [];
     renderAll();
     if (!document.getElementById("ovl5").hidden) dyRender();
-    if (CUR && !document.getElementById("ovl").hidden && !document.getElementById("mTabB").hidden) {
+    if (CUR && !document.getElementById("stuDetail").hidden && !document.getElementById("mTabB").hidden) {
       cmRenderMy();
       if (!document.getElementById("ovl4").hidden) ceRender();
     }
@@ -3104,6 +3648,15 @@
   document.getElementById("cmCopy").onclick = function () {
     copyText(document.getElementById("cmText"), document.getElementById("cmCopied"), "복사했습니다.");
   };
+  document.getElementById("cmCopyBoth").onclick = function () {
+    var a = (document.getElementById("cmText").value || "").trim();
+    var b = (document.getElementById("mMsg").value || "").trim();
+    var ta = document.getElementById("cmBoth");
+    ta.hidden = false;
+    ta.value = [a, b].filter(Boolean).join("\n\n———————————\n\n");
+    copyText(ta, document.getElementById("cmBothOk"), "복사했습니다.");
+    ta.hidden = true;
+  };
   document.getElementById("cmMyAdd").onclick = function () {
     var inp = document.getElementById("cmMyNew");
     var t = (inp.value || "").trim();
@@ -3127,6 +3680,52 @@
     ROOT.child("chips").set(null);
     toast("처음 상태로 되돌렸습니다.");
   };
+
+
+  /* ---- 매출 관리 · 버튼 연결 ---- */
+  document.getElementById("revPrev").onclick = function () {
+    revM--; if (revM < 1) { revM = 12; revY--; } drawRev();
+  };
+  document.getElementById("revNext").onclick = function () {
+    revM++; if (revM > 12) { revM = 1; revY++; } drawRev();
+  };
+  document.getElementById("revAddEtc").onclick = function () {
+    ROOT.child("rev/" + revKey() + "/etc").push({ name: "", cnt: "", unit: "", amount: "", pay: "계좌이체" });
+  };
+  document.getElementById("revAddOut").onclick = function () {
+    ROOT.child("rev/" + revKey() + "/out").push({ name: "", amount: "", memo: "" });
+  };
+  document.getElementById("revCopyPrev").onclick = function () {
+    var pm = revM - 1, py = revY; if (pm < 1) { pm = 12; py--; }
+    var prev = ((DATA.rev || {})[monthKey(py, pm)] || {}).out || {};
+    var keys = Object.keys(prev);
+    if (!keys.length) {
+      if (!confirm(pm + "월 지출이 비어 있습니다.\n\n기본 항목(월세·인터넷·정수기·관리비·핸드폰)을 넣을까요?")) return;
+      REV_OUT_DEFAULT.forEach(function (n) { ROOT.child("rev/" + revKey() + "/out").push({ name: n, amount: "", memo: "" }); });
+      toast("기본 항목을 넣었습니다."); return;
+    }
+    if (!confirm(pm + "월 지출 " + keys.length + "건을 " + revM + "월로 가져올까요?")) return;
+    keys.forEach(function (id) {
+      var r = prev[id];
+      ROOT.child("rev/" + revKey() + "/out").push({ name: r.name || "", amount: r.amount || "", memo: r.memo || "" });
+    });
+    toast(keys.length + "건 가져왔습니다.");
+  };
+  document.getElementById("revFilePay").onchange = function () {
+    if (this.files[0]) { revReadFile(this.files[0], "pay"); this.value = ""; }
+  };
+  document.getElementById("revFileBank").onchange = function () {
+    if (this.files[0]) { revReadFile(this.files[0], "bank"); this.value = ""; }
+  };
+  ["revFilePay", "revFileBank"].forEach(function (id) {
+    var lab = document.getElementById(id).parentNode;
+    lab.addEventListener("dragover", function (e) { e.preventDefault(); lab.style.borderColor = "var(--brand)"; });
+    lab.addEventListener("dragleave", function () { lab.style.borderColor = ""; });
+    lab.addEventListener("drop", function (e) {
+      e.preventDefault(); lab.style.borderColor = "";
+      if (e.dataTransfer.files[0]) revReadFile(e.dataTransfer.files[0], id === "revFilePay" ? "pay" : "bank");
+    });
+  });
 
   /* ===================== 시작 ===================== */
   (function init() {
