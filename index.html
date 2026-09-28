@@ -320,6 +320,88 @@
   .sec-t { font-size: 13px; font-weight: 700; color: var(--ink-2); margin-bottom: 9px; }
 
   /* 창 */
+  /* 그날 등원 고치기 */
+  .cal.big .cell .fix { position: absolute; top: 3px; right: 3px; width: 19px; height: 19px;
+    border-radius: 5px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-3);
+    font: inherit; font-size: 10px; line-height: 1; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; opacity: .45; padding: 0; }
+  .cal.big .cell:hover .fix, .cal.big .cell .fix:focus-visible { opacity: 1; border-color: var(--brand); color: var(--brand-ink); background: #fffbef; }
+  @media (max-width: 760px) { .cal.big .cell .fix { opacity: 1; } }
+  .cal.big .cell .dcnt { right: 25px; }
+  .ln.chg .lt { color: var(--warn); font-weight: 700; }
+  .ln.extra { background: #fffbef; outline: 1px solid #f2dfa4; }
+  .lflag { font-size: 9px; font-weight: 700; border-radius: 3px; padding: 0 3px; flex: none; }
+  .lflag.a { color: var(--ok); background: var(--ok-soft); }
+  .lflag.c { color: var(--warn); background: var(--warn-soft); }
+  .dy-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line-2); }
+  .dy-row:last-of-type { border-bottom: 0; }
+  .dy-row .nm { font-weight: 600; font-size: 13.5px; }
+  .dy-row select { margin-left: auto; font: inherit; font-size: 12.5px; padding: 4px 8px;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--surface); }
+  .dy-row select.on { border-color: var(--warn); color: var(--warn); font-weight: 700; background: var(--warn-soft); }
+  .dy-row .rm { font: inherit; font-size: 11.5px; cursor: pointer; border: 1px solid var(--line);
+    background: var(--surface); color: var(--bad); border-radius: 7px; padding: 4px 10px; }
+  .dy-row.mk { opacity: .8; }
+  .dy-add { display: flex; gap: 6px; margin-top: 12px; padding-top: 12px;
+    border-top: 1px dashed var(--line); flex-wrap: wrap; }
+  .dy-add select { flex: 1; min-width: 110px; font: inherit; font-size: 12.5px; padding: 6px 9px;
+    border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  .dy-none { font-size: 13px; color: var(--ink-3); padding: 10px 0; }
+  /* ===== 한 달 멘트 ===== */
+  .mtabs { display: flex; gap: 6px; padding: 12px 20px 0; flex-wrap: wrap; }
+  .mtab { font: inherit; font-size: 13px; font-weight: 700; padding: 7px 15px; cursor: pointer;
+    border: 1px solid var(--line); border-bottom: 0; border-radius: 9px 9px 0 0;
+    background: var(--surface-2); color: var(--ink-3); }
+  .mtab.on { background: var(--surface); color: var(--ink); box-shadow: inset 0 2px 0 var(--brand); }
+  .mtab:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .cm-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .cm-att { display: flex; gap: 5px; flex-wrap: wrap; }
+  .cm-att .pill { font-size: 12px; font-weight: 700; padding: 3px 11px; border-radius: 14px; }
+  .cm-att .p-ok { background: var(--ok-soft); color: var(--ok); }
+  .cm-att .p-warn { background: var(--warn-soft); color: var(--warn); }
+  .cm-att .p-bad { background: var(--bad-soft); color: var(--bad); }
+  .cm-att .p-mk { background: var(--slot-soft); color: var(--slot); }
+  .cm-att .p-idle { background: var(--idle-soft); color: var(--idle); }
+  .cm-cat { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+  .cm-cat-h { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surface-2);
+    font-size: 13px; font-weight: 700; cursor: pointer; }
+  .cm-cat-h .sml { font-size: 11px; font-weight: 500; color: var(--ink-3); }
+  .cm-cat-h .cnt { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--ink-3); }
+  .cm-cat-h .cnt.has { color: var(--ok); }
+  .cm-cat-b { padding: 10px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cm-col-t { font-size: 11.5px; font-weight: 800; margin-bottom: 6px; }
+  .cm-col-t.g { color: var(--ok); } .cm-col-t.b { color: var(--warn); }
+  .cm-chips { display: flex; gap: 5px; flex-wrap: wrap; }
+  .cm-chip { font: inherit; font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 15px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); cursor: pointer; text-align: left; }
+  .cm-chip.on-g { background: var(--ok-soft); border-color: #b9e2cc; color: var(--ok); font-weight: 700; }
+  .cm-chip.on-b { background: var(--warn-soft); border-color: #e8d49a; color: var(--warn); font-weight: 700; }
+  .cm-chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; }
+  .cm-tone { display: flex; gap: 6px; flex-wrap: wrap; }
+  .cm-tone .tn { font: inherit; font-size: 12.5px; font-weight: 700; padding: 6px 14px; border-radius: 15px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink-3); cursor: pointer; }
+  .cm-tone .tn.on { background: var(--brand-ink); border-color: var(--brand-ink); color: #fff; }
+  .cm-my { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
+  .cm-my .my { font-size: 12px; font-weight: 600; padding: 4px 9px 4px 11px; border-radius: 14px;
+    border: 1px dashed var(--line); background: var(--surface); color: var(--ink-2); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px; }
+  .cm-my .my b { font-weight: 600; }
+  .cm-my .my .del { color: var(--ink-3); font-size: 11px; }
+  .cm-my .my:hover { border-style: solid; border-color: var(--ink-3); }
+  /* 항목 고치기 */
+  .ce-cat { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+  .ce-h { padding: 8px 12px; background: var(--surface-2); font-size: 13px; font-weight: 700; }
+  .ce-side { padding: 10px 12px; border-top: 1px solid var(--line-2); }
+  .ce-side > .t { font-size: 11.5px; font-weight: 800; margin-bottom: 7px; }
+  .ce-side > .t.g { color: var(--ok); } .ce-side > .t.b { color: var(--warn); }
+  .ce-item { display: flex; gap: 6px; margin-bottom: 5px; align-items: center; }
+  .ce-item input { flex: 1; min-width: 0; font-size: 12.5px; padding: 5px 9px; }
+  .ce-item input.s { flex: 1.6; }
+  @media (max-width: 760px){ .ce-item { flex-wrap: wrap; } .ce-item input { flex: 1 1 100%; } }
+  .ce-item .rm { font: inherit; font-size: 12px; cursor: pointer; border: 1px solid var(--line);
+    background: var(--surface); color: var(--bad); border-radius: 7px; padding: 4px 9px; }
+  .ce-add { font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px dashed var(--line);
+    background: transparent; color: var(--ink-3); border-radius: 8px; padding: 5px 11px; margin-top: 3px; }
   .ovl { position: fixed; inset: 0; background: rgba(10,12,16,.5); display: grid; place-items: center; padding: 16px; z-index: 40; }
   .modal { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); width: min(760px,100%); max-height: 90vh; overflow: auto; padding: 22px; }
   .modal.narrow { width: min(520px,100%); }
@@ -732,6 +814,11 @@
         <button type="button" class="btn" id="mClose">닫기</button>
       </span>
     </div>
+    <div class="mtabs">
+      <button type="button" class="mtab on" id="mTabBtnA">등원 · 수업료</button>
+      <button type="button" class="mtab" id="mTabBtnB">📝 한 달 멘트</button>
+    </div>
+    <div id="mTabA">
 
     <div class="sec">
       <div class="sec-t">수업 요일 · 시간 (30분 단위)</div>
@@ -768,6 +855,100 @@
       <div class="copyrow">
         <button type="button" class="btn" id="mCopy">글 복사하기</button>
         <span class="copyok" id="mCopied" hidden>복사했습니다.</span>
+      </div>
+    </div>
+    </div>
+
+    <div id="mTabB" hidden>
+      <div class="sec">
+        <div class="cm-row">
+          <select id="cmMonth"></select>
+          <span class="cm-att" id="cmAtt"></span>
+          <span class="hint" style="margin-left:auto">출결은 프로그램이 알아서 세어 넣습니다</span>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">체크하기
+          <span class="hint">잘한 점 · 개선할 점을 눌러서 고르세요 · 2~4개면 충분합니다</span>
+          <button type="button" class="btn sm" id="cmEditChips" style="margin-left:auto">✏️ 항목 고치기</button>
+        </div>
+        <div id="cmCats"></div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">한마디 더 <span class="hint">있으면 적으세요 · 없으면 비워두셔도 됩니다</span></div>
+        <textarea id="cmMemo" rows="2" style="min-height:0"></textarea>
+        <div class="cm-my" id="cmMyList"></div>
+        <div class="copyrow" style="margin-top:7px">
+          <input type="text" id="cmMyNew" placeholder="자주 쓰는 문구 추가 (예: 다음 달 시험 대비 시작합니다)" style="flex:1;min-width:0">
+          <button type="button" class="btn sm" id="cmMyAdd">＋ 담기</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">말투</div>
+        <div class="cm-tone" id="cmTone">
+          <button type="button" class="tn on" data-t="warm">따뜻하게</button>
+          <button type="button" class="tn" data-t="plain">담백하게</button>
+          <button type="button" class="tn" data-t="detail">꼼꼼하게</button>
+        </div>
+      </div>
+
+      <div class="sec">
+        <div class="sec-t">만들어진 멘트 <span class="hint">고쳐 쓰셔도 됩니다 · 고친 그대로 저장됩니다</span></div>
+        <textarea id="cmText" style="min-height:230px"></textarea>
+        <div class="copyrow">
+          <button type="button" class="btn brand" id="cmCopy">📋 멘트 복사하기</button>
+          <button type="button" class="btn sm" id="cmRemake">↻ 다시 만들기</button>
+          <span class="copyok" id="cmCopied" hidden>복사했습니다.</span>
+          <span class="hint" style="margin-left:auto">복사해서 카톡에 붙여넣으세요</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 항목 고치기 -->
+<div class="ovl" id="ovl4" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ceTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="ceTitle">체크 항목 고치기</h2>
+        <div class="sub">칸이 세 개입니다 — <b>짧은 말</b>은 버튼에 보이고, <b>끝맺는 문장</b>은 그 문장으로 끝날 때,
+          <b>이어 쓰는 말</b>은 뒤에 다른 말이 더 붙을 때 씁니다. 이어 쓰는 말은 비워두셔도 됩니다.</div>
+      </div>
+      <span class="x" style="display:flex;gap:8px">
+        <button type="button" class="btn" id="ceReset">처음 상태로</button>
+        <button type="button" class="btn" id="ceClose">닫기</button>
+      </span>
+    </div>
+    <div class="sec"><div id="ceBody"></div></div>
+  </div>
+</div>
+
+
+<!-- 그날 등원 고치기 -->
+<div class="ovl" id="ovl5" hidden>
+  <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="dyTitle">
+    <div class="modal-head">
+      <div>
+        <h2 id="dyTitle">그날 등원</h2>
+        <div class="sub" id="dySub"></div>
+      </div>
+      <button type="button" class="btn x" id="dyClose">닫기</button>
+    </div>
+    <div class="sec">
+      <div id="dyList"></div>
+      <div class="dy-add">
+        <select id="dyWho"></select>
+        <select id="dyTime"></select>
+        <button type="button" class="btn brand" id="dyAdd">＋ 이날 추가</button>
+      </div>
+      <div class="hint" style="margin-top:10px;line-height:1.8">
+        · 시간을 바꾸면 <b>그날만</b> 바뀝니다. 다음 주 같은 요일은 원래 시간 그대로예요.<br>
+        · <b>빼기</b>는 그날만 안 오는 것으로 처리합니다. 학생 정보는 그대로 있습니다.<br>
+        · 시간 칸에서 <b>원래대로</b>를 고르면 요일에 정해 둔 시간으로 돌아갑니다.
       </div>
     </div>
   </div>
@@ -874,7 +1055,7 @@
     return e;
   }
 
-  var DATA = { students: {}, attendance: {}, events: {}, plans: {}, makeups: {}, settings: { units: {} } };
+  var DATA = { students: {}, attendance: {}, events: {}, plans: {}, makeups: {}, settings: { units: {} }, comments: {}, chips: {}, phrases: [], times: {} };
 
   function pad(n) { return (n < 10 ? "0" : "") + n; }
   function ymd(y, m, d) { return y + "-" + pad(m) + "-" + pad(d); }
@@ -971,12 +1152,27 @@
     if (plan) return plan.indexOf(dateKey) !== -1;
     return !!(s.days && s.days[d.getDay()]);
   }
-  /* 그 날 수업 시간 — 요일 시간이 없으면 그 학생이 쓰는 시간 중 하나 */
-  function timeOn(s, dateKey) {
+  /* 그 날만 따로 정한 시간 (대시보드에서 고친 것) */
+  function timeFixed(sid, dateKey) { return (DATA.times[dateKey] || {})[sid] || ""; }
+  /* 요일에 정해 둔 원래 시간 */
+  function timeBase(s, dateKey) {
     var wd = parseKey(dateKey).getDay();
     if (s.days && s.days[wd]) return s.days[wd];
     var ks = Object.keys(s.days || {});
     return ks.length ? s.days[ks[0]] : "";
+  }
+  /* 그 날 수업 시간 — 따로 정한 게 있으면 그게 먼저 */
+  function timeOn(s, dateKey) {
+    return timeFixed(s.id, dateKey) || timeBase(s, dateKey);
+  }
+  /* 그날만 시간 바꾸기 — 빈 값이면 원래대로 */
+  function setTimeDay(sid, dateKey, t) {
+    ROOT.child("times/" + dateKey + "/" + sid).set(t || null);
+  }
+  /* 원래 그 요일에 오는 날이 아닌데 끼워 넣은 날인가 */
+  function isExtraDay(s, dateKey) {
+    var wd = parseKey(dateKey).getDay();
+    return attendsOn(s, dateKey) && !(s.days && s.days[wd]);
   }
   /* 그 날 하루만 켜거나 끄기 — 그 달 계획을 만들어 두고 고칩니다 */
   function setPlanDay(sid, dateKey, on) {
@@ -1065,6 +1261,15 @@
         if (e.date === key) cell.appendChild(el("span", "ev " + e.kind, e.text));
       });
       // 그날 오는 학생 (보강 포함) — 계획에서 뺀 학생도 흐리게 같이 보여줌
+      // 그날 등원 고치기 단추 — 학생이 없는 날에도 넣을 수 있게 먼저 붙인다
+      if (!isRest(key)) {
+        var fx = el("button", "fix", "✎");
+        fx.type = "button";
+        fx.title = "이날 등원·시간 고치기";
+        fx.addEventListener("click", function (ev) { ev.stopPropagation(); dyOpen(key); });
+        cell.appendChild(fx);
+      }
+
       var list = comingOn(key, true);
       if (!list.length) return;
 
@@ -1075,7 +1280,10 @@
       list.forEach(function (x) {
         var s = x.s;
         var st = att(key, s.id);
-        var b = el("button", "ln" + (st ? " " + st : "") + (x.makeup ? " mkline" : "") + (x.off ? " offline" : ""));
+        var fixedT = !x.makeup && timeFixed(s.id, key) && timeFixed(s.id, key) !== timeBase(s, key);
+        var extraD = !x.makeup && !x.off && isExtraDay(s, key);
+        var b = el("button", "ln" + (st ? " " + st : "") + (x.makeup ? " mkline" : "") +
+          (x.off ? " offline" : "") + (fixedT ? " chg" : "") + (extraD ? " extra" : ""));
         b.type = "button";
         b.title = s.name + " " + s.grade + " · " + x.time + (x.makeup ? " · 보강" : "") +
           (x.off ? " · 이날 제외됨 (눌러서 되돌리기)"
@@ -1085,6 +1293,8 @@
         b.appendChild(g);
         b.appendChild(el("span", "lnm", s.name));
         if (x.makeup) b.appendChild(el("span", "mkflag", "보강"));
+        else if (extraD) b.appendChild(el("span", "lflag a", "추가"));
+        else if (fixedT) b.appendChild(el("span", "lflag c", "변경"));
         b.appendChild(el("span", "lt", x.time));
         b.addEventListener("click", function () {
           // 한 번 제외 → 두 번 지각 → 세 번 결석 → 네 번 원래대로
@@ -1796,6 +2006,561 @@
     ROOT.child("plans/" + monthKey(nextY, nextM) + "/" + s.id).set(list.length ? list : [PLAN_EMPTY]);
   }
 
+
+
+  /* ===================== 그날 등원 고치기 ===================== */
+  var dyKey = "";
+
+  function dyOpen(key) {
+    dyKey = key;
+    var d = parseKey(key);
+    document.getElementById("dyTitle").textContent =
+      (d.getMonth() + 1) + "월 " + d.getDate() + "일 (" + DOW[d.getDay()] + ")";
+    dyRender();
+    document.getElementById("ovl5").hidden = false;
+  }
+
+  function dyTimeSelect(s, key, cur) {
+    var base = timeBase(s, key), fixed = timeFixed(s.id, key);
+    var sel = document.createElement("select");
+    var o0 = document.createElement("option");
+    o0.value = ""; o0.textContent = base ? "원래대로 (" + base + ")" : "시간 없음";
+    sel.appendChild(o0);
+    TIMES.forEach(function (t) {
+      var o = document.createElement("option");
+      o.value = t; o.textContent = t;
+      sel.appendChild(o);
+    });
+    sel.value = fixed || "";
+    if (fixed && fixed !== base) sel.classList.add("on");
+    sel.addEventListener("change", function () {
+      setTimeDay(s.id, key, sel.value);
+      toast(s.name + " " + (sel.value ? sel.value + " 로 바꿨습니다." : "원래 시간으로 되돌렸습니다."));
+    });
+    return sel;
+  }
+
+  function dyRender() {
+    var key = dyKey;
+    var host = document.getElementById("dyList");
+    host.textContent = "";
+    var list = comingOn(key, false);
+    document.getElementById("dySub").textContent =
+      isRest(key) ? "휴무일입니다" : "이날 오는 학생 " + list.length + "명";
+
+    if (!list.length) host.appendChild(el("div", "dy-none", "이날 오기로 된 학생이 없습니다. 아래에서 넣어 주세요."));
+
+    list.forEach(function (x) {
+      var s = x.s;
+      var row = el("div", "dy-row" + (x.makeup ? " mk" : ""));
+      var g = gradeChip(s.grade); g.className = "lgr";
+      row.appendChild(g);
+      row.appendChild(el("span", "nm", s.name));
+      if (x.makeup) row.appendChild(el("span", "lflag c", "보강"));
+      else if (isExtraDay(s, key)) row.appendChild(el("span", "lflag a", "추가"));
+      if (x.makeup) {
+        var t = el("span", "", x.time || "-");
+        t.style.marginLeft = "auto"; t.style.fontSize = "12.5px"; t.style.color = "var(--ink-3)";
+        row.appendChild(t);
+        var note = el("span", "", "보강은 출결 화면에서");
+        note.style.fontSize = "11px"; note.style.color = "var(--ink-3)";
+        row.appendChild(note);
+      } else {
+        row.appendChild(dyTimeSelect(s, key, x.time));
+        var rm = el("button", "rm", "빼기"); rm.type = "button";
+        rm.onclick = function () {
+          setPlanDay(s.id, key, false);
+          setTimeDay(s.id, key, "");
+          toast(s.name + " 학생을 이날에서 뺐습니다.");
+        };
+        row.appendChild(rm);
+      }
+      host.appendChild(row);
+    });
+
+    /* 넣을 수 있는 학생 */
+    var here = {};
+    list.forEach(function (x) { here[x.s.id] = true; });
+    var who = document.getElementById("dyWho");
+    who.innerHTML = '<option value="">학생 고르기…</option>' +
+      activeStudents()
+        .filter(function (s) { return !here[s.id]; })
+        .sort(function (a, b) { return (gradeIdx(a.grade) - gradeIdx(b.grade)) || a.name.localeCompare(b.name, "ko"); })
+        .map(function (s) {
+          return '<option value="' + s.id + '">' + s.name + " (" + s.grade + ")</option>";
+        }).join("");
+    var tsel = document.getElementById("dyTime");
+    if (!tsel.options.length) {
+      tsel.innerHTML = '<option value="">시간</option>' +
+        TIMES.map(function (t) { return '<option value="' + t + '">' + t + "</option>"; }).join("");
+    }
+  }
+
+  /* ===================== 한 달 멘트 ===================== */
+  /* 저장 위치
+     comments/{학생id}/{YYYY-MM} = { picks:[{c,t,l,s}], memo, tone, text, seed }
+     chips/{묶음키}              = { g:[[짧은말,문장],...], b:[...] }   ← 고쳤을 때만 저장
+     phrases                     = [ "자주 쓰는 문구", ... ]                              */
+
+  var CM_CATS = [
+    { k: "attitude", name: "수업 태도", sub: "집중 · 참여 · 수업 습관" },
+    { k: "math",     name: "수학 학습", sub: "개념 이해 · 문제 풀이 · 계산" },
+    { k: "homework", name: "과제 · 복습", sub: "과제 수행 · 오답 · 복습 습관" },
+    { k: "exam",     name: "시험 · 성적", sub: "시험 대비 · 결과" },
+    { k: "habit",    name: "학습 습관 · 자기주도", sub: "계획 · 질문 · 필기" },
+    { k: "growth",   name: "성장 · 변화", sub: "지난달과 견줘서" },
+    { k: "motive",   name: "흥미 · 동기", sub: "태도의 뿌리" }
+  ];
+
+  var CM_DEFAULT = {
+    attitude: {
+      g: [
+        ["설명을 집중해서 들음", "설명을 집중해서 듣습니다", "설명을 집중해서 듣고"],
+        ["끝까지 생각함", "어려운 문제도 끝까지 생각해 봅니다", "어려운 문제도 끝까지 생각해 보고"],
+        ["피드백을 바로 반영함", "고쳐 줄 부분을 바로 반영합니다", "고쳐 줄 부분을 바로 반영하고"],
+        ["틀린 문제를 다시 시도함", "틀린 문제를 다시 풀어 봅니다", "틀린 문제를 다시 풀어 보고"],
+        ["모르는 부분을 정확히 질문함", "모르는 부분을 정확히 짚어 질문합니다", "모르는 부분을 정확히 짚어 묻고"],
+        ["정해진 시간 동안 집중함", "정해진 시간 동안 집중을 잘 유지합니다", "정해진 시간 동안 집중을 잘 유지하고"],
+        ["적극 참여", "수업에 적극적으로 참여합니다", "수업에 적극적으로 참여하고"],
+        ["컨디션을 스스로 조절함", "졸리거나 힘든 날에도 스스로 컨디션을 조절합니다", "힘든 날에도 스스로 컨디션을 조절하고"],
+        ["흐트러진 집중을 스스로 회복함", "집중이 흐트러져도 스스로 다시 잡습니다", "집중이 흐트러져도 스스로 다시 잡고"]
+      ],
+      b: [
+        ["졸음", "수업 중 졸려 하는 날이 있었습니다", "수업 중 졸려 하는 날이 있었고"],
+        ["산만함", "주변에 주의를 뺏기는 때가 있었습니다", "주변에 주의를 뺏기는 때가 있었고"],
+        ["틀리는 것을 두려워함", "틀리는 것을 걱정해 시도를 망설일 때가 있습니다", "틀리는 것을 걱정해 망설일 때가 있고"],
+        ["생각하지 않고 바로 질문함", "조금 더 생각해 보기 전에 먼저 묻는 편입니다", "조금 더 생각해 보기 전에 먼저 묻고"],
+        ["설명을 들어도 적용하지 않음", "설명을 들은 내용을 문제에 옮기는 연습이 더 필요합니다", "설명을 문제에 옮기는 연습이 더 필요하고"],
+        ["집중 유지 시간이 짧음", "집중을 오래 유지하는 것은 조금 더 연습이 필요해 보입니다", "집중을 오래 유지하는 연습이 조금 더 필요하고"],
+        ["문제를 대충 읽고 시작함", "문제를 끝까지 읽고 시작하는 습관이 필요합니다", "문제를 끝까지 읽고 시작하는 습관이 필요하고"],
+        ["틀린 문제를 다시 안 봄", "틀린 문제를 다시 보는 습관이 더 필요합니다", "틀린 문제를 다시 보는 습관이 더 필요하고"]
+      ]
+    },
+    math: {
+      g: [
+        ["개념을 자기 말로 설명함", "배운 개념을 자기 말로 설명할 수 있습니다", "배운 개념을 자기 말로 설명하고"],
+        ["개념의 의미를 생각하며 풂", "개념의 의미를 생각하며 문제를 푸는 점이 좋습니다", "개념의 의미를 생각하며 문제를 풀고"],
+        ["조건을 꼼꼼히 확인함", "문제의 조건을 꼼꼼히 확인합니다", "문제의 조건을 꼼꼼히 확인하고"],
+        ["조건을 그림·식으로 표현함", "문제의 조건을 그림이나 식으로 옮겨 정리합니다", "조건을 그림이나 식으로 옮겨 정리하고"],
+        ["스스로 풀이 시작", "도움 없이 스스로 풀이를 시작합니다", "도움 없이 스스로 풀이를 시작하고"],
+        ["풀이 근거를 설명할 수 있음", "왜 그렇게 풀었는지 근거를 설명할 수 있습니다", "왜 그렇게 풀었는지 설명할 수 있고"],
+        ["풀이 과정을 빠짐없이 씀", "풀이 과정을 빠짐없이 적습니다", "풀이 과정을 빠짐없이 적고"],
+        ["답을 스스로 검산", "답을 낸 뒤 스스로 검산합니다", "답을 낸 뒤 스스로 검산하고"],
+        ["오답 원인을 스스로 찾음", "틀린 까닭을 스스로 찾아냅니다", "틀린 까닭을 스스로 찾아내고"],
+        ["새 문제에 개념을 적용함", "배운 개념을 처음 보는 문제에도 적용합니다", "배운 개념을 처음 보는 문제에도 적용하고"]
+      ],
+      b: [
+        ["개념 이해 부족", "개념을 조금 더 다지고 갈 필요가 있습니다", "개념을 조금 더 다질 필요가 있고"],
+        ["숫자를 짜맞춰 풀이함", "개념보다 숫자를 맞춰 보는 방식으로 풀 때가 있습니다", "개념보다 숫자를 맞춰 보며 풀 때가 있고"],
+        ["문제 뜻을 충분히 이해 못 함", "문제의 뜻을 충분히 이해한 뒤 시작하면 좋겠습니다", "문제의 뜻을 충분히 이해한 뒤 시작하면 좋겠고"],
+        ["문제 조건 누락", "문제의 조건을 빠뜨리는 경우가 있습니다", "문제의 조건을 빠뜨리는 경우가 있고"],
+        ["공식만 외워서 적용함", "공식을 외워 쓰기보다 뜻을 알고 쓰는 연습이 필요합니다", "뜻을 알고 공식을 쓰는 연습이 필요하고"],
+        ["풀이 시작에 도움 필요", "풀이를 시작할 때 약간의 도움이 필요합니다", "풀이를 시작할 때 약간의 도움이 필요하고"],
+        ["중간 풀이 생략", "중간 과정을 건너뛰고 답만 적을 때가 있습니다", "중간 과정을 건너뛸 때가 있고"],
+        ["같은 유형 오답 반복", "같은 유형에서 같은 실수가 반복됩니다", "같은 유형에서 실수가 반복되고"],
+        ["계산 실수(부호·괄호)", "부호나 괄호에서 계산 실수가 나옵니다", "부호나 괄호에서 계산 실수가 나오고"],
+        ["검산 습관 부족", "검산하는 습관을 들이면 점수가 더 오를 것입니다", "검산하는 습관이 아직 부족하고"],
+        ["풀이 속도가 느림", "정확도는 좋으나 속도를 조금 더 올리면 좋겠습니다", "속도를 조금 더 올리면 좋겠고"]
+      ]
+    },
+    homework: {
+      g: [
+        ["과제를 빠짐없이 해옴", "과제를 빠짐없이 해 옵니다", "과제를 빠짐없이 해 오고"],
+        ["오답을 스스로 정리함", "틀린 문제를 스스로 정리해 옵니다", "틀린 문제를 스스로 정리해 오고"],
+        ["복습을 꾸준히 함", "배운 내용을 꾸준히 복습합니다", "배운 내용을 꾸준히 복습하고"],
+        ["기한을 잘 지킴", "과제 기한을 잘 지킵니다", "과제 기한을 잘 지키고"],
+        ["과제의 양이 넉넉함", "정해진 양보다 더 풀어 오는 날도 있습니다", "정해진 양보다 더 풀어 오기도 하고"]
+      ],
+      b: [
+        ["과제 미이행", "과제를 해 오지 못한 날이 있었습니다", "과제를 해 오지 못한 날이 있었고"],
+        ["과제를 대충 해옴", "과제를 서둘러 마친 흔적이 보일 때가 있습니다", "과제를 서둘러 마친 흔적이 보일 때가 있고"],
+        ["오답 정리 부족", "틀린 문제를 정리하는 부분이 조금 아쉽습니다", "틀린 문제를 정리하는 부분이 조금 아쉽고"],
+        ["복습이 거의 없음", "수업 뒤 복습이 거의 없어 다음 시간에 잊는 경우가 있습니다", "수업 뒤 복습이 거의 없고"],
+        ["기한을 넘김", "과제 기한을 넘기는 때가 있습니다", "과제 기한을 넘기는 때가 있고"]
+      ]
+    },
+    exam: {
+      g: [
+        ["시험 대비를 미리 시작함", "시험 대비를 미리 시작했습니다", "시험 대비를 미리 시작했고"],
+        ["범위를 기한 안에 끝냄", "시험 범위를 기한 안에 끝냈습니다", "시험 범위를 기한 안에 끝냈고"],
+        ["실수가 줄어듦", "아는 문제에서 나오던 실수가 줄었습니다", "아는 문제에서 나오던 실수가 줄었고"],
+        ["서술형 답안이 좋아짐", "서술형 답안 쓰는 솜씨가 좋아졌습니다", "서술형 답안 쓰는 솜씨가 좋아졌고"],
+        ["목표 점수를 향해 노력함", "목표한 점수를 향해 꾸준히 준비하고 있습니다", "목표한 점수를 향해 꾸준히 준비하고"]
+      ],
+      b: [
+        ["시험 대비 시작이 늦음", "시험 대비를 조금 더 일찍 시작하면 좋겠습니다", "시험 대비를 조금 더 일찍 시작하면 좋겠고"],
+        ["범위를 다 못 끝냄", "시험 범위를 끝까지 마치지 못했습니다", "시험 범위를 끝까지 마치지 못했고"],
+        ["아는 문제에서 실수", "아는 문제에서 실수가 나와 점수가 아쉬웠습니다", "아는 문제에서 실수가 나오고"],
+        ["서술형 답안 부족", "서술형 답안을 쓰는 연습이 더 필요합니다", "서술형 답안 쓰는 연습이 더 필요하고"],
+        ["시간 관리가 아쉬움", "시험 시간 배분을 연습하면 좋겠습니다", "시험 시간 배분을 연습하면 좋겠고"]
+      ]
+    },
+    habit: {
+      g: [
+        ["스스로 계획을 세움", "할 일을 스스로 계획해서 옵니다", "할 일을 스스로 계획해서 오고"],
+        ["모르는 것을 표시해 옴", "모르는 것을 표시해 두었다가 질문합니다", "모르는 것을 표시해 두었다가 묻고"],
+        ["질문이 구체적임", "질문이 구체적이어서 수업이 빠르게 나갑니다", "질문이 구체적이고"],
+        ["필기가 정리되어 있음", "필기가 잘 정리되어 있습니다", "필기가 잘 정리되어 있고"],
+        ["공부 시간을 스스로 확보함", "공부할 시간을 스스로 만들어 냅니다", "공부할 시간을 스스로 만들어 내고"]
+      ],
+      b: [
+        ["학습 계획이 부족함", "공부 계획을 세우는 연습이 더 필요합니다", "공부 계획을 세우는 연습이 더 필요하고"],
+        ["질문을 잘 안 함", "모르는 것을 물어보는 데 아직 망설임이 있습니다", "모르는 것을 묻는 데 아직 망설임이 있고"],
+        ["필기가 부족함", "필기를 조금 더 챙기면 복습이 쉬워집니다", "필기를 조금 더 챙기면 좋겠고"],
+        ["시작하는 데 시간이 걸림", "앉아서 시작하기까지 시간이 걸립니다", "앉아서 시작하기까지 시간이 걸리고"],
+        ["휴대폰에 주의를 뺏김", "휴대폰에 주의를 뺏기는 때가 있습니다", "휴대폰에 주의를 뺏기는 때가 있고"]
+      ]
+    },
+    growth: {
+      g: [
+        ["지난달보다 집중이 좋아짐", "지난달보다 집중하는 시간이 눈에 띄게 늘었습니다", "지난달보다 집중하는 시간이 늘었고"],
+        ["풀이가 정확해짐", "풀이 과정이 한결 정확해졌습니다", "풀이 과정이 한결 정확해졌고"],
+        ["계산 실수가 줄어듦", "계산 실수가 뚜렷하게 줄었습니다", "계산 실수가 뚜렷하게 줄었고"],
+        ["질문이 늘었음", "먼저 묻는 일이 많아졌습니다", "먼저 묻는 일이 많아졌고"],
+        ["자신감이 생김", "수학을 대하는 자신감이 생겼습니다", "수학을 대하는 자신감이 생겼고"],
+        ["푸는 속도가 빨라짐", "문제 푸는 속도가 빨라졌습니다", "문제 푸는 속도가 빨라졌고"]
+      ],
+      b: [
+        ["기복이 있음", "날에 따라 기복이 있는 편입니다", "날에 따라 기복이 있고"],
+        ["최근 컨디션이 떨어짐", "최근 컨디션이 조금 떨어져 보입니다", "최근 컨디션이 조금 떨어져 보이고"],
+        ["과제 이행이 줄어듦", "지난달보다 과제를 챙기는 정도가 줄었습니다", "지난달보다 과제를 챙기는 정도가 줄었고"]
+      ]
+    },
+    motive: {
+      g: [
+        ["어려운 문제에 도전함", "어려운 문제에도 먼저 손을 댑니다", "어려운 문제에도 먼저 손을 대고"],
+        ["수학 부담이 줄어듦", "수학에 대한 부담을 덜 느끼는 모습입니다", "수학에 대한 부담을 덜 느끼고"],
+        ["친구에게 설명해 봄", "배운 것을 친구에게 설명해 보기도 합니다", "배운 것을 친구에게 설명해 보기도 하고"],
+        ["새 단원에 흥미를 보임", "새로 들어간 단원에 흥미를 보입니다", "새로 들어간 단원에 흥미를 보이고"]
+      ],
+      b: [
+        ["어려우면 쉽게 포기함", "조금 어려워지면 빨리 포기하는 편입니다", "조금 어려워지면 빨리 포기하는 편이고"],
+        ["수학에 부담을 표현함", "수학이 어렵다는 말을 자주 합니다", "수학이 어렵다는 말을 자주 하고"],
+        ["목표가 뚜렷하지 않음", "뚜렷한 목표가 생기면 더 힘을 낼 수 있을 것 같습니다", "뚜렷한 목표가 아직 없고"]
+      ]
+    },
+  };
+
+  var cmMonthKey = "", cmOpenCat = {}, cmSeed = 0, cmTone = "warm", cmPicks = [], cmDirty = false;
+
+  function cmChips(catKey) {
+    var over = (DATA.chips || {})[catKey];
+    if (over && (over.g || over.b)) return { g: over.g || [], b: over.b || [] };
+    return { g: CM_DEFAULT[catKey].g.slice(), b: CM_DEFAULT[catKey].b.slice() };
+  }
+  function cmPhrases() { return (DATA.phrases || []).slice(); }
+  function cmSaved(sid, mk) { return ((DATA.comments || {})[sid] || {})[mk] || null; }
+  function cmHasPick(c, t, l) {
+    for (var i = 0; i < cmPicks.length; i++) if (cmPicks[i].c === c && cmPicks[i].t === t && cmPicks[i].l === l) return i;
+    return -1;
+  }
+  /* 성 빼고 이름만 — 김예윤 → 예윤 */
+  function cmFirstName(full) {
+    var n = String(full || "").replace(/\s/g, "");
+    return n.length >= 3 ? n.slice(1) : n;
+  }
+  /* 예윤 → 예윤이는 / 현아 → 현아는 */
+  function cmName(full, kind) {
+    var n = cmFirstName(full);
+    var c = n.charCodeAt(n.length - 1);
+    var has = (c >= 0xac00 && c <= 0xd7a3) ? (c - 0xac00) % 28 !== 0 : true;
+    if (kind === "ga") return n + (has ? "이가" : "가");
+    return n + (has ? "이는" : "는");
+  }
+  /* 은/는, 이/가 */
+  function josa(w, pair) {
+    var c = String(w || "").charCodeAt(String(w).length - 1);
+    var has = c >= 0xac00 && c <= 0xd7a3 ? (c - 0xac00) % 28 !== 0 : true;
+    return w + (has ? pair.charAt(0) : pair.charAt(1));
+  }
+  function cmMonthList() {
+    var out = [], d = new Date(NOW.getFullYear(), NOW.getMonth(), 1);
+    for (var i = 0; i < 12; i++) {
+      out.push(monthKey(d.getFullYear(), d.getMonth() + 1));
+      d.setMonth(d.getMonth() - 1);
+    }
+    return out;
+  }
+  /* 그 달 출결 세기 */
+  function cmCount(s, mk) {
+    var p = mk.split("-"), y = +p[0], m = +p[1];
+    var last = new Date(y, m, 0).getDate();
+    var r = { plan: 0, ok: 0, warn: 0, bad: 0, none: 0, makeup: 0 };
+    for (var d = 1; d <= last; d++) {
+      var key = ymd(y, m, d);
+      if (!attendsOn(s, key)) continue;
+      r.plan++;
+      var st = att(key, s.id);
+      if (st === "ok") r.ok++;
+      else if (st === "warn") { r.warn++; r.ok++; }
+      else if (st === "bad") { r.bad++; if (makeupOf(key, s.id)) r.makeup++; }
+      else r.none++;
+    }
+    return r;
+  }
+  function cmAttHtml(r) {
+    function pill(cls, t, n) { return n ? '<span class="pill ' + cls + '">' + t + " " + n + "</span>" : ""; }
+    return pill("p-ok", "출석", r.ok) + pill("p-warn", "지각", r.warn) +
+           pill("p-bad", "결석", r.bad) + pill("p-mk", "보강", r.makeup) +
+           (r.none ? '<span class="pill p-idle">미체크 ' + r.none + "</span>" : "");
+  }
+
+  /* ---- 화면 그리기 ---- */
+  function cmRenderCats() {
+    var host = document.getElementById("cmCats");
+    host.innerHTML = "";
+    CM_CATS.forEach(function (cat) {
+      var set = cmChips(cat.k);
+      var n = cmPicks.filter(function (p) { return p.c === cat.k; }).length;
+      var box = el("div", "cm-cat");
+      var h = el("div", "cm-cat-h");
+      h.innerHTML = (cmOpenCat[cat.k] ? "▾ " : "▸ ") + cat.name +
+        ' <span class="sml">' + cat.sub + "</span>" +
+        '<span class="cnt' + (n ? " has" : "") + '">' + n + "개</span>";
+      h.onclick = function () { cmOpenCat[cat.k] = !cmOpenCat[cat.k]; cmRenderCats(); };
+      box.appendChild(h);
+      if (cmOpenCat[cat.k]) {
+        var b = el("div", "cm-cat-b");
+        [["g", "잘한 점"], ["b", "개선할 점"]].forEach(function (side) {
+          var col = el("div");
+          col.appendChild(el("div", "cm-col-t " + side[0], side[1]));
+          var wrap = el("div", "cm-chips");
+          (set[side[0]] || []).forEach(function (pair) {
+            var lab = pair[0], sent = pair[1] || pair[0];
+            var on = cmHasPick(cat.k, side[0], lab) !== -1;
+            var btn = el("button", "cm-chip" + (on ? (side[0] === "g" ? " on-g" : " on-b") : ""), lab);
+            btn.type = "button";
+            btn.title = sent;
+            btn.onclick = function () {
+              var i = cmHasPick(cat.k, side[0], lab);
+              if (i === -1) cmPicks.push({ c: cat.k, t: side[0], l: lab, s: sent, j: pair[2] || "" });
+              else cmPicks.splice(i, 1);
+              cmDirty = true;
+              cmRenderCats(); cmMake(false); cmSave();
+            };
+            wrap.appendChild(btn);
+          });
+          col.appendChild(wrap);
+          b.appendChild(col);
+        });
+        box.appendChild(b);
+      }
+      host.appendChild(box);
+    });
+  }
+
+  function cmRenderMy() {
+    var host = document.getElementById("cmMyList");
+    host.innerHTML = "";
+    cmPhrases().forEach(function (t, i) {
+      var b = el("span", "my");
+      b.appendChild(el("b", "", t));
+      var x = el("span", "del", "✕");
+      x.onclick = function (e) {
+        e.stopPropagation();
+        if (!confirm("이 문구를 지울까요?\n\n" + t)) return;
+        var list = cmPhrases(); list.splice(i, 1);
+        ROOT.child("phrases").set(list.length ? list : null);
+      };
+      b.appendChild(x);
+      b.onclick = function () {
+        var ta = document.getElementById("cmMemo");
+        ta.value = (ta.value ? ta.value.replace(/\s*$/, "") + " " : "") + t;
+        cmDirty = true; cmMake(false); cmSave();
+      };
+      host.appendChild(b);
+    });
+  }
+
+  /* ---- 멘트 만들기 ---- */
+  var cmPickN = 0;
+  function cmPick(arr) {
+    cmPickN++;
+    var x = Math.sin(cmSeed * 12.9898 + cmPickN * 78.233) * 43758.5453;
+    return arr[Math.floor(Math.abs(x - Math.floor(x)) * arr.length) % arr.length];
+  }
+  function cmMake(newSeed) {
+    if (!CUR) return;
+    if (newSeed) cmSeed = Math.floor(Math.random() * 100000);
+    cmPickN = 0;
+    var s = CUR, mk = cmMonthKey, p = mk.split("-"), M = +p[1];
+    var r = cmCount(s, mk);
+    var full = s.name || "", nm = cmName(full), nmga = cmName(full, "ga");
+    var goods = cmPicks.filter(function (x) { return x.t === "g"; });
+    var bads = cmPicks.filter(function (x) { return x.t === "b"; });
+    var memo = (document.getElementById("cmMemo").value || "").trim();
+    var P = [];
+
+    /* 문장 잇기 — 앞의 것은 '이어 쓰는 말', 마지막은 '끝맺는 문장' */
+    function weave(list, head) {
+      var out = [], buf = [];
+      list.forEach(function (x, i) {
+        var last = i === list.length - 1;
+        var link = x.j || "";
+        // 한 문장에 둘까지만 잇는다 — 셋 넘게 이으면 읽기 힘들어서
+        if (!last && link && buf.length < 1) { buf.push(link); return; }
+        var sent = x.s;
+        if (buf.length) { sent = buf.join(", ") + ", " + sent; buf = []; }
+        out.push(sent);
+      });
+      if (buf.length) out.push(buf.join(", ").replace(/고$/, "습니다"));
+      out = out.map(function (t) { return /[.!?]$/.test(t) ? t : t + "."; });
+      if (head && out.length) out[0] = head + " " + out[0];
+      return out;
+    }
+
+    /* 1. 인사 */
+    P.push(cmPick({
+      warm: ["안녕하세요, " + full + " 학생 " + M + "월 수업 안내드립니다.",
+             "안녕하세요. " + M + "월 한 달 동안 " + nmga + " 어떻게 지냈는지 전해 드립니다.",
+             "안녕하세요, 어머님. " + full + " 학생 " + M + "월 한 달 말씀드립니다.",
+             "안녕하세요. " + full + " 학생 " + M + "월 수업 마무리하며 몇 자 적습니다."],
+      plain: [full + " 학생 " + M + "월 수업 내용입니다.",
+              M + "월 " + full + " 학생 수업 정리해 드립니다.",
+              "안녕하세요. " + full + " 학생 " + M + "월 수업 안내드립니다."],
+      detail: ["안녕하세요. " + full + " 학생의 " + M + "월 한 달을 정리해 말씀드립니다.",
+               "안녕하세요. " + M + "월 " + full + " 학생 수업을 되짚어 정리했습니다.",
+               "안녕하세요, 어머님. " + full + " 학생 " + M + "월 수업을 자세히 전해 드립니다."]
+    }[cmTone]));
+
+    /* 2. 출결 */
+    if (r.plan) {
+      var t1 = "이번 달은 " + r.plan + "회 수업 중 " + r.ok + "회 출석했";
+      var mid = [];
+      if (r.warn) mid.push("지각 " + r.warn + "회");
+      if (r.bad) mid.push("결석 " + r.bad + "회");
+      var a1 = mid.length ? (t1 + "고, " + mid.join("·") + "가 있었습니다.")
+                          : (t1 + "습니다." );
+      if (!mid.length) a1 = "이번 달은 " + r.plan + "회 수업에 한 번도 빠지지 않았습니다.";
+      if (r.bad) {
+        if (r.makeup >= r.bad) a1 += " 결석한 날은 보강으로 채웠습니다.";
+        else if (r.makeup) a1 += " 그중 " + r.makeup + "회는 보강으로 채웠습니다.";
+        else a1 += " 결석한 날 보강은 아직 잡지 않았습니다.";
+      }
+      P.push(a1);
+    }
+
+    /* 3. 좋았던 점 */
+    if (goods.length || memo) {
+      var g = weave(goods, goods.length ? nm : "");
+      if (memo) memo.split(/\n+/).forEach(function (t) {
+        t = t.trim(); if (t) g.push(/[.!?]$/.test(t) ? t : t + ".");
+      });
+      P.push(g.join(" "));
+    }
+
+    /* 4. 더 챙길 점 */
+    if (bads.length) {
+      var head = cmPick(["다만", "다만", "한 가지, ", "조금 더 챙겼으면 하는 것은,"]);
+      var bb = weave(bads, head);
+      bb = bb.map(function (t) { return /[.!?]$/.test(t) ? t : t + "."; });
+      bb.push(cmPick({
+        warm: ["수업에서도 이 부분을 함께 잡아가겠습니다.", "제가 수업에서 더 챙겨 보겠습니다.",
+               "조금씩 나아지고 있으니 너무 걱정하지 않으셔도 됩니다."],
+        plain: ["수업에서 이 부분을 지도하겠습니다.", "다음 달에는 이 부분을 중심으로 보겠습니다."],
+        detail: ["다음 달 수업은 이 부분을 중심으로 계획하겠습니다.",
+                 "이 부분은 수업과 과제에 나누어 담아 챙기겠습니다."]
+      }[cmTone]));
+      P.push(bb.join(" "));
+    }
+
+    /* 5. 마무리 */
+    P.push(cmPick({
+      warm: ["늘 관심 가져주셔서 감사합니다.",
+             "가정에서도 한마디 해 주시면 큰 힘이 됩니다. 감사합니다.",
+             "다음 달에도 " + nmga + " 잘 해낼 수 있도록 돕겠습니다. 감사합니다.",
+             "궁금한 점 있으시면 언제든 편하게 연락 주세요. 감사합니다."],
+      plain: ["문의사항 있으시면 언제든 연락 주세요.",
+              "다음 달에도 위 내용을 중심으로 지도하겠습니다.",
+              "감사합니다."],
+      detail: ["더 궁금한 점이나 집에서 챙길 부분이 있으시면 말씀해 주세요. 감사합니다.",
+               "위 내용을 바탕으로 다음 달 수업을 준비하겠습니다. 감사합니다."]
+    }[cmTone]));
+
+    document.getElementById("cmText").value =
+      P.filter(Boolean).join("\n\n").replace(/ {2,}/g, " ").replace(/ ,/g, ",").trim();
+  }
+
+  function cmSave() {
+    if (!CUR || !cmMonthKey) return;
+    ROOT.child("comments/" + CUR.id + "/" + cmMonthKey).set({
+      picks: cmPicks.length ? cmPicks : null,
+      memo: (document.getElementById("cmMemo").value || "").trim() || null,
+      tone: cmTone,
+      text: document.getElementById("cmText").value || null,
+      at: Date.now()
+    });
+  }
+
+  function cmLoad() {
+    if (!CUR) return;
+    var sv = cmSaved(CUR.id, cmMonthKey);
+    cmPicks = (sv && sv.picks) ? sv.picks.slice() : [];
+    cmTone = (sv && sv.tone) || "warm";
+    document.getElementById("cmMemo").value = (sv && sv.memo) || "";
+    Array.prototype.forEach.call(document.querySelectorAll("#cmTone .tn"), function (b) {
+      b.classList.toggle("on", b.getAttribute("data-t") === cmTone);
+    });
+    document.getElementById("cmAtt").innerHTML = cmAttHtml(cmCount(CUR, cmMonthKey));
+    cmOpenCat = { attitude: true, math: true };
+    cmRenderCats(); cmRenderMy();
+    if (sv && sv.text) document.getElementById("cmText").value = sv.text;
+    else cmMake(false);
+  }
+
+  function cmOpenTab(which) {
+    document.getElementById("mTabBtnA").classList.toggle("on", which === "a");
+    document.getElementById("mTabBtnB").classList.toggle("on", which === "b");
+    document.getElementById("mTabA").hidden = which !== "a";
+    document.getElementById("mTabB").hidden = which !== "b";
+    if (which === "b") cmLoad();
+  }
+
+  /* ---- 항목 고치기 ---- */
+  function ceRender() {
+    var host = document.getElementById("ceBody");
+    host.innerHTML = "";
+    CM_CATS.forEach(function (cat) {
+      var set = cmChips(cat.k);
+      var box = el("div", "ce-cat");
+      box.appendChild(el("div", "ce-h", cat.name + " — " + cat.sub));
+      [["g", "잘한 점"], ["b", "개선할 점"]].forEach(function (side) {
+        var wrap = el("div", "ce-side");
+        wrap.appendChild(el("div", "t " + side[0], side[1]));
+        (set[side[0]] || []).forEach(function (pair, i) {
+          var row = el("div", "ce-item");
+          var a = document.createElement("input"); a.value = pair[0]; a.placeholder = "짧은 말 (버튼에 보임)";
+          var b = document.createElement("input"); b.className = "s"; b.value = pair[1] || ""; b.placeholder = "끝맺는 문장 — 예) 설명을 집중해서 듣습니다";
+          var c = document.createElement("input"); c.className = "s"; c.value = pair[2] || ""; c.placeholder = "이어 쓰는 말 — 예) 설명을 집중해서 듣고";
+          function save() {
+            var cur = cmChips(cat.k);
+            cur[side[0]][i] = [a.value.trim(), b.value.trim(), c.value.trim()];
+            ROOT.child("chips/" + cat.k).set({ g: cur.g, b: cur.b });
+          }
+          a.onchange = save; b.onchange = save; c.onchange = save;
+          var rm = el("button", "rm", "삭제"); rm.type = "button";
+          rm.onclick = function () {
+            if (!confirm("지울까요?\n\n" + pair[0])) return;
+            var cur = cmChips(cat.k);
+            cur[side[0]].splice(i, 1);
+            ROOT.child("chips/" + cat.k).set({ g: cur.g, b: cur.b });
+          };
+          row.appendChild(a); row.appendChild(b); row.appendChild(c); row.appendChild(rm);
+          wrap.appendChild(row);
+        });
+        var add = el("button", "ce-add", "＋ " + side[1] + " 추가"); add.type = "button";
+        add.onclick = function () {
+          var cur = cmChips(cat.k);
+          cur[side[0]].push(["새 항목", "", ""]);
+          ROOT.child("chips/" + cat.k).set({ g: cur.g, b: cur.b });
+        };
+        wrap.appendChild(add);
+        box.appendChild(wrap);
+      });
+      host.appendChild(box);
+    });
+  }
+
   function openStudent(id) {
     var s = DATA.students[id]; if (!s) return;
     s.id = id; if (!s.days) s.days = {};
@@ -1830,6 +2595,16 @@
     drawNextCal(s);
     document.getElementById("mUnit").value = unitOf(s);
     fillFee(s);
+
+    // 한 달 멘트 — 달 고르는 칸 채우고 첫 칸으로
+    var msel = document.getElementById("cmMonth");
+    msel.innerHTML = cmMonthList().map(function (k) {
+      var q = k.split("-");
+      return '<option value="' + k + '">' + q[0] + "년 " + (+q[1]) + "월</option>";
+    }).join("");
+    cmMonthKey = msel.value;
+    cmOpenTab("a");
+
     document.getElementById("ovl").hidden = false;
   }
 
@@ -2267,7 +3042,16 @@
     DATA.makeups = v.makeups || {};
     DATA.settings = v.settings || { units: {} };
     if (!DATA.settings.units) DATA.settings.units = {};
+    DATA.times = v.times || {};
+    DATA.comments = v.comments || {};
+    DATA.chips = v.chips || {};
+    DATA.phrases = v.phrases || [];
     renderAll();
+    if (!document.getElementById("ovl5").hidden) dyRender();
+    if (CUR && !document.getElementById("ovl").hidden && !document.getElementById("mTabB").hidden) {
+      cmRenderMy();
+      if (!document.getElementById("ovl4").hidden) ceRender();
+    }
   }, function (err) {
     document.getElementById("liveText").textContent = "연결 실패";
     document.getElementById("liveDot").className = "live off";
@@ -2279,6 +3063,70 @@
     document.getElementById("liveDot").className = "live " + (on ? "on" : "off");
     document.getElementById("liveText").textContent = on ? "실시간 동기화 중" : "연결 끊김";
   });
+
+
+
+  /* ---- 그날 등원 고치기 · 버튼 연결 ---- */
+  document.getElementById("dyClose").onclick = function () {
+    document.getElementById("ovl5").hidden = true;
+  };
+  document.getElementById("dyAdd").onclick = function () {
+    var sid = document.getElementById("dyWho").value;
+    var t = document.getElementById("dyTime").value;
+    if (!sid) { alert("학생을 골라 주세요."); return; }
+    var s = DATA.students[sid]; if (!s) return;
+    s.id = sid;
+    setPlanDay(sid, dyKey, true);
+    if (t && t !== timeBase(s, dyKey)) setTimeDay(sid, dyKey, t);
+    document.getElementById("dyWho").value = "";
+    document.getElementById("dyTime").value = "";
+    toast(s.name + " 학생을 이날에 넣었습니다.");
+  };
+
+  /* ---- 한 달 멘트 · 버튼 연결 ---- */
+  document.getElementById("mTabBtnA").onclick = function () { cmOpenTab("a"); };
+  document.getElementById("mTabBtnB").onclick = function () { cmOpenTab("b"); };
+  document.getElementById("cmMonth").onchange = function () {
+    cmMonthKey = this.value; cmLoad();
+  };
+  Array.prototype.forEach.call(document.querySelectorAll("#cmTone .tn"), function (b) {
+    b.onclick = function () {
+      cmTone = b.getAttribute("data-t");
+      Array.prototype.forEach.call(document.querySelectorAll("#cmTone .tn"), function (x) {
+        x.classList.toggle("on", x === b);
+      });
+      cmMake(true); cmSave();
+    };
+  });
+  document.getElementById("cmMemo").onchange = function () { cmMake(false); cmSave(); };
+  document.getElementById("cmText").onchange = function () { cmSave(); };
+  document.getElementById("cmRemake").onclick = function () { cmMake(true); cmSave(); };
+  document.getElementById("cmCopy").onclick = function () {
+    copyText(document.getElementById("cmText"), document.getElementById("cmCopied"), "복사했습니다.");
+  };
+  document.getElementById("cmMyAdd").onclick = function () {
+    var inp = document.getElementById("cmMyNew");
+    var t = (inp.value || "").trim();
+    if (!t) { inp.focus(); return; }
+    var list = cmPhrases();
+    if (list.indexOf(t) === -1) list.push(t);
+    ROOT.child("phrases").set(list);
+    inp.value = "";
+    toast("문구를 담았습니다.");
+  };
+  document.getElementById("cmEditChips").onclick = function () {
+    ceRender();
+    document.getElementById("ovl4").hidden = false;
+  };
+  document.getElementById("ceClose").onclick = function () {
+    document.getElementById("ovl4").hidden = true;
+    cmRenderCats();
+  };
+  document.getElementById("ceReset").onclick = function () {
+    if (!confirm("체크 항목을 처음 상태로 되돌릴까요?\n\n직접 넣으신 항목도 함께 지워집니다.\n이미 만들어 둔 멘트는 그대로 남습니다.")) return;
+    ROOT.child("chips").set(null);
+    toast("처음 상태로 되돌렸습니다.");
+  };
 
   /* ===================== 시작 ===================== */
   (function init() {
