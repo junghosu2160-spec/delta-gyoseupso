@@ -389,6 +389,59 @@
   #page-rev.drop-on::after { content:"여기에 파일을 놓으세요"; position:fixed; inset:0; z-index:90;
     display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:800;
     color:#1e40af; background:rgba(238,242,255,.85); border:3px dashed #6366f1; border-radius:14px; pointer-events:none; }
+  .rev-step { display: flex; align-items: center; gap: 9px; margin: 22px 0 9px; }
+  .rev-step .no { width: 24px; height: 24px; border-radius: 50%; background: #161616; color: #fff;
+    font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .rev-step .tt { font-size: 15px; font-weight: 800; }
+  .rev-step .ss { font-size: 11.5px; color: var(--ink-3); }
+  .rev-step .line { flex: 1; height: 1px; background: var(--line); }
+  .rev-sub { margin-top: 13px; border-top: 1px solid var(--line); padding-top: 11px; }
+  .rev-mini { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+  .rev-mini .drop { border: 1.5px dashed var(--line); border-radius: 9px; padding: 5px 11px;
+    font-size: 11.5px; font-weight: 700; color: var(--ink-2); background: var(--surface-2); cursor: pointer; }
+  .rev-mini .drop:hover, .rev-mini .drop.over { border-color: var(--brand); background: #fffbef; }
+  .rev-tbl2 td { padding: 7px 5px; vertical-align: top; }
+  .rev-todo { border: 2px solid #fca5a5; background: #fff6f6; border-radius: 11px; padding: 9px 10px; margin-bottom: 12px; }
+  .rev-todo-h { font-size: 12.5px; font-weight: 800; color: #b91c1c; margin-bottom: 5px; }
+  .rev-fold-h { font-size: 12.5px; font-weight: 800; margin: 10px 0 6px; display: flex;
+    align-items: center; gap: 8px; flex-wrap: wrap; }
+  .rev-fold-h.ok { color: var(--ok); }
+  .rev-x { font: inherit; font-size: 12px; cursor: pointer; border: 1px solid transparent;
+    background: none; color: var(--ink-3); border-radius: 6px; padding: 2px 5px; }
+  .rev-x:hover { border-color: var(--line); color: var(--bad); background: var(--surface); }
+  .rev-due { border: 1px solid #fde68a; background: #fffbeb; border-radius: 10px; padding: 9px 11px; margin-top: 12px; }
+  .rev-due > b { color: #92400e; font-size: 12.5px; }
+  .rev-due.over { border-color: #fca5a5; background: #fff5f5; }
+  .rev-due.over > b { color: #b91c1c; }
+  .rev-due.paid { border-color: #bbf7d0; background: #f2fdf5; }
+  .rev-due.paid > b { color: #166534; }
+  .rev-who { display: inline-block; font-size: 11.5px; font-weight: 700; background: #fff;
+    border: 1px solid #fcd34d; border-radius: 999px; padding: 2px 9px; margin: 5px 4px 0 0; cursor: pointer; }
+  .rev-due.over .rev-who { border-color: #fca5a5; }
+  .rev-due.paid .rev-who { border-color: #bbf7d0; }
+  .rev-who:hover { background: var(--surface-2); }
+  .rev-edit { font: inherit; font-size: 11px; cursor: pointer; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink-2); border-radius: 6px; padding: 2px 8px; font-weight: 700; }
+  .rev-edit:hover { border-color: #6366f1; color: #4338ca; background: #eef2ff; }
+  .rev-edrow > td { background: #f8f9ff; border-top: 0; }
+  .rev-ed { border: 1px solid #c7d2fe; background: #f5f7ff; border-radius: 10px; padding: 11px 12px; }
+  .rev-ed-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 9px; font-size: 12.5px; }
+  .rev-ed-top > b { font-size: 13px; }
+  .rev-ed-sum { font-size: 12px; color: var(--ink-3); }
+  .rev-ed-sum b { color: var(--ink); font-variant-numeric: tabular-nums; }
+  .rev-ed-ok { color: var(--ok); font-weight: 800; margin-left: 4px; }
+  .rev-ed-bad { color: var(--bad); font-weight: 800; margin-left: 4px; }
+  .rev-ed-btns { margin-left: auto; display: flex; gap: 6px; }
+  .rev-ed-btns .btn { font-size: 11px; padding: 3px 9px; }
+  .rev-ed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); gap: 6px; }
+  .rev-pick { display: flex; align-items: center; gap: 7px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 8px; padding: 5px 8px; cursor: pointer; }
+  .rev-pick.on { border-color: #6366f1; background: #eef2ff; }
+  .rev-pick .nm { font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+  .rev-pick .bl { font-size: 10.5px; color: var(--ink-3); white-space: nowrap; }
+  .rev-pick .num { margin-left: auto; width: 86px !important; text-align: right; }
+  .rev-ed-foot { margin-top: 10px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .rev-ed-foot .btn.brand { background: #4f46e5; color: #fff; border-color: transparent; font-weight: 800; }
   .rev-del { font: inherit; font-size: 11px; cursor: pointer; border: 1px solid var(--line);
     background: var(--surface); color: var(--bad); border-radius: 6px; padding: 2px 7px; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
@@ -1052,7 +1105,6 @@
             <button type="button" class="btn" id="revPrev">‹</button>
             <span class="mon n" id="revMon"></span>
             <button type="button" class="btn" id="revNext">›</button>
-            <button type="button" class="btn" id="revCopyPrev">지난달 지출 가져오기</button>
           </span>
           <span class="rev-nav" id="revNavY" hidden>
             <button type="button" class="btn" id="revYPrev">‹</button>
@@ -1065,45 +1117,53 @@
 
       <div id="revMonthly">
 
-      <section class="card section-gap">
-        <div class="card-head"><div class="card-title">파일 올리기</div>
-          <div class="card-meta">결제선생 정산표 · 은행 거래내역 둘 다 됩니다</div></div>
-        <div class="rev-drops">
-          <label class="rev-drop"><input type="file" id="revFilePay" accept=".xlsx,.xls,.csv" hidden>
-            💳 <b>결제선생 정산표</b><div class="s">결제일시 · 이름 · 금액 · 카드사명</div></label>
-          <label class="rev-drop"><input type="file" id="revFileBank" accept=".xlsx,.xls,.csv" hidden>
-            🏦 <b>은행 거래내역</b><div class="s">거래일시 · 적요 · 보낸분 · 입금액</div></label>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px">
-          <button type="button" class="btn" id="revRelinkBtn">🔗 결제선생으로 다시 맞추기</button>
-          <button type="button" class="btn" id="revFixBtn">🧹 잘못 붙은 카드 연결 지우기</button>
-          <div class="hint" id="revUpMsg" style="margin:0">파일을 이 화면 아무 데나 끌어다 놓아도 됩니다 · 같은 내역은 다시 올려도 중복으로 안 들어갑니다.</div>
-        </div>
-      </section>
+      <div class="rev-step"><span class="no">1</span><span class="tt">받을 돈</span>
+        <span class="ss">이 달에 얼마를 받아야 하나</span><span class="line"></span></div>
 
-      <section class="card section-gap">
-        <div class="card-head"><div class="card-title">① 수업료 수입</div>
+      <section class="card">
+        <div class="card-head"><div class="card-title">수업료</div>
           <div class="card-meta">횟수·금액은 등원 계획에서 저절로 옵니다 · 이월은 지난달 결석(보강 안 한 것)을 세어 빼 줍니다</div></div>
         <div class="tbl-wrap"><table class="st rev-tbl" id="revFeeTbl"></table></div>
-      </section>
-
-      <div class="grid2 section-gap">
-        <section class="card">
-          <div class="card-head"><div class="card-title">② 과외 · 기타 수입</div>
+        <div class="rev-sub">
+          <div class="card-head" style="margin:0"><div class="card-title" style="font-size:13px">과외 · 기타 수입</div>
             <button type="button" class="btn" id="revAddEtc">＋ 추가</button></div>
           <div class="tbl-wrap"><table class="st rev-tbl" id="revEtcTbl"></table></div>
-        </section>
-        <section class="card">
-          <div class="card-head"><div class="card-title">③ 지출</div>
-            <button type="button" class="btn" id="revAddOut">＋ 추가</button></div>
-          <div class="tbl-wrap"><table class="st rev-tbl" id="revOutTbl"></table></div>
-        </section>
-      </div>
+        </div>
+      </section>
 
-      <section class="card section-gap">
-        <div class="card-head"><div class="card-title">④ 들어온 돈 맞추기</div>
-          <div class="card-meta">올린 입금 건을 학생과 짝지으세요 · 한 번 짝지으면 다음 달부터 저절로</div></div>
-        <div class="tbl-wrap"><table class="st rev-tbl" id="revPayTbl"></table></div>
+      <div class="rev-step"><span class="no">2</span><span class="tt">들어온 돈</span>
+        <span class="ss">파일 올리고 · 바로 밑에서 맞추기</span><span class="line"></span></div>
+
+      <section class="card">
+        <div class="card-head"><div class="card-title">입금 맞추기</div>
+          <div class="rev-mini">
+            <label class="drop"><input type="file" id="revFilePay" accept=".xlsx,.xls,.csv" hidden>💳 결제선생 올리기</label>
+            <label class="drop"><input type="file" id="revFileBank" accept=".xlsx,.xls,.csv" hidden>🏦 은행 올리기</label>
+            <button type="button" class="btn" id="revRelinkBtn">🔗 다시 맞추기</button>
+            <button type="button" class="btn" id="revFixBtn">🧹 청소</button>
+          </div></div>
+        <div class="hint" id="revUpMsg" style="margin:7px 0 11px">화면 아무 데나 파일을 끌어다 놓아도 됩니다 · 같은 내역은 다시 올려도 중복으로 안 들어갑니다.</div>
+
+        <div id="revTodoBox" class="rev-todo" hidden>
+          <div class="rev-todo-h" id="revTodoH"></div>
+          <div class="tbl-wrap"><table class="st rev-tbl rev-tbl2" id="revTodoTbl"></table></div>
+        </div>
+
+        <div class="rev-fold-h ok" id="revDoneH" hidden></div>
+        <div class="tbl-wrap" id="revDoneWrap" hidden><table class="st rev-tbl rev-tbl2" id="revDoneTbl"></table></div>
+
+        <div id="revStuBox"></div>
+      </section>
+
+      <div class="rev-step"><span class="no">3</span><span class="tt">나간 돈</span>
+        <span class="ss">월세·관리비 같은 지출</span><span class="line"></span></div>
+
+      <section class="card">
+        <div class="card-head"><div class="card-title">지출</div>
+          <span style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" class="btn" id="revCopyPrev">지난달 지출 가져오기</button>
+            <button type="button" class="btn" id="revAddOut">＋ 추가</button></span></div>
+        <div class="tbl-wrap"><table class="st rev-tbl" id="revOutTbl"></table></div>
       </section>
 
       </div>
@@ -3455,15 +3515,15 @@
     document.getElementById("revMon").textContent = revY + "년 " + revM + "월";
     var S = revSum();
     document.getElementById("revStats").innerHTML =
-      '<div class="rev-st main"><div class="k">' + revM + '월 수입</div><div class="v n">' + won(S.income) +
+      '<div class="rev-st main"><div class="k">받을 돈</div><div class="v n">' + won(S.income) +
         '</div><div class="s">수업료 ' + S.fees.length + '명' + (S.etc ? ' + 과외·기타' : '') + '</div></div>' +
-      '<div class="rev-st out"><div class="k">지출</div><div class="v n">' + won(S.out) +
+      '<div class="rev-st net"><div class="k">들어온 돈</div><div class="v n">' + won(S.got) +
+        '</div><div class="s">' + (S.unpaid.length ? '아직 ' + S.unpaid.length + '명 · ' + won(S.unpaidAmt) : '모두 들어왔습니다') + '</div></div>' +
+      '<div class="rev-st out"><div class="k">나간 돈</div><div class="v n">' + won(S.out) +
         '</div><div class="s">' + Object.keys(revBox("out")).length + '건</div></div>' +
-      '<div class="rev-st net"><div class="k">남은 돈</div><div class="v n">' + won(S.net) +
-        '</div><div class="s">수입 − 지출</div></div>' +
-      '<div class="rev-st due"><div class="k">아직 안 들어옴</div><div class="v n">' + S.unpaid.length +
-        '명</div><div class="s">' + won(S.unpaidAmt) + '</div></div>';
-    drawRevFee(S); drawRevEtc(); drawRevOut(); drawRevIn();
+      '<div class="rev-st due"><div class="k">남은 돈</div><div class="v n">' + won(S.net) +
+        '</div><div class="s">받을 돈 − 나간 돈</div></div>';
+    drawRevFee(S); drawRevEtc(); drawRevOut(); drawRevIn(); drawRevStu(S);
     revAutoTie();
   }
   /* 화면을 열 때마다 아직 안 붙은 카드 정산을 결제선생과 저절로 맞춘다 */
@@ -3482,7 +3542,7 @@
     var t = document.getElementById("revFeeTbl");
     var h = '<thead><tr><th style="width:26px">#</th><th>학생</th><th class="amt">이번 달</th>' +
       '<th class="amt">이월(−)</th><th class="amt">청구 횟수</th><th class="amt">회당</th>' +
-      '<th class="amt">총금액</th><th>결제수단</th><th>들어옴</th></tr></thead><tbody>';
+      '<th class="amt">총금액</th><th style="width:110px">결제수단</th></tr></thead><tbody>';
     S.fees.forEach(function (r, i) {
       var paid = revPaidOf(r.s.id);
       var got = paid.reduce(function (n, x) { return n + x.amount; }, 0);
@@ -3499,23 +3559,12 @@
         '<td>' + REV_PAYS.map(function (p) {
           return '<option value="' + p + '"' + (p === r.pay ? ' selected' : '') + '>' + p + '</option>'; })
           .join("").replace(/^/, '<select onchange="revSetFee(\'' + r.s.id + '\',\'pay\',this.value)">') + '</select></td>' +
-        '<td>' + (paid.length
-          ? '<span class="rev-ok' + (got > r.amount ? ' over' : '') + '" title="눌러서 내역 보기" ' +
-              'onclick="revWhy(\'' + r.s.id + '\')">' + (got > r.amount ? '⚠ ' : '✓ ') + won(got) + '</span>' +
-            (got > r.amount ? '<div class="hint" style="color:var(--bad)">청구보다 ' + won(got - r.amount) + ' 많음</div>' : '') +
-            '<div class="rev-why" id="why-' + r.s.id + '" hidden>' +
-              paid.map(function (x) {
-                return '<div>' + (x.r.date || "").slice(5).replace("-", "/") + ' · ' +
-                  escapeHtml(x.r.who || "") + ' <b>' + won(x.amount) + '</b>' +
-                  ' <button type="button" class="rev-del" onclick="revUnlink(\'' + x.id + '\',\'' + r.s.id + '\')">떼기</button></div>';
-              }).join("") + '</div>'
-          : '<span class="rev-no">아직</span>') + '</td></tr>';
+        '</tr>';
     });
     var carrySum = S.fees.reduce(function (n, r) { return n + r.carry; }, 0);
     h += '</tbody><tfoot><tr><td></td><td>' + S.fees.length + '명</td><td></td>' +
       '<td class="amt n"' + (carrySum ? ' style="color:var(--warn)"' : '') + '>' + (carrySum || "") + (carrySum ? '회' : '') + '</td>' +
-      '<td></td><td></td><td class="amt n">' + S.fee.toLocaleString("ko-KR") + '</td>' +
-      '<td colspan="2" class="hint">받은 돈 ' + won(S.got) + '</td></tr></tfoot>';
+      '<td></td><td></td><td class="amt n">' + S.fee.toLocaleString("ko-KR") + '</td><td></td></tr></tfoot>';
     t.innerHTML = h;
   }
   /* 들어옴 금액을 누르면 무엇 무엇이 합쳐진 건지 보여 준다 */
@@ -3539,6 +3588,7 @@
         var r = box[id];
         if (r.src !== "bank" || !revIsCard(r.who, r.card)) return;
         if (!(r.links || []).length) return;
+        if (r.byHand) return;                        /* 직접 고친 것은 그대로 둔다 */
         if ((r.from || []).length) return;           /* 결제선생에서 온 것은 옳은 연결이라 둔다 */
         ROOT.child("rev/" + mk + "/in/" + id + "/links").set(null);
         hits++;
@@ -3573,7 +3623,7 @@
         '<td class="amt"><input class="num" type="number" step="1000" value="' + (r.amount || "") + '" onchange="revSetEtc(\'' + id + '\',\'amount\',this.value)"></td>' +
         '<td>' + REV_PAYS.map(function (p) { return '<option' + (p === r.pay ? ' selected' : '') + '>' + p + '</option>'; })
           .join("").replace(/^/, '<select onchange="revSetEtc(\'' + id + '\',\'pay\',this.value)">') + '</select></td>' +
-        '<td><button type="button" class="rev-del" onclick="revDel(\'etc\',\'' + id + '\')">삭제</button></td></tr>';
+        '<td><button type="button" class="rev-x" title="지우기" onclick="revDel(\'etc\',\'' + id + '\')">✕</button></td></tr>';
     });
     if (!Object.keys(box).length) h += '<tr><td colspan="6" class="muted">과외·기타 수입이 있으면 ＋ 추가를 눌러 적으세요.</td></tr>';
     h += '</tbody><tfoot><tr><td>합계</td><td></td><td></td><td class="amt n">' + sum.toLocaleString("ko-KR") + '</td><td colspan="2"></td></tr></tfoot>';
@@ -3598,7 +3648,7 @@
       h += '<tr><td><input class="txt" value="' + escAttr(r.name) + '" onchange="revSetOut(\'' + id + '\',\'name\',this.value)"></td>' +
         '<td class="amt"><input class="num" type="number" step="1000" value="' + (r.amount || "") + '" onchange="revSetOut(\'' + id + '\',\'amount\',this.value)"></td>' +
         '<td><input class="txt" value="' + escAttr(r.memo) + '" onchange="revSetOut(\'' + id + '\',\'memo\',this.value)"></td>' +
-        '<td><button type="button" class="rev-del" onclick="revDel(\'out\',\'' + id + '\')">삭제</button></td></tr>';
+        '<td><button type="button" class="rev-x" title="지우기" onclick="revDel(\'out\',\'' + id + '\')">✕</button></td></tr>';
     });
     if (!Object.keys(box).length) h += '<tr><td colspan="4" class="muted">＋ 추가 또는 「지난달 지출 가져오기」를 눌러 주세요.</td></tr>';
     h += '</tbody><tfoot><tr><td>합계</td><td class="amt n">' + sum.toLocaleString("ko-KR") + '</td><td colspan="2"></td></tr></tfoot>';
@@ -3633,57 +3683,259 @@
     return { kind: "none", list: [] };
   }
 
-  function drawRevIn() {
-    var t = document.getElementById("revPayTbl"), box = revBox("in");
-    var ids = Object.keys(box).sort(function (a, b) { return (box[b].date || "").localeCompare(box[a].date || ""); });
-    var h = '<thead><tr><th style="width:56px">날짜</th><th style="width:70px">출처</th><th>보낸분 · 이름</th><th class="amt">입금액</th>' +
-      '<th class="amt">원금(역산)</th><th>붙은 학생</th><th></th></tr></thead><tbody>';
-    if (!ids.length) h += '<tr><td colspan="7" class="muted">위에서 파일을 올리면 여기에 나옵니다.</td></tr>';
-    ids.forEach(function (id) {
-      var r = box[id];
-      var linked = (r.links || []).map(function (L) {
-        var st = DATA.students[L.sid];
-        return (st ? st.name : "?") + " " + won(L.amount);
-      }).join(" + ");
-      var sug = linked ? "" : revCandidates(r.base || r.amount);
-      var cell;
-      if (linked) cell = '<span class="rev-sug">' + escapeHtml(linked) + '</span>' +
-        ((r.from || []).length ? '<div class="hint">결제선생 ' + r.from.length + '건에서 가져옴</div>' : '');
-      else if (sug.kind === "multi")
+  /* ---- 들어온 돈: 「아직 안 맞춘 것」과 「다 맞춘 것」을 갈라서 그린다 ---- */
+  var revDoneOpen = false;
+  function revInRows() {
+    var box = revBox("in");
+    return Object.keys(box).map(function (id) { return { id: id, r: box[id] }; })
+      .sort(function (a, b) { return String(b.r.date || "").localeCompare(String(a.r.date || "")); });
+  }
+  function revInHead() {
+    return '<thead><tr><th style="width:92px">언제·어디서</th><th style="width:150px">보낸분</th>' +
+      '<th class="amt" style="width:118px">금액</th><th>누구 돈인가</th><th style="width:24px"></th></tr></thead>';
+  }
+  function revInRow(id, r) {
+    var linked = (r.links || []).map(function (L) {
+      var st = DATA.students[L.sid];
+      return (st ? st.name : "?") + " " + won(L.amount);
+    }).join(" + ");
+    var isPay = r.src === "pay", used = isPay && r.useBy;
+    var badge = isPay ? '<span class="rev-src pay">결제선생</span>'
+      : (revIsCard(r.who, r.card) ? '<span class="rev-src card">카드정산</span>' : '<span class="rev-src tr">계좌이체</span>');
+    var edBtn = '<div><button type="button" class="rev-edit" style="margin-top:4px" onclick="revEdOpen(\'' + id + '\')">✏️ 고치기</button></div>';
+    var cell;
+    if (used) {
+      cell = '<span class="rev-sug done">' + escapeHtml(linked || "-") + '</span><div class="hint">은행 정산에 합산됨</div>';
+    } else if (linked) {
+      cell = '<span class="rev-sug">' + escapeHtml(linked) + '</span>' +
+        ((r.from || []).length ? '<div class="hint">결제선생 ' + r.from.length + '건에서 가져옴</div>' : '') +
+        (r.byHand ? '<div class="hint">직접 고친 것</div>' : '') + edBtn;
+    } else {
+      var sug = revCandidates(revNum(r.base || r.amount));
+      var pick = '<button type="button" class="rev-edit" onclick="revEdOpen(\'' + id + '\')">✏️ 여러 명</button>';
+      if (sug.kind === "multi")
         cell = '<span class="rev-sug multi">' + sug.list.length + '명 묶음 → ' +
-          sug.list.map(function (x) { return escapeHtml(x.name) + " " + won(x.amt); }).join(" + ") +
-          '</span> <button type="button" class="btn" style="font-size:11px;padding:2px 8px" onclick="revLinkAuto(\'' + id + '\')">확정</button>';
-      else if (sug.kind === "one")
-        cell = '<select onchange="revLinkOne(\'' + id + '\',this.value)"><option value="">고르기…</option>' +
-          sug.list.map(function (x) { return '<option value="' + x.sid + '">' + escapeHtml(x.name) + " " + won(x.amt) + '</option>'; }).join("") +
-          '</select>';
+          sug.list.map(function (x) { return escapeHtml(x.name) + " " + won(x.amt); }).join(" + ") + '</span>' +
+          '<div style="margin-top:4px"><button type="button" class="btn" style="font-size:11px;padding:2px 8px" onclick="revLinkAuto(\'' + id + '\')">확정</button> ' + pick + '</div>';
       else
         cell = ((r.fromWho || []).length
             ? '<div class="rev-sug multi">결제선생 ▸ ' + escapeHtml(r.fromWho.join(" + ")) + '</div>' : '') +
-        '<select onchange="revLinkOne(\'' + id + '\',this.value)"><option value="">' +
-          ((r.fromWho || []).length ? '이 사람을 학생과 잇기…' : '맞는 금액 없음 — 직접 고르기') + '</option>' +
-          revFeeRows().map(function (x) { return '<option value="' + x.s.id + '">' + escapeHtml(x.s.name) + " " + won(x.amount) + '</option>'; }).join("") +
-          '</select>';
-      var isPay = r.src === "pay";
-      var badge = isPay
-        ? '<span class="rev-src pay">결제선생</span>'
-        : (revIsCard(r.who, r.card) ? '<span class="rev-src card">카드정산</span>' : '<span class="rev-src tr">계좌이체</span>');
-      if (isPay && r.useBy) { badge += '<div class="hint">은행에 반영됨</div>'; cell = '<span class="rev-sug done">' + escapeHtml(linked || "-") + '</span><div class="hint">은행 정산에 합산</div>'; }
-      var cls = [];
-      if (!linked) cls.push("hl");
-      if (isPay && r.useBy) cls.push("used");
-      h += '<tr' + (cls.length ? ' class="' + cls.join(" ") + '"' : "") + '><td class="n">' + (r.date || "").slice(5).replace("-", "/") + '</td>' +
-        '<td>' + badge + '</td>' +
-        '<td>' + escapeHtml(r.who || "") + (r.card ? '<div class="hint">' + escapeHtml(r.card) + '</div>' : '') + '</td>' +
-        '<td class="amt n">' + revNum(r.amount).toLocaleString("ko-KR") + '</td>' +
-        '<td class="amt n">' + (r.base && r.base !== r.amount
-            ? r.base.toLocaleString("ko-KR") + '<div class="hint">수수료 ' + won(r.base - r.amount) + '</div>'
-            : '<span class="hint">수수료 없음</span>') + '</td>' +
-        '<td>' + cell + '</td>' +
-        '<td><button type="button" class="rev-del" onclick="revDel(\'in\',\'' + id + '\')">삭제</button></td></tr>';
+          '<select onchange="revLinkOne(\'' + id + '\',this.value)"><option value="">' +
+            (sug.kind === "one" ? '고르기…' : ((r.fromWho || []).length ? '이 사람을 학생과 잇기…' : '맞는 금액 없음 — 직접 고르기')) + '</option>' +
+          (sug.kind === "one" ? sug.list : revFeeRows().map(function (x) { return { sid: x.s.id, name: x.s.name, amt: x.amount }; }))
+            .map(function (x) { return '<option value="' + x.sid + '">' + escapeHtml(x.name) + " " + won(x.amt) + '</option>'; }).join("") +
+          '</select> ' + pick;
+    }
+    var amt = revNum(r.amount), base = revNum(r.base || r.amount);
+    var money = '<b class="n" style="font-size:14px">' + base.toLocaleString("ko-KR") + '</b>' +
+      (base !== amt ? '<div class="hint">들어온 돈 ' + amt.toLocaleString("ko-KR") + ' · 수수료 ' + (base - amt).toLocaleString("ko-KR") + '</div>'
+                    : '<div class="hint">수수료 없음</div>');
+    var h = '<tr' + (used ? ' class="used"' : (linked ? '' : ' class="hl"')) + '>' +
+      '<td><b class="n">' + (r.date || "").slice(5).replace("-", "/") + '</b><div>' + badge + '</div></td>' +
+      '<td>' + escapeHtml(r.who || "") + (r.card ? '<div class="hint">' + escapeHtml(r.card) + '</div>' : '') + '</td>' +
+      '<td class="amt">' + money + '</td>' +
+      '<td>' + cell + '</td>' +
+      '<td><button type="button" class="rev-x" title="이 줄 지우기" onclick="revDel(\'in\',\'' + id + '\')">✕</button></td></tr>';
+    if (revEd && revEd.id === id) h += revEdRowHtml();
+    return h;
+  }
+  function drawRevIn() {
+    var rows = revInRows();
+    var todo = rows.filter(function (x) { return !(x.r.links || []).length && !(x.r.src === "pay" && x.r.useBy); });
+    var done = rows.filter(function (x) { return todo.indexOf(x) < 0; });
+    var box = document.getElementById("revTodoBox");
+    if (!rows.length) {
+      box.hidden = false;
+      document.getElementById("revTodoH").textContent = "아직 올린 입금이 없습니다";
+      document.getElementById("revTodoTbl").innerHTML =
+        '<tbody><tr><td class="muted">위 버튼으로 파일을 올리거나, 화면에 끌어다 놓으세요.</td></tr></tbody>';
+      box.className = "rev-todo";
+      box.style.borderColor = "var(--line)"; box.style.background = "var(--surface-2)";
+      document.getElementById("revTodoH").style.color = "var(--ink-3)";
+      document.getElementById("revDoneH").hidden = true;
+      document.getElementById("revDoneWrap").hidden = true;
+      return;
+    }
+    box.style.borderColor = ""; box.style.background = "";
+    document.getElementById("revTodoH").style.color = "";
+    box.hidden = !todo.length;
+    if (todo.length) {
+      document.getElementById("revTodoH").textContent = "❗ 아직 안 맞춘 입금 " + todo.length + "건 — 여기만 하시면 됩니다";
+      document.getElementById("revTodoTbl").innerHTML =
+        revInHead() + '<tbody>' + todo.map(function (x) { return revInRow(x.id, x.r); }).join("") + '</tbody>';
+    }
+    var dh = document.getElementById("revDoneH"), dw = document.getElementById("revDoneWrap");
+    dh.hidden = !done.length;
+    if (done.length) {
+      var sum = done.reduce(function (n, x) { return n + (x.r.src === "pay" && x.r.useBy ? 0 : revNum(x.r.amount)); }, 0);
+      dh.innerHTML = '✓ 다 맞춘 입금 ' + done.length + '건 ' +
+        '<button type="button" class="btn" style="font-size:11px;padding:2px 9px" onclick="revDoneFold()">' +
+        (revDoneOpen ? '접기' : '펼치기') + '</button>' +
+        '<span class="hint" style="font-weight:600">합계 ' + won(sum) + '</span>';
+      dw.hidden = !revDoneOpen;
+      if (revDoneOpen) dw.querySelector("table").innerHTML =
+        revInHead() + '<tbody>' + done.map(function (x) { return revInRow(x.id, x.r); }).join("") + '</tbody>';
+    } else { dw.hidden = true; }
+    /* 고치는 중이면 그 줄이 접혀 있지 않게 */
+    if (revEd && !revDoneOpen && done.some(function (x) { return x.id === revEd.id; })) { revDoneOpen = true; drawRevIn(); }
+  }
+  function revDoneFold() { revDoneOpen = !revDoneOpen; drawRevIn(); }
+
+  /* ---- 학생별 입금 현황 ---- */
+  function drawRevStu(S) {
+    var over = [], paid = [], none = [];
+    S.fees.forEach(function (r) {
+      var list = revPaidOf(r.s.id);
+      var got = list.reduce(function (n, x) { return n + x.amount; }, 0);
+      if (!list.length) none.push({ r: r });
+      else if (got > r.amount) over.push({ r: r, got: got, list: list });
+      else paid.push({ r: r, got: got, list: list });
     });
-    h += '</tbody>';
-    t.innerHTML = h;
+    var chip = function (x, txt) {
+      return '<span class="rev-who" onclick="revWhy(\'' + x.r.s.id + '\')">' +
+        escapeHtml(x.r.s.name) + ' ' + txt + '</span>' +
+        '<span class="rev-why" id="why-' + x.r.s.id + '" hidden style="display:block">' +
+          (x.list || []).map(function (y) {
+            return '<div>' + (y.r.date || "").slice(5).replace("-", "/") + ' · ' + escapeHtml(y.r.who || "") +
+              ' <b>' + won(y.amount) + '</b> <button type="button" class="rev-del" onclick="revUnlink(\'' +
+              y.id + '\',\'' + x.r.s.id + '\')">떼기</button></div>';
+          }).join("") + '</span>';
+    };
+    var h = "";
+    if (over.length)
+      h += '<div class="rev-due over"><b>⚠ 청구보다 많이 들어온 학생 ' + over.length + '명</b><div>' +
+        over.map(function (x) { return chip(x, won(x.got) + ' (청구 ' + won(x.r.amount) + ')'); }).join("") +
+        '</div><div class="hint" style="margin-top:5px">두 달치를 한 번에 낸 것이면 그대로 두셔도 됩니다 · 이름을 누르면 내역이 보입니다</div></div>';
+    if (none.length)
+      h += '<div class="rev-due"><b>아직 안 낸 학생 ' + none.length + '명 · ' +
+        won(none.reduce(function (n, x) { return n + x.r.amount; }, 0)) + '</b><div>' +
+        none.map(function (x) { return '<span class="rev-who">' + escapeHtml(x.r.s.name) + ' ' + won(x.r.amount) + '</span>'; }).join("") +
+        '</div></div>';
+    if (paid.length)
+      h += '<div class="rev-due paid"><b>✓ 낸 학생 ' + paid.length + '명 · ' +
+        won(paid.reduce(function (n, x) { return n + x.got; }, 0)) + '</b><div>' +
+        paid.map(function (x) { return chip(x, won(x.got)); }).join("") +
+        '</div><div class="hint" style="margin-top:5px">이름을 누르면 무슨 입금이 합쳐진 건지 보입니다</div></div>';
+    document.getElementById("revStuBox").innerHTML = h;
+  }
+
+  /* ---- 입금 ↔ 학생 고치기 (여러 명 선택) ---- */
+  var revEd = null;   /* { id: 입금줄id, picks: { 학생id: 금액 } } */
+  function revEdOpen(id) {
+    if (revEd && revEd.id === id) { revEd = null; drawRevIn(); return; }
+    var r = revBox("in")[id]; if (!r) return;
+    var picks = {};
+    (r.links || []).forEach(function (L) { picks[L.sid] = revNum(L.amount); });
+    revEd = { id: id, picks: picks };
+    drawRevIn();
+    var el = document.getElementById("revEdRow");
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: "nearest" });
+  }
+  function revEdCancel() { revEd = null; drawRevIn(); }
+  /* 고를 수 있는 학생 — 이번 달 청구 명단 + 이미 붙어 있는 학생 */
+  function revEdPeople() {
+    var rows = revFeeRows().map(function (r) { return { s: r.s, bill: r.amount }; });
+    var seen = {}; rows.forEach(function (x) { seen[x.s.id] = 1; });
+    Object.keys((revEd && revEd.picks) || {}).forEach(function (sid) {
+      if (seen[sid] || !DATA.students[sid]) return;
+      rows.push({ s: DATA.students[sid], bill: 0 }); seen[sid] = 1;
+    });
+    return rows;
+  }
+  function revEdTotal() {
+    var p = (revEd && revEd.picks) || {};
+    return Object.keys(p).reduce(function (n, k) { return n + revNum(p[k]); }, 0);
+  }
+  function revEdBase() {
+    var r = revBox("in")[revEd.id] || {};
+    return revNum(r.base || r.amount);
+  }
+  /* 합계 줄만 고쳐 쓴다 — 글자 치는 중에 화면이 통째로 다시 그려지지 않게 */
+  function revEdSumDraw() {
+    var el = document.getElementById("revEdSum"); if (!el) return;
+    var got = revEdTotal(), base = revEdBase(), d = got - base;
+    el.innerHTML = '고른 금액 <b>' + got.toLocaleString("ko-KR") + '</b> / 입금 원금 ' +
+      base.toLocaleString("ko-KR") +
+      (d === 0 ? ' <span class="rev-ed-ok">딱 맞음</span>'
+        : ' <span class="rev-ed-bad">' + Math.abs(d).toLocaleString("ko-KR") + (d > 0 ? ' 많음' : ' 모자람') + '</span>');
+  }
+  function revEdToggle(sid, bill) {
+    if (!revEd) return;
+    if (revEd.picks[sid] !== undefined) delete revEd.picks[sid];
+    else revEd.picks[sid] = revNum(bill);
+    drawRevIn();
+  }
+  function revEdAmt(sid, v) {
+    if (!revEd) return;
+    revEd.picks[sid] = revNum(v);
+    revEdSumDraw();
+  }
+  function revEdEven() {
+    if (!revEd) return;
+    var ks = Object.keys(revEd.picks); if (!ks.length) return;
+    var base = revEdBase(), each = Math.round(base / ks.length / 10) * 10, rest = base;
+    ks.forEach(function (k, i) {
+      revEd.picks[k] = (i === ks.length - 1) ? rest : each;
+      rest -= each;
+    });
+    drawRevIn();
+  }
+  function revEdBill() {
+    if (!revEd) return;
+    var by = {}; revEdPeople().forEach(function (x) { by[x.s.id] = x.bill; });
+    Object.keys(revEd.picks).forEach(function (k) { revEd.picks[k] = revNum(by[k]); });
+    drawRevIn();
+  }
+  function revEdClear() { if (revEd) { revEd.picks = {}; drawRevIn(); } }
+  function revEdSave() {
+    if (!revEd) return;
+    var id = revEd.id, p = revEd.picks;
+    var links = Object.keys(p).filter(function (k) { return revNum(p[k]) > 0; })
+      .map(function (k) { return { sid: k, amount: revNum(p[k]) }; });
+    var r = revBox("in")[id] || {};
+    ROOT.child("rev/" + revKey() + "/in/" + id + "/links").set(links.length ? links : null);
+    /* 손으로 고친 것은 다음 자동 맞추기가 건드리지 않게 표시 */
+    ROOT.child("rev/" + revKey() + "/in/" + id + "/byHand").set(links.length ? true : null);
+    /* 사람 이름 이체는 다음부터 저절로 붙게 기억 (카드사 번호는 기억 안 함) */
+    if (r.who && links.length === 1 && !revIsCard(r.who, r.card))
+      ROOT.child("revMap/" + revSafe(r.who)).set(links[0].sid);
+    revEd = null;
+    drawRev();
+  }
+  /* 편집판 한 줄 만들기 */
+  function revEdRowHtml() {
+    var got = revEdTotal(), base = revEdBase(), d = got - base;
+    var h = '<tr class="rev-edrow" id="revEdRow"><td colspan="5"><div class="rev-ed">' +
+      '<div class="rev-ed-top"><b>누구 돈인지 고르세요</b>' +
+      '<span class="rev-ed-sum" id="revEdSum">고른 금액 <b>' + got.toLocaleString("ko-KR") + '</b> / 입금 원금 ' +
+        base.toLocaleString("ko-KR") +
+        (d === 0 ? ' <span class="rev-ed-ok">딱 맞음</span>'
+          : ' <span class="rev-ed-bad">' + Math.abs(d).toLocaleString("ko-KR") + (d > 0 ? ' 많음' : ' 모자람') + '</span>') +
+      '</span>' +
+      '<span class="rev-ed-btns">' +
+        '<button type="button" class="btn" onclick="revEdEven()">똑같이 나누기</button>' +
+        '<button type="button" class="btn" onclick="revEdBill()">청구액대로</button>' +
+        '<button type="button" class="btn" onclick="revEdClear()">모두 지우기</button>' +
+      '</span></div><div class="rev-ed-grid">';
+    revEdPeople().forEach(function (x) {
+      var on = revEd.picks[x.s.id] !== undefined;
+      h += '<div class="rev-pick' + (on ? ' on' : '') + '">' +
+        '<label style="display:flex;align-items:center;gap:7px;cursor:pointer;min-width:0">' +
+          '<input type="checkbox"' + (on ? ' checked' : '') +
+            ' onchange="revEdToggle(\'' + x.s.id + '\',' + x.bill + ')">' +
+          '<span class="nm">' + gradeChip(x.s.grade).outerHTML + ' ' + escapeHtml(x.s.name) + '</span>' +
+          '<span class="bl">청구 ' + (x.bill ? x.bill.toLocaleString("ko-KR") : "–") + '</span>' +
+        '</label>' +
+        '<input class="num" type="text" inputmode="numeric" ' + (on ? '' : 'disabled ') +
+          'value="' + (on ? revNum(revEd.picks[x.s.id]).toLocaleString("ko-KR") : "") + '" placeholder="0" ' +
+          'oninput="revEdAmt(\'' + x.s.id + '\',this.value)"></div>';
+    });
+    h += '</div><div class="rev-ed-foot">' +
+      '<button type="button" class="btn brand" onclick="revEdSave()">저장</button>' +
+      '<button type="button" class="btn" onclick="revEdCancel()">취소</button>' +
+      '<span class="hint">체크만 하면 청구액이 저절로 들어갑니다 · 금액은 손으로 고칠 수 있습니다 · 안 맞아도 저장됩니다</span>' +
+      '</div></div></td></tr>';
+    return h;
   }
   function revLinkOne(id, sid) {
     if (!sid) return;
@@ -3776,7 +4028,7 @@
   function revChain(pool) {
     var pays = pool.filter(function (x) { return x.r.src === "pay"; });
     var banks = pool.filter(function (x) {
-      return x.r.src === "bank" && !(x.r.links || []).length && revIsCard(x.r.who, x.r.card);
+      return x.r.src === "bank" && !x.r.byHand && !(x.r.links || []).length && revIsCard(x.r.who, x.r.card);
     }).sort(function (a, b) { return String(a.r.date || "").localeCompare(String(b.r.date || "")); });
     var hit = 0;
     banks.forEach(function (B) {
@@ -4083,7 +4335,10 @@
    ["revLinkOne", revLinkOne], ["revLinkAuto", revLinkAuto], ["revGoMonth", revGoMonth],
    ["revRelink", revRelink], ["revReadFiles", revReadFiles],
    ["revWhy", revWhy], ["revUnlink", revUnlink], ["revFixCards", revFixCards],
-   ["revAutoTie", revAutoTie],
+   ["revEdOpen", revEdOpen], ["revEdCancel", revEdCancel], ["revEdSave", revEdSave],
+   ["revEdToggle", revEdToggle], ["revEdAmt", revEdAmt],
+   ["revEdEven", revEdEven], ["revEdBill", revEdBill], ["revEdClear", revEdClear],
+   ["revAutoTie", revAutoTie], ["revDoneFold", revDoneFold],
    ["toggleExamCheck", typeof toggleExamCheck === "function" ? toggleExamCheck : null],
    ["ecAddSubject", typeof ecAddSubject === "function" ? ecAddSubject : null],
    ["ecRemoveSubject", typeof ecRemoveSubject === "function" ? ecRemoveSubject : null],
@@ -4135,7 +4390,7 @@
   };
   /* 네모 두 개에 정확히 놓기 */
   ["revFilePay", "revFileBank"].forEach(function (id) {
-    var lab = document.getElementById(id).parentNode;
+    var lab = document.getElementById(id).parentNode;   /* .rev-mini .drop */
     ["dragenter", "dragover"].forEach(function (ev) {
       lab.addEventListener(ev, function (e) { e.preventDefault(); e.stopPropagation(); lab.classList.add("over"); });
     });
