@@ -375,6 +375,11 @@
   .rev-sug.multi { color: var(--slot); }
   .rev-sug.none { color: var(--warn); }
   .rev-sug.done { color: var(--muted); font-weight: 600; }
+  .rev-ok { cursor: pointer; }
+  .rev-ok.over { background:#fee2e2 !important; color:#b91c1c !important; }
+  .rev-why { margin-top:5px; font-size:11.5px; line-height:1.7; color:var(--muted);
+    border-left:3px solid #e5e7eb; padding-left:8px; }
+  .rev-why b { color:var(--ink); }
   .rev-src { display:inline-block; font-size:10.5px; font-weight:800; padding:2px 7px; border-radius:999px; white-space:nowrap; }
   .rev-src.pay  { background:#ede9fe; color:#5b21b6; }
   .rev-src.card { background:#dbeafe; color:#1e40af; }
@@ -1071,6 +1076,7 @@
         </div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px">
           <button type="button" class="btn" id="revRelinkBtn">🔗 결제선생으로 다시 맞추기</button>
+          <button type="button" class="btn" id="revFixBtn">🧹 잘못 붙은 카드 연결 지우기</button>
           <div class="hint" id="revUpMsg" style="margin:0">파일을 이 화면 아무 데나 끌어다 놓아도 됩니다 · 같은 내역은 다시 올려도 중복으로 안 들어갑니다.</div>
         </div>
       </section>
@@ -1105,7 +1111,7 @@
       <div id="revYearly" hidden>
         <section class="card section-gap">
           <div class="card-head"><div class="card-title">달마다</div>
-            <div class="card-meta">한 해를 한눈에 · 달을 누르면 그 달로 넘어갑니다</div></div>
+            <div class="card-meta">매출 화면에서 실제로 만진 달만 들어갑니다 · 달을 누르면 그 달로 넘어갑니다</div></div>
           <div class="tbl-wrap"><table class="st rev-tbl" id="revYearTbl"></table></div>
         </section>
         <section class="card section-gap">
@@ -3283,7 +3289,9 @@
     var ins = revBox("in"), out = [];
     Object.keys(ins).forEach(function (id) {
       var r = ins[id];
-      (r.links || []).forEach(function (L) { if (L.sid === sid) out.push({ id: id, r: r, amount: L.amount }); });
+      /* 은행 정산에 이미 합쳐진 결제선생 줄은 또 세지 않는다 */
+      if (r.src === "pay" && r.useBy) return;
+      (r.links || []).forEach(function (L) { if (L.sid === sid) out.push({ id: id, r: r, amount: revNum(L.amount) }); });
     });
     return out;
   }
@@ -3318,9 +3326,24 @@
     document.getElementById("revYearly").hidden = v !== "y";
     drawRev();
   }
+  /* 그 달을 매출 화면에서 실제로 만졌나 — 연간은 이 달들만 센다 */
+  function revTouched(y, m) {
+    var b = (DATA.rev || {})[monthKey(y, m)];
+    if (!b) return false;
+    if (Object.keys(b.in || {}).length) return true;
+    if (Object.keys(b.etc || {}).length) return true;
+    if (Object.keys(b.out || {}).length) return true;
+    var f = b.fees || {};
+    return Object.keys(f).some(function (k) {
+      var r = f[k] || {};
+      return (r.pay !== undefined && r.pay !== "") || (r.carry !== undefined && r.carry !== "");
+    });
+  }
   /* 한 달치 숫자 — 연간 표에서 씀 */
   function revMonthSum(y, m) {
     var b = (DATA.rev || {})[monthKey(y, m)] || {};
+    var has = revTouched(y, m);
+    if (!has) return { fee: 0, etc: 0, out: 0, got: 0, cnt: 0, income: 0, net: 0, has: false };
     var fee = 0, cnt = 0;
     activeStudents().forEach(function (s) {
       var pl = savedPlan(s.id, y, m) || basePlanOf(s, y, m);
@@ -3334,7 +3357,7 @@
     var etc = Object.values(b.etc || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
     var out = Object.values(b.out || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
     var got = Object.values(b.in || {}).reduce(function (n, r) { return n + revNum(r.amount); }, 0);
-    return { fee: fee, etc: etc, out: out, got: got, cnt: cnt, income: fee + etc, net: fee + etc - out };
+    return { fee: fee, etc: etc, out: out, got: got, cnt: cnt, income: fee + etc, net: fee + etc - out, has: true };
   }
 
   function drawRevYear() {
@@ -3345,26 +3368,31 @@
       rows.push(r);
       ["fee", "etc", "out", "got", "income", "net"].forEach(function (k) { T[k] += r[k]; });
     }
-    /* 요약 4칸 */
-    var best = rows.reduce(function (a, b, i) { return b.income > rows[a].income ? i : a; }, 0);
+    /* 요약 4칸 — 기록이 있는 달만 센다 */
+    var live = rows.filter(function (r) { return r.has; }).length;
+    var avg = function (v) { return live ? Math.round(v / live) : 0; };
+    var best = -1;
+    rows.forEach(function (r, i) { if (r.has && (best < 0 || r.income > rows[best].income)) best = i; });
     document.getElementById("revStats").innerHTML =
       '<div class="rev-st main"><div class="k">' + revY + '년 수입</div><div class="v n">' + won(T.income) +
-        '</div><div class="s">달 평균 ' + won(Math.round(T.income / 12)) + '</div></div>' +
+        '</div><div class="s">기록 ' + live + '달 · 달 평균 ' + won(avg(T.income)) + '</div></div>' +
       '<div class="rev-st out"><div class="k">지출</div><div class="v n">' + won(T.out) +
-        '</div><div class="s">달 평균 ' + won(Math.round(T.out / 12)) + '</div></div>' +
+        '</div><div class="s">달 평균 ' + won(avg(T.out)) + '</div></div>' +
       '<div class="rev-st net"><div class="k">남은 돈</div><div class="v n">' + won(T.net) +
         '</div><div class="s">수입 − 지출</div></div>' +
-      '<div class="rev-st due"><div class="k">가장 많았던 달</div><div class="v n">' + (best + 1) +
-        '월</div><div class="s">' + won(rows[best].income) + '</div></div>';
+      (best < 0
+        ? '<div class="rev-st due"><div class="k">가장 많았던 달</div><div class="v n">–</div><div class="s">아직 기록이 없습니다</div></div>'
+        : '<div class="rev-st due"><div class="k">가장 많았던 달</div><div class="v n">' + (best + 1) +
+          '월</div><div class="s">' + won(rows[best].income) + '</div></div>');
 
     /* 달마다 표 */
     var h = '<thead><tr><th>달</th><th class="amt">학생</th><th class="amt">수업료</th><th class="amt">과외·기타</th>' +
       '<th class="amt">수입</th><th class="amt">지출</th><th class="amt">남은 돈</th></tr></thead><tbody>';
     rows.forEach(function (r, i) {
       var m = i + 1;
-      var empty = !r.income && !r.out;
-      h += '<tr class="clickable" onclick="revGoMonth(' + revY + ',' + m + ')"' + (empty ? ' style="opacity:.45"' : '') + '>' +
-        '<td><b>' + m + '월</b></td><td class="amt n">' + (r.cnt || "–") + '</td>' +
+      h += '<tr class="clickable" onclick="revGoMonth(' + revY + ',' + m + ')"' + (r.has ? '' : ' style="opacity:.42"') + '>' +
+        '<td><b>' + m + '월</b>' + (r.has ? '' : '<div class="hint">기록 없음 — 눌러서 만들기</div>') + '</td>' +
+        '<td class="amt n">' + (r.cnt || "–") + '</td>' +
         '<td class="amt n">' + (r.fee ? r.fee.toLocaleString("ko-KR") : "–") + '</td>' +
         '<td class="amt n">' + (r.etc ? r.etc.toLocaleString("ko-KR") : "–") + '</td>' +
         '<td class="amt n">' + (r.income ? r.income.toLocaleString("ko-KR") : "–") + '</td>' +
@@ -3396,6 +3424,7 @@
     /* 학생별 한 해 */
     var per = {};
     for (var mm = 1; mm <= 12; mm++) {
+      if (!revTouched(revY, mm)) continue;
       var bb = (DATA.rev || {})[monthKey(revY, mm)] || {};
       activeStudents().forEach(function (s) {
         var pl = savedPlan(s.id, revY, mm) || basePlanOf(s, revY, mm);
@@ -3435,6 +3464,18 @@
       '<div class="rev-st due"><div class="k">아직 안 들어옴</div><div class="v n">' + S.unpaid.length +
         '명</div><div class="s">' + won(S.unpaidAmt) + '</div></div>';
     drawRevFee(S); drawRevEtc(); drawRevOut(); drawRevIn();
+    revAutoTie();
+  }
+  /* 화면을 열 때마다 아직 안 붙은 카드 정산을 결제선생과 저절로 맞춘다 */
+  var revTieAt = 0, revTieTimer = null;
+  function revAutoTie() {
+    if (revTieTimer) return;
+    if (Date.now() - revTieAt < 3000) return;
+    revTieTimer = setTimeout(function () {
+      revTieTimer = null; revTieAt = Date.now();
+      var pool = revPool(), n = revChain(pool);
+      if (n) revFlush(pool);
+    }, 700);
   }
 
   function drawRevFee(S) {
@@ -3459,7 +3500,15 @@
           return '<option value="' + p + '"' + (p === r.pay ? ' selected' : '') + '>' + p + '</option>'; })
           .join("").replace(/^/, '<select onchange="revSetFee(\'' + r.s.id + '\',\'pay\',this.value)">') + '</select></td>' +
         '<td>' + (paid.length
-          ? '<span class="rev-ok">✓ ' + won(got) + '</span>'
+          ? '<span class="rev-ok' + (got > r.amount ? ' over' : '') + '" title="눌러서 내역 보기" ' +
+              'onclick="revWhy(\'' + r.s.id + '\')">' + (got > r.amount ? '⚠ ' : '✓ ') + won(got) + '</span>' +
+            (got > r.amount ? '<div class="hint" style="color:var(--bad)">청구보다 ' + won(got - r.amount) + ' 많음</div>' : '') +
+            '<div class="rev-why" id="why-' + r.s.id + '" hidden>' +
+              paid.map(function (x) {
+                return '<div>' + (x.r.date || "").slice(5).replace("-", "/") + ' · ' +
+                  escapeHtml(x.r.who || "") + ' <b>' + won(x.amount) + '</b>' +
+                  ' <button type="button" class="rev-del" onclick="revUnlink(\'' + x.id + '\',\'' + r.s.id + '\')">떼기</button></div>';
+              }).join("") + '</div>'
           : '<span class="rev-no">아직</span>') + '</td></tr>';
     });
     var carrySum = S.fees.reduce(function (n, r) { return n + r.carry; }, 0);
@@ -3468,6 +3517,40 @@
       '<td></td><td></td><td class="amt n">' + S.fee.toLocaleString("ko-KR") + '</td>' +
       '<td colspan="2" class="hint">받은 돈 ' + won(S.got) + '</td></tr></tfoot>';
     t.innerHTML = h;
+  }
+  /* 들어옴 금액을 누르면 무엇 무엇이 합쳐진 건지 보여 준다 */
+  function revWhy(sid) {
+    var el = document.getElementById("why-" + sid);
+    if (el) el.hidden = !el.hidden;
+  }
+  /* 잘못 붙은 입금 한 건만 떼기 */
+  function revUnlink(id, sid) {
+    var r = revBox("in")[id]; if (!r) return;
+    var left = (r.links || []).filter(function (L) { return L.sid !== sid; });
+    ROOT.child("rev/" + revKey() + "/in/" + id + "/links").set(left.length ? left : null);
+  }
+  /* 카드사 이름으로 잘못 기억된 자동연결을 모두 지우고, 카드 정산 줄을 다시 맞춘다 */
+  function revFixCards() {
+    var map = DATA.revMap || {}, bad = Object.keys(map).filter(function (k) { return revIsCard(k, ""); });
+    var hits = 0;
+    Object.keys(DATA.rev || {}).forEach(function (mk) {
+      var box = ((DATA.rev[mk] || {}).in) || {};
+      Object.keys(box).forEach(function (id) {
+        var r = box[id];
+        if (r.src !== "bank" || !revIsCard(r.who, r.card)) return;
+        if (!(r.links || []).length) return;
+        if ((r.from || []).length) return;           /* 결제선생에서 온 것은 옳은 연결이라 둔다 */
+        ROOT.child("rev/" + mk + "/in/" + id + "/links").set(null);
+        hits++;
+      });
+    });
+    bad.forEach(function (k) { ROOT.child("revMap/" + k).remove(); });
+    setTimeout(function () {
+      var pool = revPool(), n = revChain(pool); revFlush(pool);
+      var el = document.getElementById("revUpMsg");
+      if (el) el.textContent = "카드사 이름으로 잘못 기억된 " + bad.length + "개를 지우고, 손으로 붙었던 " + hits +
+        "건을 떼어 다시 맞췄습니다" + (n ? " (결제선생으로 " + n + "건 다시 붙음)" : "") + ".";
+    }, 400);
   }
   function revSetFee(sid, k, v) {
     if (k === "carry") {
@@ -3606,7 +3689,8 @@
     if (!sid) return;
     var r = revBox("in")[id]; if (!r) return;
     ROOT.child("rev/" + revKey() + "/in/" + id + "/links").set([{ sid: sid, amount: r.base || r.amount }]);
-    if (r.who) ROOT.child("revMap/" + revSafe(r.who)).set(sid);
+    /* 카드사 정산(삼성19755545 같은 것)은 사람 이름이 아니므로 기억하면 안 된다 */
+    if (r.who && !revIsCard(r.who, r.card)) ROOT.child("revMap/" + revSafe(r.who)).set(sid);
   }
   function revLinkAuto(id) {
     var r = revBox("in")[id]; if (!r) return;
@@ -3614,7 +3698,7 @@
     if (!sug.list.length) return;
     ROOT.child("rev/" + revKey() + "/in/" + id + "/links")
       .set(sug.list.map(function (x) { return { sid: x.sid, amount: x.amt }; }));
-    if (r.who && sug.list.length === 1) ROOT.child("revMap/" + revSafe(r.who)).set(sug.list[0].sid);
+    if (r.who && sug.list.length === 1 && !revIsCard(r.who, r.card)) ROOT.child("revMap/" + revSafe(r.who)).set(sug.list[0].sid);
   }
 
   /* ---- 엑셀 읽기 ---- */
@@ -3808,7 +3892,7 @@
         if (dup) { skip++; return; }
         /* 이름으로 바로 붙여보기 — 「안수민,안성재」처럼 여러 명이면 나눠 붙인다 */
         var hits = activeStudents().filter(function (s) { return rec.who.indexOf(s.name) >= 0; });
-        var mapped = revMapOf(rec.who);
+        var mapped = (rec.src === "bank" && revIsCard(rec.who, rec.card)) ? "" : revMapOf(rec.who);
         if (hits.length > 1) {
           var p2 = rec.date.slice(0, 7).split("-");
           var each = hits.map(function (s) {
@@ -3998,6 +4082,8 @@
   [["revSetFee", revSetFee], ["revSetEtc", revSetEtc], ["revSetOut", revSetOut], ["revDel", revDel],
    ["revLinkOne", revLinkOne], ["revLinkAuto", revLinkAuto], ["revGoMonth", revGoMonth],
    ["revRelink", revRelink], ["revReadFiles", revReadFiles],
+   ["revWhy", revWhy], ["revUnlink", revUnlink], ["revFixCards", revFixCards],
+   ["revAutoTie", revAutoTie],
    ["toggleExamCheck", typeof toggleExamCheck === "function" ? toggleExamCheck : null],
    ["ecAddSubject", typeof ecAddSubject === "function" ? ecAddSubject : null],
    ["ecRemoveSubject", typeof ecRemoveSubject === "function" ? ecRemoveSubject : null],
@@ -4044,6 +4130,9 @@
     if (this.files[0]) { revReadFile(this.files[0], "bank"); this.value = ""; }
   };
   document.getElementById("revRelinkBtn").onclick = revRelink;
+  document.getElementById("revFixBtn").onclick = function () {
+    if (confirm("카드사 이름(삼성19755545 같은 것)으로 잘못 기억된 자동연결을 지우고,\n손으로 붙였던 카드 정산 줄을 떼어 다시 맞춥니다.\n\n결제선생에서 물려 온 연결은 그대로 둡니다. 할까요?")) revFixCards();
+  };
   /* 네모 두 개에 정확히 놓기 */
   ["revFilePay", "revFileBank"].forEach(function (id) {
     var lab = document.getElementById(id).parentNode;
