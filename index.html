@@ -650,6 +650,10 @@
   .pbtn:hover{ background:#3A3A3A; }
   .pbtn.brand{ background:var(--brand); border-color:var(--brand); color:#1A1A1A; }
   .pbtn.brand:hover{ filter:brightness(.96); }
+
+  .got-cell{display:flex;align-items:center;gap:7px;}
+  .gotbox{width:19px;height:19px;cursor:pointer;flex:0 0 auto;}
+  .got-hand{font-size:10px;font-weight:800;border-radius:4px;padding:2px 7px;background:#e0e7ff;color:#3730a3;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -3542,7 +3546,7 @@
     var t = document.getElementById("revFeeTbl");
     var h = '<thead><tr><th style="width:26px">#</th><th>학생</th><th class="amt">이번 달</th>' +
       '<th class="amt">이월(−)</th><th class="amt">청구 횟수</th><th class="amt">회당</th>' +
-      '<th class="amt">총금액</th><th style="width:110px">결제수단</th></tr></thead><tbody>';
+      '<th class="amt">총금액</th><th style="width:108px">결제수단</th><th style="width:150px">받음</th></tr></thead><tbody>';
     S.fees.forEach(function (r, i) {
       var paid = revPaidOf(r.s.id);
       var got = paid.reduce(function (n, x) { return n + x.amount; }, 0);
@@ -3559,12 +3563,14 @@
         '<td>' + REV_PAYS.map(function (p) {
           return '<option value="' + p + '"' + (p === r.pay ? ' selected' : '') + '>' + p + '</option>'; })
           .join("").replace(/^/, '<select onchange="revSetFee(\'' + r.s.id + '\',\'pay\',this.value)">') + '</select></td>' +
-        '</tr>';
+        '<td>' + revGotCell(r) + '</td></tr>';
     });
     var carrySum = S.fees.reduce(function (n, r) { return n + r.carry; }, 0);
     h += '</tbody><tfoot><tr><td></td><td>' + S.fees.length + '명</td><td></td>' +
       '<td class="amt n"' + (carrySum ? ' style="color:var(--warn)"' : '') + '>' + (carrySum || "") + (carrySum ? '회' : '') + '</td>' +
-      '<td></td><td></td><td class="amt n">' + S.fee.toLocaleString("ko-KR") + '</td><td></td></tr></tfoot>';
+      '<td></td><td></td><td class="amt n">' + S.fee.toLocaleString("ko-KR") + '</td><td></td>' +
+      '<td class="hint">받음 ' + S.fees.filter(function (x) { return revGotOf(x.s.id); }).length +
+      '명 · 아직 ' + S.fees.filter(function (x) { return !revGotOf(x.s.id); }).length + '명</td></tr></tfoot>';
     t.innerHTML = h;
   }
   /* 들어옴 금액을 누르면 무엇 무엇이 합쳐진 건지 보여 준다 */
@@ -3602,6 +3608,43 @@
         "건을 떼어 다시 맞췄습니다" + (n ? " (결제선생으로 " + n + "건 다시 붙음)" : "") + ".";
     }, 400);
   }
+
+  /* 받았나 — 손으로 체크한 값이 있으면 그것이 우선 */
+  function revGotOf(sid){
+    var f = revBox("fees")[sid] || {};
+    if (f.got === true) return "hand";
+    if (f.got === false) return "";
+    return revPaidOf(sid).length ? "auto" : "";
+  }
+  function revSetGot(sid, on){
+    var auto = revPaidOf(sid).length > 0;
+    /* 자동과 같은 값이면 따로 저장하지 않는다 */
+    ROOT.child("rev/" + revKey() + "/fees/" + sid + "/got").set((on === auto) ? null : !!on);
+  }
+
+
+  function revGotCell(r) {
+    var sid = r.s.id, how = revGotOf(sid);
+    var paid = revPaidOf(sid), got = paid.reduce(function (n, x) { return n + x.amount; }, 0);
+    var over = got > r.amount;
+    var tag = !how ? '<span class="rev-no">아직</span>'
+      : how === "hand" && !paid.length ? '<span class="got-hand">✓ 손으로 체크</span>'
+      : '<span class="rev-ok' + (over ? ' over' : '') + '" onclick="revWhy(\'' + sid + '\')" title="눌러서 내역 보기">' +
+        (over ? '⚠ ' : '✓ ') + won(got) + '</span>';
+    var sub = '';
+    if (paid.length && how) sub = over
+      ? '<div class="hint" style="color:var(--bad)">청구보다 ' + won(got - r.amount) + ' 많음 — 네모를 껐다 켜면 손 체크로 바뀝니다</div>'
+      : '<div class="hint">입금에서 붙음</div>';
+    return '<div class="got-cell"><input type="checkbox" class="gotbox"' + (how ? ' checked' : '') +
+      ' onchange="revSetGot(\'' + sid + '\',this.checked)">' + tag + '</div>' + sub +
+      '<div class="rev-why" id="why-' + sid + '" hidden>' +
+        paid.map(function (y) {
+          return '<div>' + (y.r.date || "").slice(5).replace("-", "/") + ' · ' + escapeHtml(y.r.who || "") +
+            ' <b>' + won(y.amount) + '</b> <button type="button" class="rev-del" onclick="revUnlink(\'' +
+            y.id + '\',\'' + sid + '\')">떼기</button></div>';
+        }).join("") + '</div>';
+  }
+
   function revSetFee(sid, k, v) {
     if (k === "carry") {
       var t = String(v == null ? "" : v).trim();
@@ -3787,7 +3830,8 @@
     S.fees.forEach(function (r) {
       var list = revPaidOf(r.s.id);
       var got = list.reduce(function (n, x) { return n + x.amount; }, 0);
-      if (!list.length) none.push({ r: r });
+      var how = revGotOf(r.s.id);
+      if (!how) none.push({ r: r });
       else if (got > r.amount) over.push({ r: r, got: got, list: list });
       else paid.push({ r: r, got: got, list: list });
     });
@@ -4335,6 +4379,7 @@
    ["revLinkOne", revLinkOne], ["revLinkAuto", revLinkAuto], ["revGoMonth", revGoMonth],
    ["revRelink", revRelink], ["revReadFiles", revReadFiles],
    ["revWhy", revWhy], ["revUnlink", revUnlink], ["revFixCards", revFixCards],
+   ["revSetGot", revSetGot],
    ["revEdOpen", revEdOpen], ["revEdCancel", revEdCancel], ["revEdSave", revEdSave],
    ["revEdToggle", revEdToggle], ["revEdAmt", revEdAmt],
    ["revEdEven", revEdEven], ["revEdBill", revEdBill], ["revEdClear", revEdClear],
