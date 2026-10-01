@@ -654,6 +654,18 @@
   .got-cell{display:flex;align-items:center;gap:7px;}
   .gotbox{width:19px;height:19px;cursor:pointer;flex:0 0 auto;}
   .got-hand{font-size:10px;font-weight:800;border-radius:4px;padding:2px 7px;background:#e0e7ff;color:#3730a3;white-space:nowrap;}
+
+  #ovlPk { display: flex; align-items: center; justify-content: center; padding: 16px; }
+  #ovlPk[hidden] { display: none; }
+  .pk-box { background: var(--surface); border-radius: 16px; padding: 16px; width: 100%; max-width: 330px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.25); }
+  .pk-t { font-size: 16px; font-weight: 800; }
+  .pk-s { font-size: 11.5px; color: var(--ink-3); margin: 3px 0 11px; line-height: 1.6; }
+  .pk-box select { width: 100%; box-sizing: border-box; font: inherit; font-size: 16px; padding: 11px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--surface); margin-bottom: 10px; }
+  .pk-btns { display: flex; gap: 7px; }
+  .pk-btns .btn { flex: 1; padding: 12px 4px; font-size: 13.5px; font-weight: 800; }
+  .cal .mk.fix { background: #fef3c7 !important; color: #92400e !important; font-weight: 800; }
 </style>
 </head>
 <body>
@@ -1196,6 +1208,18 @@
 
 <!-- 학생 상세 -->
 <!-- 그날 등원 고치기 -->
+<div class="ovl" id="ovlPk" hidden>
+  <div class="pk-box">
+    <div class="pk-t" id="pkTitle"></div>
+    <div class="pk-s" id="pkSub"></div>
+    <select id="pkTime"></select>
+    <div class="pk-btns">
+      <button type="button" class="btn brand" id="pkSaveBtn">저장</button>
+      <button type="button" class="btn" id="pkDropBtn" style="color:var(--bad);border-color:#fca5a5">이 날 빼기</button>
+      <button type="button" class="btn" id="pkCloseBtn">닫기</button>
+    </div>
+  </div>
+</div>
 <div class="ovl" id="ovl5" hidden>
   <div class="modal narrow" role="dialog" aria-modal="true" aria-labelledby="dyTitle">
     <div class="modal-head">
@@ -2272,14 +2296,16 @@
   (function () { var d = new Date(NOW.getFullYear(), NOW.getMonth() + 1, 1); nextY = d.getFullYear(); nextM = d.getMonth() + 1; })();
 
   function basePlan(s, y, m) { return basePlanOf(s, y, m); }
-  function planOf(s) {
-    var saved = savedPlan(s.id, nextY, nextM);
+  function planOfM(s, y, m) {
+    var saved = savedPlan(s.id, y, m);
     if (saved) return saved.filter(function (x) { return x !== PLAN_EMPTY; });
-    return basePlanOf(s, nextY, nextM);
+    return basePlanOf(s, y, m);
   }
-  function savePlan(s, list) {
-    ROOT.child("plans/" + monthKey(nextY, nextM) + "/" + s.id).set(list.length ? list : [PLAN_EMPTY]);
+  function savePlanM(s, y, m, list) {
+    ROOT.child("plans/" + monthKey(y, m) + "/" + s.id).set(list.length ? list : [PLAN_EMPTY]);
   }
+  function planOf(s) { return planOfM(s, nextY, nextM); }
+  function savePlan(s, list) { savePlanM(s, nextY, nextM, list); }
 
 
 
@@ -2861,13 +2887,7 @@
       fillFee(s);
     });
 
-    buildCal(document.getElementById("mCalNow"), NOW.getFullYear(), NOW.getMonth() + 1, function (cell, key, wd) {
-      if (!attendsOn(s, key)) return;
-      var st = att(key, id);
-      var cls = st === "ok" ? "ok" : st === "bad" ? "bad" : st === "warn" ? "warn" : "plan";
-      var txt = st === "ok" ? "출석" : st === "bad" ? "결석" : st === "warn" ? "지각" : timeOn(s, key);
-      cell.appendChild(el("span", "mk " + cls, txt));
-    });
+    drawNowCal(s);
 
     drawNextCal(s);
     document.getElementById("mUnit").value = unitOf(s);
@@ -2893,11 +2913,32 @@
     drawStudents();
   }
 
+
+  function drawNowCal(s) {
+    var ny = NOW.getFullYear(), nm = NOW.getMonth() + 1;
+    var plan = planOfM(s, ny, nm);
+    var base = basePlanOf(s, ny, nm);
+    buildCal(document.getElementById("mCalNow"), ny, nm, function (cell, key, wd) {
+      var on = plan.indexOf(key) !== -1;
+      var st = att(key, s.id);
+      if (on) {
+        cell.classList.add("on");
+        if (base.indexOf(key) === -1) cell.classList.add("extra");
+        var cls = st === "ok" ? "ok" : st === "bad" ? "bad" : st === "warn" ? "warn" : "plan";
+        var txt = st === "ok" ? "출석" : st === "bad" ? "결석" : st === "warn" ? "지각" : (timeOn(s, key) || "등원");
+        if (!st && timeFixed(s.id, key)) cls += " fix";
+        cell.appendChild(el("span", "mk " + cls, txt));
+      } else if (isRest(key)) {
+        cell.appendChild(el("span", "ev rest", restName(key) || "휴무"));
+      }
+      pickCell(cell, s, key, ny, nm, on, function () { openStudent(s.id); });
+    });
+  }
+
   function drawNextCal(s) {
     buildCal(document.getElementById("mCalNext"), nextY, nextM, function (cell, key, wd) {
       var on = s._plan.indexOf(key) !== -1;
       var base = basePlan(s, nextY, nextM).indexOf(key) !== -1;
-      cell.classList.add("pick");
       if (on) {
         cell.classList.add("on");
         if (!base) cell.classList.add("extra");
@@ -2905,21 +2946,67 @@
       } else if (isRest(key)) {
         cell.appendChild(el("span", "ev rest", restName(key) || "휴무"));
       }
-      cell.tabIndex = 0;
-      cell.setAttribute("role", "button");
-      cell.setAttribute("aria-pressed", String(on));
-      function toggle() {
-        var i = s._plan.indexOf(key);
-        if (i === -1) s._plan.push(key); else s._plan.splice(i, 1);
-        s._plan.sort();
-        savePlan(s, s._plan);
-        drawNextCal(s);
-        fillFee(s);
-      }
-      cell.addEventListener("click", toggle);
-      cell.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+      if (on && timeFixed(s.id, key)) cell.querySelector(".mk").classList.add("fix");
+      pickCell(cell, s, key, nextY, nextM, on, function () {
+        s._plan = planOf(s); drawNextCal(s); fillFee(s);
       });
+    });
+  }
+
+
+  /* ===== 달력에서 날짜 하나 고치기 ===== */
+  var pkS = null, pkKey = "", pkY = 0, pkM = 0;
+  function pkOpen(s, key, y, m) {
+    pkS = s; pkKey = key; pkY = y; pkM = m;
+    var d = parseKey(key), base = timeBase(s, key), fixed = timeFixed(s.id, key);
+    var isBase = basePlanOf(s, y, m).indexOf(key) !== -1;
+    document.getElementById("pkTitle").textContent =
+      (d.getMonth() + 1) + "월 " + d.getDate() + "일 (" + DOW[d.getDay()] + ")";
+    document.getElementById("pkSub").textContent =
+      (isBase ? "원래 등원 요일입니다" : "원래 요일이 아닌데 직접 넣은 날입니다") +
+      (base ? " · 기본 시간 " + base : " · 기본 시간 없음");
+    var sel = document.getElementById("pkTime");
+    sel.innerHTML = '<option value="">' + (base ? "원래대로 (" + base + ")" : "시간 없음") + "</option>" +
+      TIMES.map(function (t) { return '<option value="' + t + '">' + t + "</option>"; }).join("");
+    sel.value = fixed || "";
+    document.getElementById("ovlPk").hidden = false;
+  }
+  function pkClose() { document.getElementById("ovlPk").hidden = true; }
+  function pkSave() {
+    if (!pkS) return;
+    setTimeDay(pkS.id, pkKey, document.getElementById("pkTime").value);
+    pkClose();
+    openStudent(pkS.id);
+    toast("시간을 저장했습니다.");
+  }
+  function pkDrop() {
+    if (!pkS) return;
+    var list = planOfM(pkS, pkY, pkM).slice();
+    var i = list.indexOf(pkKey);
+    if (i !== -1) list.splice(i, 1);
+    savePlanM(pkS, pkY, pkM, list.sort());
+    setTimeDay(pkS.id, pkKey, "");
+    pkClose();
+    openStudent(pkS.id);
+    toast("이 날을 뺐습니다.");
+  }
+
+  /* 달력 한 칸을 누를 수 있게 만든다 */
+  function pickCell(cell, s, key, y, m, on, redraw) {
+    cell.classList.add("pick");
+    cell.tabIndex = 0;
+    cell.setAttribute("role", "button");
+    cell.setAttribute("aria-pressed", String(on));
+    function hit() {
+      if (on) { pkOpen(s, key, y, m); return; }
+      var list = planOfM(s, y, m).slice();
+      if (list.indexOf(key) === -1) list.push(key);
+      savePlanM(s, y, m, list.sort());
+      redraw();
+    }
+    cell.addEventListener("click", hit);
+    cell.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hit(); }
     });
   }
 
@@ -2933,8 +3020,10 @@
       return e.kind === "rest" && e.date.indexOf(monthKey(nextY, nextM)) === 0;
     }).length;
 
+    var nowCnt = planOfM(s, NOW.getFullYear(), NOW.getMonth() + 1).length;
     document.getElementById("mCount").textContent = cnt + "회";
-    document.getElementById("mCountSub").textContent = "휴무 " + rests + "일 제외" + (extra ? " · 직접 넣은 날 " + extra + "회 포함" : "");
+    document.getElementById("mCountSub").textContent =
+      "이번 달 " + nowCnt + "회 · 휴무 " + rests + "일 제외" + (extra ? " · 직접 넣은 날 " + extra + "회" : "");
     document.getElementById("mUnitSub").textContent = levelOf(s.grade) + " 기본 " + won((DATA.settings.units || {})[levelOf(s.grade)] || DEFAULT_UNITS[levelOf(s.grade)]);
     document.getElementById("mFee").textContent = won(unit * cnt);
     document.getElementById("mMsg").value = buildMsg(s, cnt, unit);
@@ -2943,6 +3032,11 @@
     document.getElementById("mImgWrap").hidden = true;
     drawCalImage(s, cnt, unit);
   }
+
+  document.getElementById("pkSaveBtn").onclick = pkSave;
+  document.getElementById("pkDropBtn").onclick = pkDrop;
+  document.getElementById("pkCloseBtn").onclick = pkClose;
+  document.getElementById("ovlPk").addEventListener("click", function (e) { if (e.target === this) pkClose(); });
 
   document.getElementById("mUnit").addEventListener("change", function () {
     if (!CUR) return;
